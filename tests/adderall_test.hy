@@ -163,3 +163,30 @@
                                        (=ᵒ q y)
                                        (=ᵒ q :milk))))
                [:coffee :tea :milk]))))
+
+(defn test-condᵉ []
+  (let [[q (fresh [q])]]
+    (assert (= (run* q (condᵉ
+                        [succeed (=ᵒ q :coffee)]
+                        [fail (=ᵒ q :tea)]))
+               [:coffee]))
+    (assert (= (run* q (fresh [x y]
+                              (=ᵒ x :good)
+                              (=ᵒ y :good)
+                              (condᵉ
+                               [(=ᵒ x :good) (=ᵒ q :coffee)]
+                               [(=ᵒ y :good) (=ᵒ q :tea)])))
+               [:coffee :tea]))
+    (assert (= (run* q (fresh [x y]
+                              (=ᵒ x :best)
+                              (=ᵒ y :good)
+                              (condᵉ
+                               [(=ᵒ x :good) (=ᵒ q :coffee)]
+                               [(=ᵒ y :good) (=ᵒ q :tea)])))
+               [:tea]))
+    (assert (r= (run* q (fresh [x y]
+                               (=ᵒ x 1)
+                               (condᵉ
+                                [(=ᵒ x 1) (=ᵒ y 2)]
+                                [(=ᵒ x 1) (=ᵒ q :tea)])))
+                [(LVar "_.0") :tea]))))
