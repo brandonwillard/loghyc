@@ -43,16 +43,14 @@
   (let [[reifying
          (fn [val]
            (setv val (substitute val s))
-           (if (lvar? val)
-             (do
-              (if (not (in val free_vars))
-                (setv (get free_vars val)
-                      (LVar (.format "_.{0}"
-                                     (len free_vars)))))
-              (get free_vars val))
-             (if (tuple? val)
-               (tuple (map reifying val))
-               val)))]]
+           (cond [(lvar? val) (do
+                               (if (not (in val free_vars))
+                                 (setv (get free_vars val)
+                                       (LVar (.format "_.{0}"
+                                                      (len free_vars)))))
+                               (get free_vars val))]
+                 [(tuple? val) (tuple (map reifying val))]
+                 [True val]))]]
     (reifying val)))
 
 (defn extend-unchecked [var val s]
