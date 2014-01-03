@@ -42,15 +42,15 @@
   (LVar (.format "_.{0}" id)))
 
 (defn reify [val s]
-  (setv free_vars {})
+  (setv free-vars {})
   (let [[reifying
          (fn [val]
            (setv val (substitute val s))
            (cond [(lvar? val) (do
-                               (if (not (in val free_vars))
+                               (if (not (in val free-vars))
                                  (setv (get free_vars val)
                                        (free-lvar (len free-vars))))
-                               (get free_vars val))]
+                               (get free-vars val))]
                  [(tuple? val) (tuple (map reifying val))]
                  [True val]))]]
     (reifying val)))
