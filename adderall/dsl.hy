@@ -20,8 +20,10 @@
 
 ;; Top level stuff
 
-(defn run* [var goal]
-  (list (gen-solutions var goal)))
+(defn run* [var &rest goals]
+  (cond
+   [(= (len goals) 1) (list (gen-solutions var (get goals 0)))]
+   [True (list (gen-solutions var (apply allᵍ goals)))]))
 (def run_all run*)
 
 (defn fresh [names_str]

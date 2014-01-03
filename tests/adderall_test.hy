@@ -121,3 +121,15 @@
                                         (=ᵒ q y)
                                         (=ᵒ q :milk)))))
                [:coffee :tea :milk]))))
+
+(defn test-run* []
+  (let [[q (fresh "q")]
+        [x (fresh "x")]
+        [y (fresh "y")]]
+    (assert (= (run* q
+                     (=o x :coffee)
+                     (=o y :tea)
+                     (eitherg (=o q x)
+                              (=o q y)
+                              (=o q :milk)))
+               [:coffee :tea :milk]))))
