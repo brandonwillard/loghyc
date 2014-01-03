@@ -16,7 +16,8 @@
 
 (import [itertools [islice]]
         [adderall.internal [*]]
-        [adderall.lvar [LVar]])
+        [adderall.lvar [LVar]]
+        [hy.models.list [HyList]])
 
 ;; Top level stuff
 
@@ -27,11 +28,12 @@
 (defn run [n var &rest goals]
   (list (islice (run! allᵍ var goals) 0 n)))
 
-(defn fresh [names_str]
-  (setv names (.split names_str))
-  (if (= (len names) 1)
-    (LVar (get names 0))
-    (map LVar names)))
+(defmacro fresh [vars &rest goals]
+  (cond
+   [goals `(let [~@(list-comp `[~x (LVar '~x)] [x vars])]
+             (allᵍ ~@goals))]
+   [(= (len vars) 1) `(LVar '~(first vars))]
+   [True `[~@(list-comp `(LVar '~x) [x vars])]]))
 
 ;; Goals
 

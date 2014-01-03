@@ -18,7 +18,7 @@ In Hy:
 
 ```lisp
 (import [adderall.dsl [*]])
-(def q (fresh "q"))
+(def q (fresh [q]))
 
 (run* q (eitherᵍ (=ᵒ q :tea)
                  (bothᵍ (=ᵒ q :coffee)
@@ -35,8 +35,9 @@ Or in Python:
 ```python
 import hy
 from adderall.dsl import *
+from adderall.lvar import LVar
 
-q = fresh ("q")
+q = LVar("q")
 
 run_all (q, eitherg (eq (q, "tea"),
                      bothg (eq (q, "coffee"),
