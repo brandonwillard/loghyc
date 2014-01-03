@@ -69,21 +69,16 @@
 (defn unify [u v s]
   (setv u (substitute u s))
   (setv v (substitute v s))
-  (if (is u v)
-    s
-    (if (lvar? u)
-      (if (lvar? v)
-        (extend-unchecked u v s)
-        (extend u v s))
-      (if (lvar? v)
-        (extend v u s)
-        (if (and (tuple? u) (tuple? v) (= (len u) (len v)))
-          (do
-           (for [[ui vi] (zip u v)]
-             (setv s (unify ui vi s))
-             (if (is s None)
-               (break)))
-           s)
-          (if (= u v)
-            s
-            None))))))
+
+  (cond
+   [(is u v) s]
+   [(lvar? u) (if (lvar? v) (extend-unchecked u v s) (extend u v s))]
+   [(lvar? v) (extend v u s)]
+   [(and (tuple? u) (tuple? v) (= (len u) (len v)))
+    (do
+     (for [[ui vi] (zip u v)]
+       (setv s (unify ui vi s))
+       (if (is s nil)
+         (break)))
+     s)]
+   [(= u v) s]))
