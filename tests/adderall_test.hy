@@ -57,3 +57,40 @@
                         (bothᵍ (=ᵒ q x)
                                (bothᵍ (=ᵒ x :tea)
                                       succeed)))) [:tea]))))
+
+(defn test-eitherᵍ []
+  (let [[q (fresh "q")]]
+    (assert (r= (run q (eitherᵍ succeed fail)) [(LVar "_.0")]))
+    (assert (= (run q (eitherᵍ fail fail)) []))
+    (assert (= (run q (eitherᵍ (=ᵒ q :tea) fail))
+               [:tea]))
+    (assert (= (run q (eitherᵍ (=ᵒ q :tea) (=ᵒ q :coffee)))
+               [:tea :coffee]))
+    (assert (= (run q (eitherᵍ (=ᵒ q :tea)
+                               (eitherᵍ (=ᵒ q :coffee)
+                                        (=ᵒ q :milk))))
+               [:tea :coffee :milk]))))
+
+(defn test-eitherᵍ-and-bothᵍ []
+  (let [[q (fresh "q")]]
+    (assert (= (run q (eitherᵍ (=ᵒ q :tea)
+                               (bothᵍ (=ᵒ q :coffee)
+                                      succeed)))
+               [:tea :coffee]))
+    (assert (= (run q (eitherᵍ (=ᵒ q :tea)
+                               (bothᵍ (=ᵒ q :coffee)
+                                      fail)))
+               [:tea]))
+    (assert (= (run q (eitherᵍ fail
+                               (bothᵍ (=ᵒ q :coffee)
+                                      (=ᵒ q :tea))))
+               []))
+    (assert (r= (run q (eitherᵍ succeed
+                                (bothᵍ (=ᵒ q :coffee)
+                                       (=ᵒ q :tea))))
+                [(LVar "_.0")]))
+    (assert (r= (run q (let [[x (fresh "x")]
+                             [y (fresh "y")]]
+                         (eitherᵍ (bothᵍ (=ᵒ q x) (=ᵒ x x))
+                                  (bothᵍ (=ᵒ q y) (=ᵒ y y)))))
+                [(LVar "_.0") (LVar "_.0")]))))

@@ -84,3 +84,10 @@
          (break)))
      s)]
    [(= u v) s]))
+
+(defn interleave [iters]
+  (while iters
+    (try
+     (yield (next (get iters 0)))
+     (catch [e StopIteration] (setv iters (slice iters 1)))
+     (else (setv iters (+ (slice iters 1) [(get iters 0)]))))))

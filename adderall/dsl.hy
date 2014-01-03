@@ -56,3 +56,8 @@
         (for [opt-s2 (g2 opt-s1)]
           (yield opt-s2))))))
 (def bothg bothᵍ)
+
+(defn eitherᵍ [g1 g2]
+  (fn [s]
+    (interleave [(g1 s) (g2 s)])))
+(def eitherg eitherᵍ)
