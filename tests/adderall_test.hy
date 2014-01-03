@@ -32,28 +32,28 @@
 
 (defn test-eq []
   (let [[q (fresh "q")]]
-    (assert (r= (run q (eq q q)) [(LVar "_.0")]))
-    (assert (= (run q (eq q True)) [True]))
-    (assert (= (run q (eq True q)) [True]))
-    (assert (= (run q (eq [1 2 3] q)) [[1 2 3]]))))
+    (assert (r= (run q (=ᵒ q q)) [(LVar "_.0")]))
+    (assert (= (run q (=ᵒ q True)) [True]))
+    (assert (= (run q (=ᵒ True q)) [True]))
+    (assert (= (run q (=ᵒ [1 2 3] q)) [[1 2 3]]))))
 
 (defn test-fresh []
   (let [[q (fresh "q")]]
-    (assert (r= (run q (eq q (fresh "x"))) [(LVar "_.0")]))))
+    (assert (r= (run q (=ᵒ q (fresh "x"))) [(LVar "_.0")]))))
 
-(defn test-both []
+(defn test-bothᵍ []
   (let [[q (fresh "q")]]
-    (assert (= (run q (both (eq q :tea) fail)) []))
-    (assert (= (run q (both (eq q :tea) succeed)) [:tea]))
+    (assert (= (run q (bothᵍ (=ᵒ q :tea) fail)) []))
+    (assert (= (run q (bothᵍ (=ᵒ q :tea) succeed)) [:tea]))
     (assert (= (run q (let [[x (fresh "x")]]
-                        (both (eq x :tea) (eq x q)))) [:tea]))
+                        (bothᵍ (=ᵒ x :tea) (=ᵒ x q)))) [:tea]))
     (assert (= (run q (let [[x (fresh "x")]]
-                        (both (eq x :tea) (eq q x)))) [:tea]))
+                        (bothᵍ (=ᵒ x :tea) (=ᵒ q x)))) [:tea]))
     (assert (= (run q (let [[x (fresh "x")]]
-                        (both (eq q x)
-                              (both (eq x :tea)
-                                    fail)))) []))
+                        (bothᵍ (=ᵒ q x)
+                              (bothᵍ (=ᵒ x :tea)
+                                     fail)))) []))
     (assert (= (run q (let [[x (fresh "x")]]
-                        (both (eq q x)
-                              (both (eq x :tea)
-                                    succeed)))) [:tea]))))
+                        (bothᵍ (=ᵒ q x)
+                               (bothᵍ (=ᵒ x :tea)
+                                      succeed)))) [:tea]))))
