@@ -20,11 +20,8 @@
 
 ;; Top level stuff
 
-(defn run [var goal &optional [n nil]]
-  (let [[solutions (gen-solutions var goal)]]
-    (if (= n nil)
-      (list solutions)
-      (islice solutions 0 n))))
+(defn run [var goal]
+  (list (gen-solutions var goal)))
 
 (defn fresh [names_str]
   (setv names (.split names_str))
