@@ -26,6 +26,11 @@
    [True (list (gen-solutions var (apply allᵍ goals)))]))
 (def run_all run*)
 
+(defn run [n var &rest goals]
+  (cond
+   [(= (len goals) 1) (list (islice (gen-solutions var (get goals 0)) 0 n))]
+   [True (list (islice (gen-solutions var (apply allᵍ goals)) 0 n))]))
+
 (defn fresh [names_str]
   (setv names (.split names_str))
   (if (= (len names) 1)
