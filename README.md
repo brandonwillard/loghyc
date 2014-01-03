@@ -20,14 +20,14 @@ In Hy:
 (import [adderall.dsl [*]])
 (def q (fresh "q"))
 
-(run q (eitherᵍ (=ᵒ q :tea)
-                (bothᵍ (=ᵒ q :coffee)
-                       succeed)))
+(run* q (eitherᵍ (=ᵒ q :tea)
+                 (bothᵍ (=ᵒ q :coffee)
+                        succeed)))
 ;; => [:tea :coffee]
 
-(run q (eitherᵍ (=ᵒ q :tea)
-                (bothᵍ (=ᵒ q :coffee)
-                       fail)))
+(run* q (eitherᵍ (=ᵒ q :tea)
+                 (bothᵍ (=ᵒ q :coffee)
+                        fail)))
 ;; => [:tea]
 ```
 
@@ -38,14 +38,14 @@ from adderall.dsl import *
 
 q = fresh ("q")
 
-run (q, eitherg (eq (q, "tea"),
-                 bothg (eq (q, "coffee"),
-                        succeed)))
+run_all (q, eitherg (eq (q, "tea"),
+                     bothg (eq (q, "coffee"),
+                            succeed)))
 ## => ['tea', 'coffee']
 
-run (q, eitherg (eq (q, "tea"),
-                 bothg (eq (q, "coffee"),
-                        fail)))
+run_all (q, eitherg (eq (q, "tea"),
+                     bothg (eq (q, "coffee"),
+                            fail)))
 ## => ['tea']
 ```
 

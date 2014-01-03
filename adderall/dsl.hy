@@ -20,8 +20,9 @@
 
 ;; Top level stuff
 
-(defn run [var goal]
+(defn run* [var goal]
   (list (gen-solutions var goal)))
+(def run_all run*)
 
 (defn fresh [names_str]
   (setv names (.split names_str))
