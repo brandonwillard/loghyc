@@ -56,6 +56,12 @@
           (yield opt-s2))))))
 (def bothg bothᵍ)
 
+(defn allᵍ [goal &rest goals]
+  (if goals
+    (bothᵍ goal (apply allᵍ goals))
+    goal))
+(def allg allᵍ)
+
 (defn eitherᵍ [&rest goals]
   (fn [s]
     (interleave (list-comp (goal s) [goal goals]))))

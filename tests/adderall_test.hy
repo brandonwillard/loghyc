@@ -98,3 +98,26 @@
                          (eitherᵍ (bothᵍ (=ᵒ q x) (=ᵒ x x))
                                   (bothᵍ (=ᵒ q y) (=ᵒ y y)))))
                 [(LVar "_.0") (LVar "_.0")]))))
+
+(defn test-allᵍ []
+  (let [[q (fresh "q")]]
+    (assert (= (run q (allᵍ (=ᵒ q :coffee)
+                            succeed
+                            succeed))
+               [:coffee]))
+    (assert (= (run q (allᵍ (=ᵒ q :coffee)
+                            succeed
+                            fail))
+               []))
+    (assert (= (run q (allᵍ (=ᵒ q :coffee)
+                            (=ᵒ q :tea)
+                            (=ᵒ q :milk)))
+               []))
+    (assert (= (run q (let [[x (fresh "x")]
+                            [y (fresh "y")]]
+                        (allᵍ (=ᵒ x :coffee)
+                              (=ᵒ y :tea)
+                              (eitherᵍ (=ᵒ q x)
+                                       (=ᵒ q y)
+                                       (=ᵒ q :milk)))))
+               [:coffee :tea :milk]))))
