@@ -93,8 +93,7 @@
                                  (bothᵍ (=ᵒ q :coffee)
                                         (=ᵒ q :tea))))
                 [(LVar "_.0")]))
-    (assert (r= (run* q (let [[x (fresh [x])]
-                              [y (fresh [y])]]
+    (assert (r= (run* q (let [[[x y] (fresh [x y])]]
                           (eitherᵍ (bothᵍ (=ᵒ q x) (=ᵒ x x))
                                    (bothᵍ (=ᵒ q y) (=ᵒ y y)))))
                 [(LVar "_.0") (LVar "_.0")]))))
@@ -113,8 +112,7 @@
                              (=ᵒ q :tea)
                              (=ᵒ q :milk)))
                []))
-    (assert (= (run* q (let [[x (fresh [x])]
-                             [y (fresh [y])]]
+    (assert (= (run* q (let [[[x y] (fresh [x y])]]
                          (allᵍ (=ᵒ x :coffee)
                                (=ᵒ y :tea)
                                (eitherᵍ (=ᵒ q x)
@@ -123,9 +121,7 @@
                [:coffee :tea :milk]))))
 
 (defn test-run* []
-  (let [[q (fresh [q])]
-        [x (fresh [x])]
-        [y (fresh [y])]]
+  (let [[[q x y] (fresh [q x y])]]
     (assert (= (run* q
                      (=ᵒ x :coffee)
                      (=ᵒ y :tea)
@@ -135,9 +131,7 @@
                [:coffee :tea :milk]))))
 
 (defn test-run []
-  (let [[q (fresh [q])]
-        [x (fresh [x])]
-        [y (fresh [y])]]
+  (let [[[q x y] (fresh [q x y])]]
     (assert (= (run 1 q
                     (=ᵒ x :coffee)
                     (=ᵒ y :tea)
