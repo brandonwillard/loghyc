@@ -127,11 +127,11 @@
         [x (fresh [x])]
         [y (fresh [y])]]
     (assert (= (run* q
-                     (=o x :coffee)
-                     (=o y :tea)
-                     (eitherg (=o q x)
-                              (=o q y)
-                              (=o q :milk)))
+                     (=ᵒ x :coffee)
+                     (=ᵒ y :tea)
+                     (eitherᵍ (=ᵒ q x)
+                              (=ᵒ q y)
+                              (=ᵒ q :milk)))
                [:coffee :tea :milk]))))
 
 (defn test-run []
@@ -139,33 +139,33 @@
         [x (fresh [x])]
         [y (fresh [y])]]
     (assert (= (run 1 q
-                    (=o x :coffee)
-                    (=o y :tea)
-                    (eitherg (=o q x)
-                             (=o q y)
-                             (=o q :milk)))
+                    (=ᵒ x :coffee)
+                    (=ᵒ y :tea)
+                    (eitherᵍ (=ᵒ q x)
+                             (=ᵒ q y)
+                             (=ᵒ q :milk)))
                [:coffee]))
     (assert (= (run 2 q
-                    (=o x :coffee)
-                    (=o y :tea)
-                    (eitherg (=o q x)
-                             (=o q y)
-                             (=o q :milk)))
+                    (=ᵒ x :coffee)
+                    (=ᵒ y :tea)
+                    (eitherᵍ (=ᵒ q x)
+                             (=ᵒ q y)
+                             (=ᵒ q :milk)))
                [:coffee :tea]))
     (assert (= (run 4 q
-                    (=o x :coffee)
-                    (=o y :tea)
-                    (eitherg (=o q x)
-                             (=o q y)
-                             (=o q :milk)))
+                    (=ᵒ x :coffee)
+                    (=ᵒ y :tea)
+                    (eitherᵍ (=ᵒ q x)
+                             (=ᵒ q y)
+                             (=ᵒ q :milk)))
                [:coffee :tea :milk]))))
 
 (defn test-fresh-with-goals []
   (let [[q (fresh [q])]]
     (assert (= (run* q (fresh [x y]
-                              (=o x :coffee)
-                              (=o y :tea)
-                              (eitherg (=o q x)
-                                       (=o q y)
-                                       (=o q :milk))))
+                              (=ᵒ x :coffee)
+                              (=ᵒ y :tea)
+                              (eitherᵍ (=ᵒ q x)
+                                       (=ᵒ q y)
+                                       (=ᵒ q :milk))))
                [:coffee :tea :milk]))))
