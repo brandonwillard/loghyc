@@ -14,6 +14,8 @@ maybe it won't.
 Example
 -------
 
+In Hy:
+
 ```lisp
 (import [adderall.dsl [*]])
 (def q (fresh "q"))
@@ -27,6 +29,24 @@ Example
                 (bothᵍ (=ᵒ q :coffee)
                        fail)))
 ;; => [:tea]
+```
+
+Or in Python:
+```python
+import hy
+from adderall.dsl import *
+
+q = fresh ("q")
+
+run (q, eitherg (eq (q, "tea"),
+                 bothg (eq (q, "coffee"),
+                        succeed)))
+## => ['tea', 'coffee']
+
+run (q, eitherg (eq (q, "tea"),
+                 bothg (eq (q, "coffee"),
+                        fail)))
+## => ['tea']
 ```
 
 License

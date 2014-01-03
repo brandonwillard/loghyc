@@ -38,6 +38,7 @@
   (fn [s]
     (yield (unify u v s))))
 (def =o =ᵒ)
+(def eq =ᵒ)
 
 (defn succeed [s]
   (yield s))
