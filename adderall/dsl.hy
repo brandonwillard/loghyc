@@ -41,8 +41,12 @@
 (defn succeed [s]
   (yield s))
 
+(def *s succeed)
+
 (defn fail [s]
   (iter ()))
+
+(def *u fail)
 
 (defn both [g1 g2]
   (fn [s]

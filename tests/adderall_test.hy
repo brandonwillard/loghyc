@@ -15,6 +15,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]])
+(require adderall.dsl)
 
 (defn r= [a b]
   (= (repr a) (repr b)))
@@ -23,6 +24,11 @@
   (let [[q (fresh "q")]]
     (assert (= (run q fail) []))
     (assert (r= (run q succeed) [(LVar "_.0")]))))
+
+(defn test-*s-and-*u []
+  (let [[q (fresh "q")]]
+    (assert (= (run q *u) []))
+    (assert (r= (run q *s) [(LVar "_.0")]))))
 
 (defn test-eq []
   (let [[q (fresh "q")]]
