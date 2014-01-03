@@ -21,6 +21,14 @@
              [opt-s (goal (tuple []))]
              (not (is opt-s nil))))
 
+(defn gen-goals [f goals]
+  (if (= (len goals) 1)
+   (get goals 0)
+   (apply f goals)))
+
+(defn run! [f var goals]
+  (gen-solutions var (gen-goals f goals)))
+
 (defn lvar? [x] (isinstance x LVar))
 (defn tuple? [x] (isinstance x tuple))
 
