@@ -25,10 +25,10 @@
     (assert (= (run q fail) []))
     (assert (r= (run q succeed) [(LVar "_.0")]))))
 
-(defn test-*s-and-*u []
+(defn test-#s-and-#u []
   (let [[q (fresh "q")]]
-    (assert (= (run q *u) []))
-    (assert (r= (run q *s) [(LVar "_.0")]))))
+    (assert (= (run q #uu) []))
+    (assert (r= (run q #ss) [(LVar "_.0")]))))
 
 (defn test-eq []
   (let [[q (fresh "q")]]

@@ -41,13 +41,11 @@
 
 (defn succeed [s]
   (yield s))
-
-(def *s succeed)
+(defreader s [_] succeed)
 
 (defn fail [s]
   (iter ()))
-
-(def *u fail)
+(defreader u [_] fail)
 
 (defn bothᵍ [g1 g2]
   (fn [s]
