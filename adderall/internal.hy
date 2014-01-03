@@ -19,7 +19,7 @@
 (defn gen-solutions [var goal]
   (list-comp (reify var opt-s)
              [opt-s (goal (tuple []))]
-             (not (is opt-s None))))
+             (not (is opt-s nil))))
 
 (defn lvar? [x] (isinstance x LVar))
 (defn tuple? [x] (isinstance x tuple))

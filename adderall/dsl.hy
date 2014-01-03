@@ -51,6 +51,6 @@
 (defn both [g1 g2]
   (fn [s]
     (for [opt-s1 (g1 s)]
-      (when (not (is opt-s1 None))
+      (when (not (is opt-s1 nil))
         (for [opt-s2 (g2 opt-s1)]
           (yield opt-s2))))))

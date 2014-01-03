@@ -17,6 +17,6 @@
 (defclass LVar [object]
   [[--init-- (fn [self name]
                (setv self.name name)
-               None)]
+               nil)]
    [--hash-- (fn [self] (hash self.name))]
    [--repr-- (fn [self] (.format "<{0!r}>" self.name))]])
