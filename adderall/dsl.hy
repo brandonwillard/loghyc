@@ -56,7 +56,7 @@
           (yield opt-s2))))))
 (def bothg bothᵍ)
 
-(defn eitherᵍ [g1 g2]
+(defn eitherᵍ [&rest goals]
   (fn [s]
-    (interleave [(g1 s) (g2 s)])))
+    (interleave (list-comp (goal s) [goal goals]))))
 (def eitherg eitherᵍ)

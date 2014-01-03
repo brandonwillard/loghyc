@@ -69,6 +69,10 @@
     (assert (= (run q (eitherᵍ (=ᵒ q :tea)
                                (eitherᵍ (=ᵒ q :coffee)
                                         (=ᵒ q :milk))))
+               [:tea :coffee :milk]))
+    (assert (= (run q (eitherᵍ (=ᵒ q :tea)
+                               (=ᵒ q :coffee)
+                               (=ᵒ q :milk)))
                [:tea :coffee :milk]))))
 
 (defn test-eitherᵍ-and-bothᵍ []
