@@ -260,7 +260,7 @@
                    [b (fresh [x]
                              (=ᵒ x q)
                              (=ᵒ False x))]
-                   [c (conde
+                   [c (condᵉ
                        [(=ᵒ True q) #ss]
                        [(=ᵒ False q)])]]
                b)))
