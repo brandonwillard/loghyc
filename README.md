@@ -29,6 +29,12 @@ Example
 ;; => [:tea]
 ```
 
+More examples can be found in the [test suite][t:generic], and in
+particular, the tests [adapted][t:trs] from The Reasoned Schemer.
+
+ [t:generic]: https://github.com/algernon/adderall/blob/master/tests/adderall_test.hy
+ [t:trs]: https://github.com/algernon/adderall/blob/master/tests/reasoned_schemer.hy
+
 License
 -------
 
