@@ -17,29 +17,28 @@
 (import [adderall.dsl [*]])
 (require adderall.dsl)
 
-(defn r= [a b]
-  (= (repr a) (repr b)))
+(def unbound (LVar "_.0"))
 
 (defn test-fail-and-succeed []
   (let [[q (fresh [q])]]
     (assert (= (run* q fail) []))
-    (assert (r= (run* q succeed) [(LVar "_.0")]))))
+    (assert (= (run* q succeed) [unbound]))))
 
 (defn test-#s-and-#u []
   (let [[q (fresh [q])]]
     (assert (= (run* q #uu) []))
-    (assert (r= (run* q #ss) [(LVar "_.0")]))))
+    (assert (= (run* q #ss) [unbound]))))
 
 (defn test-eq []
   (let [[q (fresh [q])]]
-    (assert (r= (run* q (=ᵒ q q)) [(LVar "_.0")]))
+    (assert (= (run* q (=ᵒ q q)) [unbound]))
     (assert (= (run* q (=ᵒ q True)) [True]))
     (assert (= (run* q (=ᵒ True q)) [True]))
     (assert (= (run* q (=ᵒ [1 2 3] q)) [[1 2 3]]))))
 
 (defn test-fresh []
   (let [[q (fresh [q])]]
-    (assert (r= (run* q (=ᵒ q (fresh [x]))) [(LVar "_.0")]))))
+    (assert (= (run* q (=ᵒ q (fresh [x]))) [unbound]))))
 
 (defn test-bothᵍ []
   (let [[q (fresh [q])]]
@@ -60,7 +59,7 @@
 
 (defn test-eitherᵍ []
   (let [[q (fresh [q])]]
-    (assert (r= (run* q (eitherᵍ succeed fail)) [(LVar "_.0")]))
+    (assert (= (run* q (eitherᵍ succeed fail)) [unbound]))
     (assert (= (run* q (eitherᵍ fail fail)) []))
     (assert (= (run* q (eitherᵍ (=ᵒ q :tea) fail))
                [:tea]))
@@ -89,14 +88,14 @@
                                 (bothᵍ (=ᵒ q :coffee)
                                        (=ᵒ q :tea))))
                []))
-    (assert (r= (run* q (eitherᵍ succeed
-                                 (bothᵍ (=ᵒ q :coffee)
-                                        (=ᵒ q :tea))))
-                [(LVar "_.0")]))
-    (assert (r= (run* q (let [[[x y] (fresh [x y])]]
-                          (eitherᵍ (bothᵍ (=ᵒ q x) (=ᵒ x x))
-                                   (bothᵍ (=ᵒ q y) (=ᵒ y y)))))
-                [(LVar "_.0") (LVar "_.0")]))))
+    (assert (= (run* q (eitherᵍ succeed
+                                (bothᵍ (=ᵒ q :coffee)
+                                       (=ᵒ q :tea))))
+               [unbound]))
+    (assert (= (run* q (let [[[x y] (fresh [x y])]]
+                         (eitherᵍ (bothᵍ (=ᵒ q x) (=ᵒ x x))
+                                  (bothᵍ (=ᵒ q y) (=ᵒ y y)))))
+               [unbound unbound]))))
 
 (defn test-allᵍ []
   (let [[q (fresh [q])]]
@@ -184,9 +183,9 @@
                                [(=ᵒ x :good) (=ᵒ q :coffee)]
                                [(=ᵒ y :good) (=ᵒ q :tea)])))
                [:tea]))
-    (assert (r= (run* q (fresh [x y]
-                               (=ᵒ x 1)
-                               (condᵉ
-                                [(=ᵒ x 1) (=ᵒ y 2)]
-                                [(=ᵒ x 1) (=ᵒ q :tea)])))
-                [(LVar "_.0") :tea]))))
+    (assert (= (run* q (fresh [x y]
+                              (=ᵒ x 1)
+                              (condᵉ
+                               [(=ᵒ x 1) (=ᵒ y 2)]
+                               [(=ᵒ x 1) (=ᵒ q :tea)])))
+               [unbound :tea]))))
