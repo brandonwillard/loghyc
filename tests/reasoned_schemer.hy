@@ -95,29 +95,34 @@
                (fresh [q]
                       (=ᵒ true q)))))
 
-(frame "1.30" [(, (unbound 0) (unbound 1))]
+(defn lcons [a b]
+  (cond
+   [(nil? b) [a]]
+   [True     (+ [a] b)]))
+
+(frame "1.30" [[(unbound 0) (unbound 1)]]
        (run* q
              (fresh [x y]
-                    (=ᵒ (, x y) q))))
+                    (=ᵒ (lcons x (lcons y ())) q))))
 
-(frame "1.31" [(, (unbound 0) (unbound 1))]
+(frame "1.31" [[(unbound 0) (unbound 1)]]
        (run* q
              (fresh [t u]
-                    (=ᵒ (, t u) q))))
+                    (=ᵒ (lcons t (lcons u ())) q))))
 
-(frame "1.32" [(, (unbound 0) (unbound 1) (unbound 0))]
+(frame "1.32" [[(unbound 0) (unbound 1) (unbound 0)]]
        (run* q
              (fresh [x]
                     (let [[y x]]
                       (fresh [x]
-                             (=ᵒ (, y x y) q))))))
+                             (=ᵒ (lcons y (lcons x (lcons y ()))) q))))))
 
-(frame "1.33" [(, (unbound 0) (unbound 1) (unbound 0))]
+(frame "1.33" [[(unbound 0) (unbound 1) (unbound 0)]]
        (run* q
              (fresh [x]
                     (let [[y x]]
                       (fresh [x]
-                             (=ᵒ (, x y x) q))))))
+                             (=ᵒ (lcons x (lcons y (lcons x ()))) q))))))
 
 (frame "1.34" []
        (run* q
@@ -183,30 +188,30 @@
              [(=ᵒ :oil q) #ss]
              [#uu])))
 
-(frame "1.53" [(, :split :pea)]
+(frame "1.53" [[:split :pea]]
        (run* q
              (fresh [x y]
                     (=ᵒ :split x)
                     (=ᵒ :pea y)
-                    (=ᵒ (, x y) q))))
+                    (=ᵒ (lcons x (lcons y ())) q))))
 
-(frame "1.54" [(, :split :pea) (, :navy :bean)]
+(frame "1.54" [[:split :pea] [:navy :bean]]
        (run* q
              (fresh [x y]
                     (condᵉ
                      [(=ᵒ :split x) (=ᵒ :pea y)]
                      [(=ᵒ :navy x) (=ᵒ :bean y)]
                      [#uu])
-                    (=ᵒ (, x y) q))))
+                    (=ᵒ (lcons x (lcons y ())) q))))
 
-(frame "1.55" [(, :split :pea :soup) (, :navy :bean :soup)]
+(frame "1.55" [[:split :pea :soup] [:navy :bean :soup]]
        (run* q
              (fresh [x y]
                     (condᵉ
                      [(=ᵒ :split x) (=ᵒ :pea y)]
                      [(=ᵒ :navy x) (=ᵒ :bean y)]
                      [#uu])
-                    (=ᵒ (, x y :soup) q))))
+                    (=ᵒ (lcons x (lcons y (lcons :soup ()))) q))))
 
 (defn teacupᵒ [x]
   (condᵉ
@@ -220,26 +225,26 @@
 
 ;; NOTE: This was modified, because our evaluation order differs from
 ;; that of the Reasoned Schemer. In TRS, (, false true) comes last.
-(frame "1.57" [(, :tea true) (, false true) (, :cup true)]
+(frame "1.57" [[:tea true] [false true] [:cup true]]
        (run* q
              (fresh [x y]
                     (condᵉ
                      [(teacupᵒ x) (=ᵒ true y) #ss]
                      [(=ᵒ false x) (=ᵒ true y)]
                      [#uu])
-                    (=ᵒ (, x y) q))))
+                    (=ᵒ (lcons x (lcons y ())) q))))
 
-(frame "1.58" [(, (unbound 0) (unbound 1))
-               (, (unbound 0) (unbound 1))]
+(frame "1.58" [[(unbound 0) (unbound 1)]
+               [(unbound 0) (unbound 1)]]
        (run* q
              (fresh [x y z]
                     (condᵉ
                      [(=ᵒ y x) (fresh [x] (=ᵒ z x))]
                      [(fresh [x] (=ᵒ y x)) (=ᵒ z x)]
                      [#uu])
-                    (=ᵒ (, y z) q))))
+                    (=ᵒ (lcons y (lcons z ())) q))))
 
-(frame "1.59" [(, false (unbound 0)) (, (unbound 0) false)]
+(frame "1.59" [[false (unbound 0)] [(unbound 0) false]]
        (run* q
              (fresh [x y z]
                     (condᵉ
@@ -247,7 +252,8 @@
                      [(fresh [x] (=ᵒ y x)) (=ᵒ z x)]
                      [#uu])
                     (=ᵒ false x)
-                    (=ᵒ (, y z) q))))
+                    (=ᵒ (lcons y (lcons z ())) q))))
+
 (frame "1.60" [false]
        (run* q
              (let [[a (=ᵒ true q)]
