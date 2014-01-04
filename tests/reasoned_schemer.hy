@@ -18,7 +18,8 @@
         [hy.models.symbol [HySymbol]])
 (require adderall.dsl)
 
-(def unbound (LVar "_.0"))
+(defn unbound [n]
+  (LVar (.format "_.{0}" n)))
 
 (defmacro frame [frame-num value expr]
   (let [[res (gensym)]
@@ -84,12 +85,22 @@
                     (=ᵒ x True)
                     (=ᵒ q True))))
 
-(frame "1.28" [unbound]
+(frame "1.28" [(unbound 0)]
        (run* q
              #ss))
 
-(frame "1.29" [unbound]
+(frame "1.29" [(unbound 0)]
        (run* q
              (let [[q False]]
                (fresh [q]
                       (=ᵒ True q)))))
+
+(frame "1.30" [(, (unbound 0) (unbound 1))]
+       (run* q
+             (fresh [x y]
+                    (=ᵒ (, x y) q))))
+
+(frame "1.31" [(, (unbound 0) (unbound 1))]
+       (run* q
+             (fresh [t u]
+                    (=ᵒ (, t u) q))))
