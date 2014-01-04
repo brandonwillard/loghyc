@@ -111,3 +111,156 @@
                     (let [[y x]]
                       (fresh [x]
                              (=ᵒ (, y x y) q))))))
+
+(frame "1.33" [(, (unbound 0) (unbound 1) (unbound 0))]
+       (run* q
+             (fresh [x]
+                    (let [[y x]]
+                      (fresh [x]
+                             (=ᵒ (, x y x) q))))))
+
+(frame "1.34" []
+       (run* q
+             (=ᵒ False q)
+             (=ᵒ True q)))
+
+(frame "1.35" [False]
+       (run* q
+             (=ᵒ False q)
+             (=ᵒ False q)))
+
+(frame "1.36" [True]
+       (run* q
+             (let [[x q]]
+               (=ᵒ True x))))
+
+(frame "1.37" [(unbound 0)]
+       (run* q
+             (fresh [x]
+                    (=ᵒ x q))))
+
+(frame "1.38" [True]
+       (run* q
+             (fresh [x]
+                    (=ᵒ True x)
+                    (=ᵒ x q))))
+
+(frame "1.39" [True]
+       (run* q
+             (fresh [x]
+                    (=ᵒ x q)
+                    (=ᵒ True x))))
+
+(frame "1.47" [:olive :oil]
+       (run* q
+             (condᵉ
+              [(=ᵒ :olive q) #ss]
+              [(=ᵒ :oil q) #ss]
+              [#uu])))
+
+(frame "1.49" [:olive]
+       (run 1 q
+            (condᵉ
+             [(=ᵒ :olive q) #ss]
+             [(=ᵒ :oil q) #ss]
+             [#uu])))
+
+(frame "1.50" [:olive (unbound 0) :oil]
+       (run* q
+             (condᵉ
+              [(=ᵒ :virgin q) #uu]
+              [(=ᵒ :olive q) #ss]
+              [#ss #ss]
+              [(=ᵒ :oil q) #ss]
+              [#uu])))
+
+(frame "1.52" [:extra :olive]
+       (run 2 q
+            (condᵉ
+             [(=ᵒ :extra q) #ss]
+             [(=ᵒ :virgin q) #uu]
+             [(=ᵒ :olive q) #ss]
+             [(=ᵒ :oil q) #ss]
+             [#uu])))
+
+(frame "1.53" [(, :split :pea)]
+       (run* q
+             (fresh [x y]
+                    (=ᵒ :split x)
+                    (=ᵒ :pea y)
+                    (=ᵒ (, x y) q))))
+
+(frame "1.54" [(, :split :pea) (, :navy :bean)]
+       (run* q
+             (fresh [x y]
+                    (condᵉ
+                     [(=ᵒ :split x) (=ᵒ :pea y)]
+                     [(=ᵒ :navy x) (=ᵒ :bean y)]
+                     [#uu])
+                    (=ᵒ (, x y) q))))
+
+(frame "1.55" [(, :split :pea :soup) (, :navy :bean :soup)]
+       (run* q
+             (fresh [x y]
+                    (condᵉ
+                     [(=ᵒ :split x) (=ᵒ :pea y)]
+                     [(=ᵒ :navy x) (=ᵒ :bean y)]
+                     [#uu])
+                    (=ᵒ (, x y :soup) q))))
+
+(defn teacupᵒ [x]
+  (condᵉ
+   [(=ᵒ :tea x) #ss]
+   [(=ᵒ :cup x) #ss]
+   [#uu]))
+
+(frame "1.56" [:tea :cup]
+       (run* q
+             (teacupᵒ q)))
+
+;; NOTE: This was modified, because our evaluation order differs from
+;; that of the Reasoned Schemer. In TRS, (, False True) comes last.
+(frame "1.57" [(, :tea True) (, False True) (, :cup True)]
+       (run* q
+             (fresh [x y]
+                    (condᵉ
+                     [(teacupᵒ x) (=ᵒ True y) #ss]
+                     [(=ᵒ False x) (=ᵒ True y)]
+                     [#uu])
+                    (=ᵒ (, x y) q))))
+
+(frame "1.58" [(, (unbound 0) (unbound 1))
+               (, (unbound 0) (unbound 1))]
+       (run* q
+             (fresh [x y z]
+                    (condᵉ
+                     [(=ᵒ y x) (fresh [x] (=ᵒ z x))]
+                     [(fresh [x] (=ᵒ y x)) (=ᵒ z x)]
+                     [#uu])
+                    (=ᵒ (, y z) q))))
+
+(frame "1.59" [(, False (unbound 0)) (, (unbound 0) False)]
+       (run* q
+             (fresh [x y z]
+                    (condᵉ
+                     [(=ᵒ y x) (fresh [x] (=ᵒ z x))]
+                     [(fresh [x] (=ᵒ y x)) (=ᵒ z x)]
+                     [#uu])
+                    (=ᵒ False x)
+                    (=ᵒ (, y z) q))))
+(frame "1.60" [False]
+       (run* q
+             (let [[a (=ᵒ True q)]
+                   [b (=ᵒ False q)]]
+               b)))
+
+(frame "1.61" [False]
+       (run* q
+             (let [[a (=ᵒ True q)]
+                   [b (fresh [x]
+                             (=ᵒ x q)
+                             (=ᵒ False x))]
+                   [c (conde
+                       [(=ᵒ True q) #ss]
+                       [(=ᵒ False q)])]]
+               b)))
