@@ -30,10 +30,12 @@ Example
 ```
 
 More examples can be found in the [test suite][t:generic], and in
-particular, the tests [adapted][t:trs] from The Reasoned Schemer.
+particular, the tests [adapted][t:trs] from
+[The Reasoned Schemer][trs].
 
  [t:generic]: https://github.com/algernon/adderall/blob/master/tests/adderall_test.hy
  [t:trs]: https://github.com/algernon/adderall/blob/master/tests/reasoned_schemer.hy
+ [trs]: http://mitpress.mit.edu/books/reasoned-schemer
 
 License
 -------
