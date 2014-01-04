@@ -30,10 +30,10 @@
 
 (defmacro fresh [vars &rest goals]
   (cond
-   [goals `(let [~@(list-comp `[~x (LVar '~x)] [x vars])]
+   [goals `(let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])]
              (allᵍ ~@goals))]
-   [(= (len vars) 1) `(LVar '~(first vars))]
-   [True `[~@(list-comp `(LVar '~x) [x vars])]]))
+   [(= (len vars) 1) `(LVar (gensym '~(first vars)))]
+   [True `[~@(list-comp `(LVar (gensym '~x)) [x vars])]]))
 
 ;; Goals
 

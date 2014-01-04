@@ -104,3 +104,10 @@
        (run* q
              (fresh [t u]
                     (=ᵒ (, t u) q))))
+
+(frame "1.32" [(, (unbound 0) (unbound 1) (unbound 0))]
+       (run* q
+             (fresh [x]
+                    (let [[y x]]
+                      (fresh [x]
+                             (=ᵒ (, y x y) q))))))
