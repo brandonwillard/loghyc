@@ -31,6 +31,8 @@
 
 (defn lvar? [x] (isinstance x LVar))
 (defn tuple? [x] (isinstance x tuple))
+(defn seq? [x] (or (tuple? x)
+                   (isinstance x list)))
 
 (defn substitute [val s]
   (while (lvar? val)
@@ -59,7 +61,7 @@
                                  (setv (get free_vars val)
                                        (free-lvar (len free-vars))))
                                (get free-vars val))]
-                 [(tuple? val) (tuple (map reifying val))]
+                 [(seq? val) ((type val) (map reifying val))]
                  [true val]))]]
     (reifying val)))
 
