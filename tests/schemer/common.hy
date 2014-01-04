@@ -14,4 +14,17 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(import [tests.schemer.chapter01 [*]])
+(import [adderall.dsl [*]]
+        [hy.models.symbol [HySymbol]])
+(require adderall.dsl)
+
+(defn unbound [n]
+  (LVar (.format "_.{0}" n)))
+
+(defmacro frame [frame-num value expr]
+  (let [[res (gensym)]
+        [name (+ 'test-rs- frame-num)]]
+    `(defn ~(HySymbol name) []
+       (let [[q (fresh [q])]
+             [~res ~expr]]
+         (assert (= ~value ~res))))))
