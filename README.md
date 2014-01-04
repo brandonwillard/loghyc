@@ -14,8 +14,6 @@ maybe it won't.
 Example
 -------
 
-In Hy:
-
 ```lisp
 (import [adderall.dsl [*]])
 (def q (fresh [q]))
@@ -29,25 +27,6 @@ In Hy:
                  (bothᵍ (=ᵒ q :coffee)
                         fail)))
 ;; => [:tea]
-```
-
-Or in Python:
-```python
-import hy
-from adderall.dsl import *
-from adderall.lvar import LVar
-
-q = LVar("q")
-
-run_all (q, eitherg (eq (q, "tea"),
-                     bothg (eq (q, "coffee"),
-                            succeed)))
-## => ['tea', 'coffee']
-
-run_all (q, eitherg (eq (q, "tea"),
-                     bothg (eq (q, "coffee"),
-                            fail)))
-## => ['tea']
 ```
 
 License
