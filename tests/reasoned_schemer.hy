@@ -33,19 +33,19 @@
        (run* q
              #uu))
 
-(frame "1.11" [True]
+(frame "1.11" [true]
        (run* q
-             (=ᵒ True q)))
+             (=ᵒ true q)))
 
 (frame "1.12" []
        (run* q
              #uu
-             (=ᵒ True q)))
+             (=ᵒ true q)))
 
-(frame "1.13" [True]
+(frame "1.13" [true]
        (run* q
              #ss
-             (=ᵒ True q)))
+             (=ᵒ true q)))
 
 (frame "1.15" ['corn]
        (run* q
@@ -57,33 +57,33 @@
              #uu
              (=ᵒ 'corn q)))
 
-(frame "1.18" [False]
+(frame "1.18" [false]
        (run* q
              #ss
-             (=ᵒ False q)))
+             (=ᵒ false q)))
 
 (frame "1.22" []
        (run* q
-             (let [[x False]]
-               (=ᵒ True x))))
+             (let [[x false]]
+               (=ᵒ true x))))
 
-(frame "1.23" [True]
+(frame "1.23" [true]
        (run* q
              (fresh [x]
-                    (=ᵒ True x)
-                    (=ᵒ True q))))
+                    (=ᵒ true x)
+                    (=ᵒ true q))))
 
-(frame "1.26" [True]
+(frame "1.26" [true]
        (run* q
              (fresh [x]
-                    (=ᵒ x True)
-                    (=ᵒ True q))))
+                    (=ᵒ x true)
+                    (=ᵒ true q))))
 
-(frame "1.26" [True]
+(frame "1.26" [true]
        (run* q
              (fresh [x]
-                    (=ᵒ x True)
-                    (=ᵒ q True))))
+                    (=ᵒ x true)
+                    (=ᵒ q true))))
 
 (frame "1.28" [(unbound 0)]
        (run* q
@@ -91,9 +91,9 @@
 
 (frame "1.29" [(unbound 0)]
        (run* q
-             (let [[q False]]
+             (let [[q false]]
                (fresh [q]
-                      (=ᵒ True q)))))
+                      (=ᵒ true q)))))
 
 (frame "1.30" [(, (unbound 0) (unbound 1))]
        (run* q
@@ -121,35 +121,35 @@
 
 (frame "1.34" []
        (run* q
-             (=ᵒ False q)
-             (=ᵒ True q)))
+             (=ᵒ false q)
+             (=ᵒ true q)))
 
-(frame "1.35" [False]
+(frame "1.35" [false]
        (run* q
-             (=ᵒ False q)
-             (=ᵒ False q)))
+             (=ᵒ false q)
+             (=ᵒ false q)))
 
-(frame "1.36" [True]
+(frame "1.36" [true]
        (run* q
              (let [[x q]]
-               (=ᵒ True x))))
+               (=ᵒ true x))))
 
 (frame "1.37" [(unbound 0)]
        (run* q
              (fresh [x]
                     (=ᵒ x q))))
 
-(frame "1.38" [True]
+(frame "1.38" [true]
        (run* q
              (fresh [x]
-                    (=ᵒ True x)
+                    (=ᵒ true x)
                     (=ᵒ x q))))
 
-(frame "1.39" [True]
+(frame "1.39" [true]
        (run* q
              (fresh [x]
                     (=ᵒ x q)
-                    (=ᵒ True x))))
+                    (=ᵒ true x))))
 
 (frame "1.47" [:olive :oil]
        (run* q
@@ -219,13 +219,13 @@
              (teacupᵒ q)))
 
 ;; NOTE: This was modified, because our evaluation order differs from
-;; that of the Reasoned Schemer. In TRS, (, False True) comes last.
-(frame "1.57" [(, :tea True) (, False True) (, :cup True)]
+;; that of the Reasoned Schemer. In TRS, (, false true) comes last.
+(frame "1.57" [(, :tea true) (, false true) (, :cup true)]
        (run* q
              (fresh [x y]
                     (condᵉ
-                     [(teacupᵒ x) (=ᵒ True y) #ss]
-                     [(=ᵒ False x) (=ᵒ True y)]
+                     [(teacupᵒ x) (=ᵒ true y) #ss]
+                     [(=ᵒ false x) (=ᵒ true y)]
                      [#uu])
                     (=ᵒ (, x y) q))))
 
@@ -239,28 +239,28 @@
                      [#uu])
                     (=ᵒ (, y z) q))))
 
-(frame "1.59" [(, False (unbound 0)) (, (unbound 0) False)]
+(frame "1.59" [(, false (unbound 0)) (, (unbound 0) false)]
        (run* q
              (fresh [x y z]
                     (condᵉ
                      [(=ᵒ y x) (fresh [x] (=ᵒ z x))]
                      [(fresh [x] (=ᵒ y x)) (=ᵒ z x)]
                      [#uu])
-                    (=ᵒ False x)
+                    (=ᵒ false x)
                     (=ᵒ (, y z) q))))
-(frame "1.60" [False]
+(frame "1.60" [false]
        (run* q
-             (let [[a (=ᵒ True q)]
-                   [b (=ᵒ False q)]]
+             (let [[a (=ᵒ true q)]
+                   [b (=ᵒ false q)]]
                b)))
 
-(frame "1.61" [False]
+(frame "1.61" [false]
        (run* q
-             (let [[a (=ᵒ True q)]
+             (let [[a (=ᵒ true q)]
                    [b (fresh [x]
                              (=ᵒ x q)
-                             (=ᵒ False x))]
+                             (=ᵒ false x))]
                    [c (condᵉ
-                       [(=ᵒ True q) #ss]
-                       [(=ᵒ False q)])]]
+                       [(=ᵒ true q) #ss]
+                       [(=ᵒ false q)])]]
                b)))

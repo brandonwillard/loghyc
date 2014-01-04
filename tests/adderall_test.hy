@@ -32,8 +32,8 @@
 (defn test-eq []
   (let [[q (fresh [q])]]
     (assert (= (run* q (=ᵒ q q)) [unbound]))
-    (assert (= (run* q (=ᵒ q True)) [True]))
-    (assert (= (run* q (=ᵒ True q)) [True]))
+    (assert (= (run* q (=ᵒ q true)) [true]))
+    (assert (= (run* q (=ᵒ true q)) [true]))
     (assert (= (run* q (=ᵒ [1 2 3] q)) [[1 2 3]]))))
 
 (defn test-fresh []

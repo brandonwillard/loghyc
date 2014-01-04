@@ -60,7 +60,7 @@
                                        (free-lvar (len free-vars))))
                                (get free-vars val))]
                  [(tuple? val) (tuple (map reifying val))]
-                 [True val]))]]
+                 [true val]))]]
     (reifying val)))
 
 (defn extend-unchecked [var val s]
