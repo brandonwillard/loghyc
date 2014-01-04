@@ -55,7 +55,7 @@
          (fn [val]
            (setv val (substitute val s))
            (cond [(lvar? val) (do
-                               (if (not (in val free-vars))
+                               (unless (in val free-vars)
                                  (setv (get free_vars val)
                                        (free-lvar (len free-vars))))
                                (get free-vars val))]
@@ -67,7 +67,7 @@
   (tuple [var val s]))
 
 (defn extend [var val s]
-  (when (not (occurs var val s))
+  (unless (occurs var val s)
     (extend-unchecked var val s)))
 
 (defn occurs [var val s]
