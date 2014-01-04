@@ -87,7 +87,7 @@
 
 (defn lcons [a b]
   (cond
-   [(nil? b) [a]]
+   [(is b nil) [a]]
    [True     (+ [a] b)]))
 
 (frame "1.30" [[(unbound 0) (unbound 1)]]
