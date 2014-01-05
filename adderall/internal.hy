@@ -111,8 +111,8 @@
        (if (is s nil)
          (break)))
      s)]
-   [(or (and (cons? u) (seq? v))
-        (and (seq? u) (cons? v)))
+   [(or (and (cons? u) (or (cons? v) (seq? v)))
+        (and (or (cons? u) (seq? u)) (cons? v)))
     (do
      (setv s (unify (first u) (first v) s))
      (setv s (unify (rest u) (rest v) s))

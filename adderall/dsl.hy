@@ -99,3 +99,8 @@
 
 (defn eqᵒ [u v]
   (≣ u v))
+
+(defn pairᵒ [l]
+  (fresh [a d]
+         (consᵒ a d l)))
+(def pairo pairᵒ)

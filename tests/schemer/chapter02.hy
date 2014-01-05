@@ -134,3 +134,8 @@
        (run* q
              (fresh [x y]
                     (≣ q (cons x (cons y :salad))))))
+
+(frame "2.54" [true]
+       (run* q
+             (pairᵒ (cons q q))
+             (≣ true q)))
