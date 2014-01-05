@@ -41,6 +41,7 @@
   (fn [s]
     (yield (unify u v s))))
 (def == ≣)
+(def unifyo ≣)
 
 (defn succeed [s]
   (yield s))
