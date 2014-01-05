@@ -53,7 +53,7 @@
 (defn bothᵍ [g1 g2]
   (fn [s]
     (for [opt-s1 (g1 s)]
-      (unless (is opt-s1 nil)
+      (unless (nil? opt-s1)
         (for [opt-s2 (g2 opt-s1)]
           (yield opt-s2))))))
 (def bothg bothᵍ)

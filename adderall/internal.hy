@@ -20,7 +20,7 @@
 (defn gen-solutions [var goal]
   (list-comp (reify var opt-s)
              [opt-s (goal (tuple []))]
-             (not (is opt-s nil))))
+             (not (nil? opt-s))))
 
 (defn gen-goals [f goals]
   (if (= (len goals) 1)
@@ -111,7 +111,7 @@
     (do
      (for [[ui vi] (zip u v)]
        (setv s (unify ui vi s))
-       (if (is s nil)
+       (if (nil? s)
          (break)))
      s)]
    [(or (and (cons? u) (or (cons? v) (neseq? v)))
