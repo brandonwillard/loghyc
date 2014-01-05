@@ -99,6 +99,7 @@
 
 (defn eqᵒ [u v]
   (≣ u v))
+(def eqo eqᵒ)
 
 (defn pairᵒ [l]
   (fresh [a d]
