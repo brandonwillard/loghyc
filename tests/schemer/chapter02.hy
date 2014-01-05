@@ -144,3 +144,16 @@
        (run* q
              (pairᵒ [])
              (≣ true q)))
+
+(frame "2.56" []
+       (run* q
+             (pairᵒ :pair)
+             (≣ true q)))
+
+(frame "2.57" [(cons (unbound 0) (unbound 1))]
+       (run* q
+             (pairᵒ q)))
+
+(frame "2.58" [(unbound 0)]
+       (run* q
+             (pairᵒ (cons q :pear))))
