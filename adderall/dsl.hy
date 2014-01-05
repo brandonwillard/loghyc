@@ -76,3 +76,13 @@
       (eitherᵍ goal (apply condᵉ cs))
       goal)))
 (def conde condᵉ)
+
+(defn consᵒ [f r l]
+  (cond
+   [(or (is r nil) (= r [])) (=ᵒ [f] l)]
+   [(lvar? r) (let [[rest (list-comp (LVar (gensym "conso")) [x (slice l 1)])]]
+                (bothᵍ (=ᵒ (lcons f rest) l)
+                       (=ᵒ rest r)))]
+   [(seq? r) (=ᵒ (lcons f r) l)]
+   [true (=ᵒ (lcons f [r]) l)]))
+(def conso consᵒ)

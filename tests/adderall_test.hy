@@ -189,3 +189,24 @@
                                [(=ᵒ x 1) (=ᵒ y 2)]
                                [(=ᵒ x 1) (=ᵒ q :tea)])))
                [unbound :tea]))))
+
+(defn test-consᵒ []
+  (let [[q (fresh [q])]]
+    (assert (= (run* q (conso 1 [2 3] [1 2 3]))
+               [unbound]))
+    (assert (= (run* q (conso q [2 3] [1 2 3]))
+               [1]))
+    (assert (= (run* q (conso 1 q [1 2 3]))
+               [[2 3]]))
+    (assert (= (run* q (conso 1 [2 3] q))
+               [[1 2 3]]))
+    (assert (= (run* q (conso 1 [q 3] [1 2 3]))
+               [2]))
+    (assert (= (run* q (conso 1 [2 q] [1 2 3]))
+               [3]))
+    (assert (= (run* q (conso 1 [2 3] [q 2 3]))
+               [1]))
+    (assert (= (run* q (conso 1 [2 3] [1 q 3]))
+               [2]))
+    (assert (= (run* q (conso 1 [2 3] [1 2 q]))
+               [3]))))

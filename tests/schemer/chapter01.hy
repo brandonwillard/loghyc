@@ -85,11 +85,6 @@
                (fresh [q]
                       (=ᵒ true q)))))
 
-(defn lcons [a b]
-  (cond
-   [(is b nil) [a]]
-   [True     (+ [a] b)]))
-
 (frame "1.30" [[(unbound 0) (unbound 1)]]
        (run* q
              (fresh [x y]

@@ -86,7 +86,7 @@
    [(is u v) s]
    [(lvar? u) (if (lvar? v) (extend-unchecked u v s) (extend u v s))]
    [(lvar? v) (extend v u s)]
-   [(and (tuple? u) (tuple? v) (= (len u) (len v)))
+   [(and (seq? u) (seq? v) (= (len u) (len v)))
     (do
      (for [[ui vi] (zip u v)]
        (setv s (unify ui vi s))
@@ -101,3 +101,11 @@
      (yield (next (get iters 0)))
      (catch [e StopIteration] (setv iters (slice iters 1)))
      (else (setv iters (+ (slice iters 1) [(get iters 0)]))))))
+
+(defn lcons [a b]
+  (cond
+   [(is b nil) [a]]
+   [(lvar? b)  (if (seq? a)
+                 (let [[x a]] (.append x b) x)
+                 [a b])]
+   [True       (+ [a] b)]))
