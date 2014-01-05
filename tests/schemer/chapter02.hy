@@ -47,7 +47,12 @@
                     (restᵒ [:a :c :o :r :n] v)
                     (firstᵒ v q))))
 
-;; 2.18 skipped, because of no cons in Hy
+(frame "2.18" [[[:raisin :pear] :a]]
+       (run* q
+             (fresh [x y]
+                    (restᵒ [:grapre :raisin :pear] x)
+                    (firstᵒ [[:a] [:b] [:c]] y)
+                    (≣ (cons x y) q))))
 
 (frame "2.19" [true]
        (run* q
