@@ -33,6 +33,7 @@
 (defn tuple? [x] (isinstance x tuple))
 (defn seq? [x] (or (tuple? x)
                    (isinstance x list)))
+(defn cons? [x] (isinstance x hy.models.cons.HyCons))
 
 (defn substitute [val s]
   (while (lvar? val)
@@ -93,6 +94,12 @@
        (if (is s nil)
          (break)))
      s)]
+   [(or (and (cons? u) (seq? v))
+        (and (seq? u) (cons? v)))
+    (do
+     (setv s (unify (first u) (first v) s))
+     (setv s (unify (rest u) (rest v) s))
+     s)]
    [(= u v) s]))
 
 (defn interleave [iters]
@@ -107,5 +114,5 @@
    [(is b nil) [a]]
    [(lvar? b)  (if (seq? a)
                  (let [[x (list a)]] (.append x b) x)
-                 [a b])]
+                 (cons a b))]
    [True       (+ [a] b)]))

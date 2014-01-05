@@ -35,3 +35,16 @@
                     (=ᵒ :pear x))))
 
 ;; 2.11 not implemented, because there's no native cons in Hy
+
+(frame "2.15" [:c]
+       (run* q
+             (fresh [v]
+                    (restᵒ [:a :c :o :r :n] v)
+                    (firstᵒ v q))))
+
+;; 2.18 skipped, because of no cons in Hy
+
+(frame "2.19" [true]
+       (run* q
+             (restᵒ [:a :c :o :r :n] [:c :o :r :n])
+             (=ᵒ true q)))
