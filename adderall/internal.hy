@@ -64,6 +64,8 @@
                                        (free-lvar (len free-vars))))
                                (get free-vars val))]
                  [(seq? val) ((type val) (map reifying val))]
+                 [(cons? val) (cons (reifying (first val))
+                                    (reifying (rest val)))]
                  [true val]))]]
     (reifying val)))
 
