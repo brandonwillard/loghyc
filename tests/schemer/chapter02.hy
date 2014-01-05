@@ -48,3 +48,44 @@
        (run* q
              (restᵒ [:a :c :o :r :n] [:c :o :r :n])
              (=ᵒ true q)))
+
+(frame "2.20" [:o]
+       (run* q
+             (restᵒ [:c :o :r :n] [q :r :n])))
+
+(frame "2.21" [[:a :c :o :r :n]]
+       (run* q
+             (fresh [x]
+                    (restᵒ q [:c :o :r :n])
+                    (firstᵒ q x)
+                    (=ᵒ :a x))))
+
+(frame "2.22" [[[:a :b :c] :d :e]]
+       (run* q
+             (consᵒ [:a :b :c] [:d :e] q)))
+
+(frame "2.23" [:d]
+       (run* q
+             (consᵒ q [:a :b :c] [:d :a :b :c])))
+
+(frame "2.24" [[:e :a :d :c]]
+       (run* q
+             (fresh [x y z]
+                    (=ᵒ [:e :a :d x] q)
+                    (consᵒ y [:a z :c] q))))
+
+(frame "2.25" [:d]
+       (run* q
+             (consᵒ q [:a q :c] [:d :a q :c])))
+
+(frame "2.26" [[:d :a :d :c]]
+       (run* q
+             (fresh [x]
+                    (=ᵒ [:d :a x :c] q)
+                    (consᵒ x [:a x :c] q))))
+
+(frame "2.27" [[:d :a :d :c]]
+       (run* q
+             (fresh [x]
+                    (consᵒ x [:a x :c] q)
+                    (=ᵒ [:d :a x :c] q))))
