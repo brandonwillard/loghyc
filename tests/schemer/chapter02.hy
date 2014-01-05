@@ -94,3 +94,14 @@
              (fresh [x]
                     (consᵒ x [:a x :c] q)
                     (=ᵒ [:d :a x :c] q))))
+
+(frame "2.29" [[:b :e :a :n :s]]
+       (run* q
+             (fresh [d x y w s]
+                    (consᵒ w [:a :n :s] s)
+                    (restᵒ q s)
+                    (firstᵒ q x)
+                    (=ᵒ :b x)
+                    (restᵒ q d)
+                    (firstᵒ d y)
+                    (=ᵒ :e y))))
