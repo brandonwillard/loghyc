@@ -106,6 +106,6 @@
   (cond
    [(is b nil) [a]]
    [(lvar? b)  (if (seq? a)
-                 (let [[x a]] (.append x b) x)
+                 (let [[x (list a)]] (.append x b) x)
                  [a b])]
    [True       (+ [a] b)]))
