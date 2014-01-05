@@ -96,3 +96,6 @@
 (defn nilᵒ [l]
   (≣ [] l))
 (def nilo nilᵒ)
+
+(defn eqᵒ [u v]
+  (≣ u v))

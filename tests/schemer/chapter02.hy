@@ -119,3 +119,13 @@
 (frame "2.34" [[]]
        (run* q
              (nilᵒ q)))
+
+(frame "2.38" []
+       (run* q
+             (eqᵒ :pear :plum)
+             (≣ true q)))
+
+(frame "2.39" [true]
+       (run* q
+             (eqᵒ :plum :plum)
+             (≣ true q)))
