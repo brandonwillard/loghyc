@@ -80,8 +80,8 @@
 (defn consᵒ [f r l]
   (cond
    [(or (is r nil) (= r [])) (=ᵒ [f] l)]
-   [(or (lvar? r) (seq? r)) (=ᵒ (lcons f r) l)]
-   [true (=ᵒ (lcons f [r]) l)]))
+   [(or (lvar? r) (seq? r)) (=ᵒ (cons f r) l)]
+   [true (=ᵒ (cons f [r]) l)]))
 (def conso consᵒ)
 
 (defn firstᵒ [l a]
@@ -91,5 +91,5 @@
 
 (defn restᵒ [l d]
   (fresh [a]
-         (=ᵒ (lcons a d) l)))
+         (=ᵒ (cons a d) l)))
 (def resto restᵒ)

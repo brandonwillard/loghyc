@@ -21,7 +21,7 @@
 
 (frame "2.6" [:a]
        (run* q
-             (firstᵒ (lcons :a (lcons :c (lcons :o (lcons :r (lcons :n nil))))) q)))
+             (firstᵒ (cons :a (cons :c (cons :o (cons :r (cons :n nil))))) q)))
 
 (frame "2.7" [true]
        (run* q

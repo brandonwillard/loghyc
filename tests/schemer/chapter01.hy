@@ -88,26 +88,26 @@
 (frame "1.30" [[(unbound 0) (unbound 1)]]
        (run* q
              (fresh [x y]
-                    (=ᵒ (lcons x (lcons y ())) q))))
+                    (=ᵒ (cons x (cons y ())) q))))
 
 (frame "1.31" [[(unbound 0) (unbound 1)]]
        (run* q
              (fresh [t u]
-                    (=ᵒ (lcons t (lcons u ())) q))))
+                    (=ᵒ (cons t (cons u ())) q))))
 
 (frame "1.32" [[(unbound 0) (unbound 1) (unbound 0)]]
        (run* q
              (fresh [x]
                     (let [[y x]]
                       (fresh [x]
-                             (=ᵒ (lcons y (lcons x (lcons y ()))) q))))))
+                             (=ᵒ (cons y (cons x (cons y ()))) q))))))
 
 (frame "1.33" [[(unbound 0) (unbound 1) (unbound 0)]]
        (run* q
              (fresh [x]
                     (let [[y x]]
                       (fresh [x]
-                             (=ᵒ (lcons x (lcons y (lcons x ()))) q))))))
+                             (=ᵒ (cons x (cons y (cons x ()))) q))))))
 
 (frame "1.34" []
        (run* q
@@ -178,7 +178,7 @@
              (fresh [x y]
                     (=ᵒ :split x)
                     (=ᵒ :pea y)
-                    (=ᵒ (lcons x (lcons y ())) q))))
+                    (=ᵒ (cons x (cons y ())) q))))
 
 (frame "1.54" [[:split :pea] [:navy :bean]]
        (run* q
@@ -187,7 +187,7 @@
                      [(=ᵒ :split x) (=ᵒ :pea y)]
                      [(=ᵒ :navy x) (=ᵒ :bean y)]
                      [#uu])
-                    (=ᵒ (lcons x (lcons y ())) q))))
+                    (=ᵒ (cons x (cons y ())) q))))
 
 (frame "1.55" [[:split :pea :soup] [:navy :bean :soup]]
        (run* q
@@ -196,7 +196,7 @@
                      [(=ᵒ :split x) (=ᵒ :pea y)]
                      [(=ᵒ :navy x) (=ᵒ :bean y)]
                      [#uu])
-                    (=ᵒ (lcons x (lcons y (lcons :soup ()))) q))))
+                    (=ᵒ (cons x (cons y (cons :soup ()))) q))))
 
 (defn teacupᵒ [x]
   (condᵉ
@@ -217,7 +217,7 @@
                      [(teacupᵒ x) (=ᵒ true y) #ss]
                      [(=ᵒ false x) (=ᵒ true y)]
                      [#uu])
-                    (=ᵒ (lcons x (lcons y ())) q))))
+                    (=ᵒ (cons x (cons y ())) q))))
 
 (frame "1.58" [[(unbound 0) (unbound 1)]
                [(unbound 0) (unbound 1)]]
@@ -227,7 +227,7 @@
                      [(=ᵒ y x) (fresh [x] (=ᵒ z x))]
                      [(fresh [x] (=ᵒ y x)) (=ᵒ z x)]
                      [#uu])
-                    (=ᵒ (lcons y (lcons z ())) q))))
+                    (=ᵒ (cons y (cons z ())) q))))
 
 (frame "1.59" [[false (unbound 0)] [(unbound 0) false]]
        (run* q
@@ -237,7 +237,7 @@
                      [(fresh [x] (=ᵒ y x)) (=ᵒ z x)]
                      [#uu])
                     (=ᵒ false x)
-                    (=ᵒ (lcons y (lcons z ())) q))))
+                    (=ᵒ (cons y (cons z ())) q))))
 
 (frame "1.60" [false]
        (run* q

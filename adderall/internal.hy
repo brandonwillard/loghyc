@@ -14,7 +14,8 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.lvar [LVar]])
+(import [adderall.lvar [LVar]]
+        [hy])
 
 (defn gen-solutions [var goal]
   (list-comp (reify var opt-s)
@@ -108,11 +109,3 @@
      (yield (next (get iters 0)))
      (catch [e StopIteration] (setv iters (slice iters 1)))
      (else (setv iters (+ (slice iters 1) [(get iters 0)]))))))
-
-(defn lcons [a b]
-  (cond
-   [(is b nil) [a]]
-   [(lvar? b)  (if (seq? a)
-                 (let [[x (list a)]] (.append x b) x)
-                 (cons a b))]
-   [True       (+ [a] b)]))
