@@ -27,6 +27,11 @@ Example
                  (bothᵍ (≣ q :coffee)
                         fail)))
 ;; => [:tea]
+
+(defreader h [_] #ss)
+(defn lovesᵒ [u v] (≣ v #hy))
+(run* q (lovesᵒ :algernon #hy) (≣ q true))
+;; => [True]
 ```
 
 More examples can be found in the [test suite][t:generic], and in
