@@ -14,5 +14,24 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(import [tests.schemer.chapter01 [*]]
-        [tests.schemer.chapter02 [*]])
+(import [adderall.dsl [*]]
+        [tests.schemer.common [*]])
+(require adderall.dsl)
+(require tests.schemer.common)
+
+(frame "2.6" [:a]
+       (run* q
+             (firstᵒ (lcons :a (lcons :c (lcons :o (lcons :r (lcons :n nil))))) q)))
+
+(frame "2.7" [true]
+       (run* q
+             (firstᵒ [:a :c :o :r :n] :a)
+             (=ᵒ true q)))
+
+(frame "2.8" [:pear]
+       (run* q
+             (fresh [x y]
+                    (firstᵒ [q y] x)
+                    (=ᵒ :pear x))))
+
+;; 2.11 not implemented, because there's no native cons in Hy

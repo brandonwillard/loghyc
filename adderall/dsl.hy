@@ -86,3 +86,8 @@
    [(seq? r) (=ᵒ (lcons f r) l)]
    [true (=ᵒ (lcons f [r]) l)]))
 (def conso consᵒ)
+
+(defn firstᵒ [l a]
+  (fresh [d]
+         (consᵒ a d l)))
+(def firsto firstᵒ)
