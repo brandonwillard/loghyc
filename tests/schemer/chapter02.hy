@@ -34,7 +34,12 @@
                     (firstᵒ [q y] x)
                     (=ᵒ :pear x))))
 
-;; 2.11 not implemented, because there's no native cons in Hy
+(frame "2.11" [[:grape :a]]
+       (run* q
+             (fresh [x y]
+                    (firstᵒ [:grape :raisin :pear] x)
+                    (firstᵒ [[:a] [:b] [:c]] y)
+                    (=ᵒ (cons x y) q))))
 
 (frame "2.15" [:c]
        (run* q
