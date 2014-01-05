@@ -69,9 +69,15 @@
                  [true val]))]]
     (reifying val)))
 
+(defn unbound? [l]
+  (and (lvar? l)
+       (.startswith l.name "_.")))
+
 (defn cons-substitute [c s]
   (cond
-   [(cons? c) (cons (reify (first c) s) (cons-substitute (rest c) s))]
+   [(cons? c) (cons (if (unbound? (first c))
+                      (reify (first c) s)
+                      (first c)) (cons-substitute (rest c) s))]
    [(lvar? c) (reify c s)]
    [True c]))
 

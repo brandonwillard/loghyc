@@ -129,3 +129,8 @@
        (run* q
              (eqᵒ :plum :plum)
              (≣ true q)))
+
+(frame "2.52" [(cons (unbound 0) (cons (unbound 1) :salad))]
+       (run* q
+             (fresh [x y]
+                    (≣ q (cons x (cons y :salad))))))
