@@ -139,3 +139,8 @@
        (run* q
              (pairᵒ (cons q q))
              (≣ true q)))
+
+(frame "2.55" []
+       (run* q
+             (pairᵒ [])
+             (≣ true q)))

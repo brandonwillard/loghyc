@@ -96,6 +96,9 @@
       (and (tuple? val)
            (any (list-comp (occurs var item s) [item val])))))
 
+(defn neseq? [c]
+  (and (seq? c) (> (len c) 0)))
+
 (defn unify [u v s]
   (setv u (substitute u s))
   (setv v (substitute v s))
@@ -111,8 +114,8 @@
        (if (is s nil)
          (break)))
      s)]
-   [(or (and (cons? u) (or (cons? v) (seq? v)))
-        (and (or (cons? u) (seq? u)) (cons? v)))
+   [(or (and (cons? u) (or (cons? v) (neseq? v)))
+        (and (or (cons? v) (neseq? u)) (cons? v)))
     (do
      (setv s (unify (first u) (first v) s))
      (setv s (unify (rest u) (rest v) s))
