@@ -26,20 +26,20 @@
 (frame "2.7" [true]
        (run* q
              (firstᵒ [:a :c :o :r :n] :a)
-             (=ᵒ true q)))
+             (≣ true q)))
 
 (frame "2.8" [:pear]
        (run* q
              (fresh [x y]
                     (firstᵒ [q y] x)
-                    (=ᵒ :pear x))))
+                    (≣ :pear x))))
 
 (frame "2.11" [[:grape :a]]
        (run* q
              (fresh [x y]
                     (firstᵒ [:grape :raisin :pear] x)
                     (firstᵒ [[:a] [:b] [:c]] y)
-                    (=ᵒ (cons x y) q))))
+                    (≣ (cons x y) q))))
 
 (frame "2.15" [:c]
        (run* q
@@ -52,7 +52,7 @@
 (frame "2.19" [true]
        (run* q
              (restᵒ [:a :c :o :r :n] [:c :o :r :n])
-             (=ᵒ true q)))
+             (≣ true q)))
 
 (frame "2.20" [:o]
        (run* q
@@ -63,7 +63,7 @@
              (fresh [x]
                     (restᵒ q [:c :o :r :n])
                     (firstᵒ q x)
-                    (=ᵒ :a x))))
+                    (≣ :a x))))
 
 (frame "2.22" [[[:a :b :c] :d :e]]
        (run* q
@@ -76,7 +76,7 @@
 (frame "2.24" [[:e :a :d :c]]
        (run* q
              (fresh [x y z]
-                    (=ᵒ [:e :a :d x] q)
+                    (≣ [:e :a :d x] q)
                     (consᵒ y [:a z :c] q))))
 
 (frame "2.25" [:d]
@@ -86,14 +86,14 @@
 (frame "2.26" [[:d :a :d :c]]
        (run* q
              (fresh [x]
-                    (=ᵒ [:d :a x :c] q)
+                    (≣ [:d :a x :c] q)
                     (consᵒ x [:a x :c] q))))
 
 (frame "2.27" [[:d :a :d :c]]
        (run* q
              (fresh [x]
                     (consᵒ x [:a x :c] q)
-                    (=ᵒ [:d :a x :c] q))))
+                    (≣ [:d :a x :c] q))))
 
 (frame "2.29" [[:b :e :a :n :s]]
        (run* q
@@ -101,20 +101,20 @@
                     (consᵒ w [:a :n :s] s)
                     (restᵒ q s)
                     (firstᵒ q x)
-                    (=ᵒ :b x)
+                    (≣ :b x)
                     (restᵒ q d)
                     (firstᵒ d y)
-                    (=ᵒ :e y))))
+                    (≣ :e y))))
 
 (frame "2.32" []
        (run* q
              (nilᵒ [:grape :raisin :pear])
-             (=ᵒ true q)))
+             (≣ true q)))
 
 (frame "2.33" [true]
        (run* q
              (nilᵒ [])
-             (=ᵒ true q)))
+             (≣ true q)))
 
 (frame "2.34" [[]]
        (run* q
