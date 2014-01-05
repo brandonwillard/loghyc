@@ -105,3 +105,17 @@
                     (restᵒ q d)
                     (firstᵒ d y)
                     (=ᵒ :e y))))
+
+(frame "2.32" []
+       (run* q
+             (nilᵒ [:grape :raisin :pear])
+             (=ᵒ true q)))
+
+(frame "2.33" [true]
+       (run* q
+             (nilᵒ [])
+             (=ᵒ true q)))
+
+(frame "2.34" [[]]
+       (run* q
+             (nilᵒ q)))

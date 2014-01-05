@@ -93,3 +93,7 @@
   (fresh [a]
          (=ᵒ (cons a d) l)))
 (def resto restᵒ)
+
+(defn nilᵒ [l]
+  (=ᵒ [] l))
+(def nilo nilᵒ)
