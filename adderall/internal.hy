@@ -55,19 +55,18 @@
 
 (defn reify [val s]
   (setv free-vars {})
-  (let [[reifying
-         (fn [val]
-           (setv val (substitute val s))
-           (cond [(lvar? val) (do
-                               (unless (in val free-vars)
-                                 (setv (get free_vars val)
-                                       (free-lvar (len free-vars))))
-                               (get free-vars val))]
-                 [(seq? val) ((type val) (map reifying val))]
-                 [(cons? val) (cons (reifying (first val))
-                                    (reifying (rest val)))]
-                 [true val]))]]
-    (reifying val)))
+  (defn reifying [val]
+    (setv val (substitute val s))
+    (cond [(lvar? val) (do
+                        (unless (in val free-vars)
+                          (setv (get free_vars val)
+                                (free-lvar (len free-vars))))
+                        (get free-vars val))]
+          [(seq? val) ((type val) (map reifying val))]
+          [(cons? val) (cons (reifying (first val))
+                             (reifying (rest val)))]
+          [true val]))
+  (reifying val))
 
 (defn unbound? [l]
   (and (lvar? l)
