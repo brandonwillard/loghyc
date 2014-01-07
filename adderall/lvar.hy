@@ -18,7 +18,10 @@
   [[--init-- (fn [self name]
                (setv self.name name)
                nil)]
-   [--hash-- (fn [self] (hash self.name))]
-   [--eq-- (fn [self other] (and (= (type self) (type other))
-                                (= self.name other.name)))]
-   [--repr-- (fn [self] (.format "<{0!r}>" self.name))]])
+   [--hash-- (fn [self]
+               (hash self.name))]
+   [--eq--   (fn [self other]
+               (and (= (type self) (type other))
+                    (= self.name other.name)))]
+   [--repr-- (fn [self]
+               (.format "<{0!r}>" self.name))]])
