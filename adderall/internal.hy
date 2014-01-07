@@ -15,7 +15,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.lvar [LVar]]
-        [hy])
+        [hy [HyCons]])
 
 (defn gen-solutions [var goal]
   (list-comp (reify var opt-s)
@@ -30,11 +30,11 @@
 (defn run! [f var goals]
   (gen-solutions var (gen-goals f goals)))
 
-(defn lvar? [x] (isinstance x LVar))
-(defn tuple? [x] (isinstance x tuple))
+(defn lvar? [x] (instance? LVar x))
+(defn tuple? [x] (instance? tuple x))
 (defn seq? [x] (or (tuple? x)
-                   (isinstance x list)))
-(defn cons? [x] (isinstance x hy.models.cons.HyCons))
+                   (instance? list x)))
+(defn cons? [x] (instance? HyCons x))
 
 (defn substitute [val s]
   (while (lvar? val)
