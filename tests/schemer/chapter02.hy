@@ -113,17 +113,17 @@
 
 (frame "2.32" []
        (run* q
-             (nilᵒ [:grape :raisin :pear])
+             (emptyᵒ [:grape :raisin :pear])
              (≣ true q)))
 
 (frame "2.33" [true]
        (run* q
-             (nilᵒ [])
+             (emptyᵒ [])
              (≣ true q)))
 
 (frame "2.34" [[]]
        (run* q
-             (nilᵒ q)))
+             (emptyᵒ q)))
 
 (frame "2.38" []
        (run* q

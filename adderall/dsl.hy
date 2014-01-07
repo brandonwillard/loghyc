@@ -94,9 +94,9 @@
          (≣ (cons a d) l)))
 (def resto restᵒ)
 
-(defn nilᵒ [l]
+(defn emptyᵒ [l]
   (≣ [] l))
-(def nilo nilᵒ)
+(def emptyo emptyᵒ)
 
 (defn eqᵒ [u v]
   (≣ u v))
