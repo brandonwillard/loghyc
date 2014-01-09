@@ -19,5 +19,5 @@
 ;; Goals
 
 (defn canhasᵒ [w]
-  (≣ w :cheezburger))
+  (≡ w :cheezburger))
 (def canhaso canhasᵒ)

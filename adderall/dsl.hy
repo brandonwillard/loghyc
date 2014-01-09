@@ -37,11 +37,11 @@
 
 ;; Goals
 
-(defn ≣ [u v]
+(defn ≡ [u v]
   (fn [s]
     (yield (unify u v s))))
-(def == ≣)
-(def unifyo ≣)
+(def == ≡)
+(def unifyo ≡)
 
 (defn succeed [s]
   (yield s))
@@ -79,9 +79,9 @@
 
 (defn consᵒ [f r l]
   (cond
-   [(or (is r nil) (= r [])) (≣ [f] l)]
-   [(or (lvar? r) (seq? r)) (≣ (cons f r) l)]
-   [true (≣ (cons f [r]) l)]))
+   [(or (is r nil) (= r [])) (≡ [f] l)]
+   [(or (lvar? r) (seq? r)) (≡ (cons f r) l)]
+   [true (≡ (cons f [r]) l)]))
 (def conso consᵒ)
 
 (defn firstᵒ [l a]
@@ -91,15 +91,15 @@
 
 (defn restᵒ [l d]
   (fresh [a]
-         (≣ (cons a d) l)))
+         (≡ (cons a d) l)))
 (def resto restᵒ)
 
 (defn emptyᵒ [l]
-  (≣ [] l))
+  (≡ [] l))
 (def emptyo emptyᵒ)
 
 (defn eqᵒ [u v]
-  (≣ u v))
+  (≡ u v))
 (def eqo eqᵒ)
 
 (defn pairᵒ [l]

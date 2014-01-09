@@ -18,19 +18,19 @@ Example
 (import [adderall.dsl [*]])
 (def q (fresh [q]))
 
-(run* q (eitherᵍ (≣ q :tea)
-                 (bothᵍ (≣ q :coffee)
+(run* q (eitherᵍ (≡ q :tea)
+                 (bothᵍ (≡ q :coffee)
                         succeed)))
 ;; => [:tea :coffee]
 
-(run* q (eitherᵍ (≣ q :tea)
-                 (bothᵍ (≣ q :coffee)
+(run* q (eitherᵍ (≡ q :tea)
+                 (bothᵍ (≡ q :coffee)
                         fail)))
 ;; => [:tea]
 
 (defreader h [_] #ss)
-(defn lovesᵒ [u v] (≣ v #hy))
-(run* q (lovesᵒ :algernon #hy) (≣ q true))
+(defn lovesᵒ [u v] (≡ v #hy))
+(run* q (lovesᵒ :algernon #hy) (≡ q true))
 ;; => [True]
 ```
 

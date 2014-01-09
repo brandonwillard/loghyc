@@ -26,20 +26,20 @@
 (frame "2.7" [true]
        (run* q
              (firstᵒ [:a :c :o :r :n] :a)
-             (≣ true q)))
+             (≡ true q)))
 
 (frame "2.8" [:pear]
        (run* q
              (fresh [x y]
                     (firstᵒ [q y] x)
-                    (≣ :pear x))))
+                    (≡ :pear x))))
 
 (frame "2.11" [[:grape :a]]
        (run* q
              (fresh [x y]
                     (firstᵒ [:grape :raisin :pear] x)
                     (firstᵒ [[:a] [:b] [:c]] y)
-                    (≣ (cons x y) q))))
+                    (≡ (cons x y) q))))
 
 (frame "2.15" [:c]
        (run* q
@@ -52,12 +52,12 @@
              (fresh [x y]
                     (restᵒ [:grapre :raisin :pear] x)
                     (firstᵒ [[:a] [:b] [:c]] y)
-                    (≣ (cons x y) q))))
+                    (≡ (cons x y) q))))
 
 (frame "2.19" [true]
        (run* q
              (restᵒ [:a :c :o :r :n] [:c :o :r :n])
-             (≣ true q)))
+             (≡ true q)))
 
 (frame "2.20" [:o]
        (run* q
@@ -68,7 +68,7 @@
              (fresh [x]
                     (restᵒ q [:c :o :r :n])
                     (firstᵒ q x)
-                    (≣ :a x))))
+                    (≡ :a x))))
 
 (frame "2.22" [[[:a :b :c] :d :e]]
        (run* q
@@ -81,7 +81,7 @@
 (frame "2.24" [[:e :a :d :c]]
        (run* q
              (fresh [x y z]
-                    (≣ [:e :a :d x] q)
+                    (≡ [:e :a :d x] q)
                     (consᵒ y [:a z :c] q))))
 
 (frame "2.25" [:d]
@@ -91,14 +91,14 @@
 (frame "2.26" [[:d :a :d :c]]
        (run* q
              (fresh [x]
-                    (≣ [:d :a x :c] q)
+                    (≡ [:d :a x :c] q)
                     (consᵒ x [:a x :c] q))))
 
 (frame "2.27" [[:d :a :d :c]]
        (run* q
              (fresh [x]
                     (consᵒ x [:a x :c] q)
-                    (≣ [:d :a x :c] q))))
+                    (≡ [:d :a x :c] q))))
 
 (frame "2.29" [[:b :e :a :n :s]]
        (run* q
@@ -106,20 +106,20 @@
                     (consᵒ w [:a :n :s] s)
                     (restᵒ q s)
                     (firstᵒ q x)
-                    (≣ :b x)
+                    (≡ :b x)
                     (restᵒ q d)
                     (firstᵒ d y)
-                    (≣ :e y))))
+                    (≡ :e y))))
 
 (frame "2.32" []
        (run* q
              (emptyᵒ [:grape :raisin :pear])
-             (≣ true q)))
+             (≡ true q)))
 
 (frame "2.33" [true]
        (run* q
              (emptyᵒ [])
-             (≣ true q)))
+             (≡ true q)))
 
 (frame "2.34" [[]]
        (run* q
@@ -128,32 +128,32 @@
 (frame "2.38" []
        (run* q
              (eqᵒ :pear :plum)
-             (≣ true q)))
+             (≡ true q)))
 
 (frame "2.39" [true]
        (run* q
              (eqᵒ :plum :plum)
-             (≣ true q)))
+             (≡ true q)))
 
 (frame "2.52" [(cons (unbound 0) (cons (unbound 1) :salad))]
        (run* q
              (fresh [x y]
-                    (≣ q (cons x (cons y :salad))))))
+                    (≡ q (cons x (cons y :salad))))))
 
 (frame "2.54" [true]
        (run* q
              (pairᵒ (cons q q))
-             (≣ true q)))
+             (≡ true q)))
 
 (frame "2.55" []
        (run* q
              (pairᵒ [])
-             (≣ true q)))
+             (≡ true q)))
 
 (frame "2.56" []
        (run* q
              (pairᵒ :pair)
-             (≣ true q)))
+             (≡ true q)))
 
 (frame "2.57" [(cons (unbound 0) (unbound 1))]
        (run* q
