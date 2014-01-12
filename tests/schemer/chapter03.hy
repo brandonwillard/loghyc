@@ -110,4 +110,14 @@
             (fresh [w x y z]
                    (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) q)
                    (lotᵒ q))))
+
+(frame "3.49" [[[:g :g] [:e :e] [(unbound 0) (unbound 0)]]
+               [[:g :g] [:e :e] [(unbound 0) (unbound 0)]
+                [(unbound 1) (unbound 1)]]
+               [[:g :g] [:e :e] [(unbound 0) (unbound 0)]
+                [(unbound 1) (unbound 1)] [(unbound 2) (unbound 2)]]]
+       (run 3 q
+            (fresh [w x y z]
+                   (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) q)
+                   (listofᵒ twinsᵒ q))))
 )

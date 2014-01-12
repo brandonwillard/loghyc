@@ -144,3 +144,15 @@
            (lotᵒ d))]
    [#ss #uu]))
 (def loto lotᵒ)
+
+(defn listofᵒ [predᵒ l]
+  (condᵉ
+   [(emptyᵒ l) #ss]
+   [(fresh [a]
+           (firstᵒ l a)
+           (predᵒ a))
+    (fresh [d]
+           (restᵒ l d)
+           (listofᵒ predᵒ d))]
+   [#ss #uu]))
+(def listofo listofᵒ)
