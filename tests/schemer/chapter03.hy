@@ -40,6 +40,30 @@
 (frame "3.20" [[]]
        (run 1 q
             (lolᵒ q)))
+
+(frame "3.21" [true]
+       (run* q
+             (fresh [x y]
+                    (lolᵒ [[:a :b] [x :c] [:d y]])
+                    (≡ true q))))
+
+(frame "3.22" [true]
+       (run* q
+             (fresh [x]
+                    (lolᵒ (cons [:a :b] x))
+                    (≡ true q))))
+
+(frame "3.23" [[]]
+       (run 1 q
+            (lolᵒ (cons [:a :b] (cons [:c :d] q)))))
+
+(frame "3.24" [[]
+               [[]]
+               [[] []]
+               [[] [] []]
+               [[] [] [] []]]
+       (run 5 q
+            (lolᵒ (cons [:a :b] (cons [:c :d] q)))))
 )
 
 
