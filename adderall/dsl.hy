@@ -132,3 +132,15 @@
   (fresh [x]
          (≡ [x x] s)))
 (def twinso twinsᵒ)
+
+(defn lotᵒ [l]
+  (condᵉ
+   [(emptyᵒ l) #ss]
+   [(fresh [a]
+           (firstᵒ l a)
+           (twinsᵒ a))
+    (fresh [d]
+           (restᵒ l d)
+           (lotᵒ d))]
+   [#ss #uu]))
+(def loto lotᵒ)

@@ -75,3 +75,39 @@
        (run* q
              (twinsᵒ [q :tofu])))
 
+(experimental
+
+(frame "3.38" [[]]
+       (run 1 q
+            (lotᵒ (cons [:g :g] q))))
+
+(frame "3.42" [[]
+               [[(unbound 0) (unbound 0)]]
+               [[(unbound 0) (unbound 0)] [(unbound 1) (unbound 1)]]
+               [[(unbound 0) (unbound 0)] [(unbound 1) (unbound 1)]
+                [(unbound 2) (unbound 2)]]
+               [[(unbound 0) (unbound 0)] [(unbound 1) (unbound 1)]
+                [(unbound 2) (unbound 2)] [(unbound 3) (unbound 3)]]]
+       (run 5 q
+            (lotᵒ (cons [:g :g] q))))
+
+(frame "3.45" [[:e [(unbound 0) (unbound 0) []]]
+               [:e [(unbound 0) (unbound 0) []]]
+               [:e [(unbound 0) (unbound 0) []]]
+               [:e [(unbound 0) (unbound 0) []]]
+               [:e [(unbound 0) (unbound 0) []]]]
+       (run 5 q
+            (fresh [w x y z]
+                   (lotᵒ (cons [:g :g] (cons [:e w] (cons [x y] z))))
+                   (≡ [w [x y] z] r))))
+
+(frame "3.47" [[[:g :g] [:e :e] [(unbound 0) (unbound 0)]]
+               [[:g :g] [:e :e] [(unbound 0) (unbound 0)]
+                [(unbound 1) (unbound 1)]]
+               [[:g :g] [:e :e] [(unbound 0) (unbound 0)]
+                [(unbound 1) (unbound 1)] [(unbound 2) (unbound 2)]]]
+       (run 3 q
+            (fresh [w x y z]
+                   (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) q)
+                   (lotᵒ q))))
+)
