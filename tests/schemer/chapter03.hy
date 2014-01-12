@@ -120,4 +120,29 @@
             (fresh [w x y z]
                    (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) q)
                    (listofᵒ twinsᵒ q))))
+
+(frame "3.57" [true]
+       (run* q
+             (memberᵒ :olive [:virgin :olive :oil])
+             (≡ true q)))
+
+(frame "3.58" [:hummus]
+       (run 1 q
+            (memberᵒ q [:hummus :with :pita])))
+
+(frame "3.59" [:with]
+       (run 1 q
+            (memberᵒ q [:with :pita])))
+
+(frame "3.60" [:pita]
+       (run 1 q
+            (memberᵒ q [:pita])))
+
+(frame "3.61" []
+       (run* q
+             (memberᵒ q [])))
+
+(frame "3.62" [:hummus :with :pita]
+       (run* q
+             (memberᵒ q [:hummus :with :pita])))
 )

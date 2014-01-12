@@ -148,3 +148,12 @@
            (listofᵒ predᵒ d))]
    [#ss #uu]))
 (def listofo listofᵒ)
+
+(defn memberᵒ [x l]
+  (condᵉ
+   [(emptyᵒ l) #uu]
+   [(firstᵒ l x) #ss]
+   [#ss (fresh [d]
+               (restᵒ l d)
+               (memberᵒ x d))]))
+(def membero memberᵒ)
