@@ -145,4 +145,43 @@
 (frame "3.62" [:hummus :with :pita]
        (run* q
              (memberᵒ q [:hummus :with :pita])))
+
+(frame "3.66" [:e]
+       (run* q
+            (memberᵒ :e [:pasta q :fagioli])))
+
+(frame "3.69" [(unbound 0)]
+       (run 1 q
+            (memberᵒ :e [:pasta :e q :fagioli])))
+
+(frame "3.70" [:e]
+       (run 1 q
+            (memberᵒ :e [:pasta q :e :fagioli])))
+
+(frame "3.71" [[:e (unbound 0)] [(unbound 0) :e]]
+       (run* q
+             (fresh [x y]
+                    (memberᵒ :e [:pasta x :fagioli y])
+                    (≡ [x y] r))))
+
+(frame "3.73" [(cons :tofu (unbound 0))]
+       (run 1 q
+            (memberᵒ :tofu q)))
+
+(frame "3.76" [(cons :tofu (unbound 0))
+               (cons (unbound 0) (cons :tofu (unbound 1)))
+               (cons (unbound 0) (cons (unbound 1)
+                                       (cons :tofu
+                                             (unbound 2))))
+               (cons (unbound 0)
+                     (cons (unbound 1)
+                           (cons (unbound 2)
+                                 (cons :tofu (unbound 3)))))
+               (cons (unbound 0)
+                     (cons (unbound 1)
+                           (cons (unbound 2)
+                                 (cons (unbound 3)
+                                       (cons :tofu (unbound 4))))))]
+       (run 5 q
+            (memberᵒ :tofu l)))
 )
