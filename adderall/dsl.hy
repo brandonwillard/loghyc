@@ -106,3 +106,12 @@
   (fresh [a d]
          (consᵒ a d l)))
 (def pairo pairᵒ)
+
+(defn listᵒ [l]
+  (condᵉ
+   [(emptyᵒ l) succeed]
+   [(pairᵒ l) (fresh [d]
+                     (restᵒ l d)
+                     (listᵒ d))]
+   [#ss #uu]))
+(def listo listᵒ)

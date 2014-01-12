@@ -15,18 +15,28 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]]
-        [hy.models.symbol [HySymbol]])
+        [tests.schemer.common [*]])
 (require adderall.dsl)
+(require tests.schemer.common)
 
-(defn unbound [n]
-  (LVar (.format "_.{0}" n)))
+(experimental
 
-(defmacro experimental [&rest _])
+(frame "3.7" [(unbound 0)]
+       (run* q
+             (listᵒ [:a :b q :d])))
 
-(defmacro frame [frame-num value expr]
-  (let [[res (gensym)]
-        [name (+ 'test-rs- frame-num)]]
-    `(defn ~(HySymbol name) []
-       (let [[q (fresh [q])]
-             [~res ~expr]]
-         (assert (= ~value ~res))))))
+(frame "3.10" [[]]
+       (run 1 q
+            (listᵒ (cons :a (cons :b (cons :c q))))))
+
+(frame "3.14" [[]
+               [(unbound 0)]
+               [(unbound 0) (unbound 1)]
+               [(unbound 0) (unbound 1) (unbound 2)]
+               [(unbound 0) (unbound 1) (unbound 2) (unbound 3)]]
+       (run 5 q
+            (listᵒ (cons :a (cons :b (cons :c q))))))
+
+)
+
+
