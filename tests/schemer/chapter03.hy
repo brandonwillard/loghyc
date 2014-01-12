@@ -238,4 +238,8 @@
                                                          (unbound 6))))))))
                [(unbound 0) (unbound 1) (unbound 2)
                 (unbound 3) (unbound 4) :tofu]])
+
+(frame "3.100" [:fagioli :e :pasta]
+       (run* q
+             (memberrevᵒ q [:pasta :e :figoli])))
 )

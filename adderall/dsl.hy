@@ -168,3 +168,11 @@
                (restᵒ l d)
                (pmemberᵒ x d))]))
 (def pmembero pmemberᵒ)
+
+(defn memberrevᵒ [x l]
+  (condᵉ
+   [#ss (fresh [d]
+               (restᵒ l d)
+               (memberrevᵒ x d))]
+   [#ss (firstᵒ l x)]))
+(def memberrevo memberrevᵒ)
