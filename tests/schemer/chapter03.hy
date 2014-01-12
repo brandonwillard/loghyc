@@ -184,4 +184,58 @@
                                        (cons :tofu (unbound 4))))))]
        (run 5 q
             (memberᵒ :tofu l)))
+
+(frame "3.80" [[:tofu]
+               [(unbound 0) :tofu]
+               [(unbound 0) (unbound 1) :tofu]
+               [(unbound 0) (unbound 1) (unbound 2) :tofu]
+               [(unbound 0) (unbound 1) (unbound 2) (unbound 3)
+                :tofu]]
+       (run 5 q
+            (pmemberᵒ :tofu l)))
+
+(frame "3.88" [true true]
+       (run* q
+             (pmemberᵒ :tofu [:a :b :tofu :d :tofu])
+             (≡ true q)))
+
+(frame "3.94" [(cons :tofu (cons (unbound 0) (unbound 1)))
+               [:tofu]
+               (cons (unbound 0)
+                     (cons :tofu
+                           (cons (unbound 1)
+                                 (unbound 2))))
+               [(unbound 0) :tofu]
+               (cons (unbound 0)
+                     (cons (unbound 1)
+                           (cons :tofu
+                                 (cons (unbound 2)
+                                       (unbound 3)))))
+               [(unbound 0) (unbound 1) :tofu]
+               (cons (unbound 0)
+                     (cons (unbound 1)
+                           (cons (unbound 2)
+                                 (cons :tofu
+                                       (cons (unbound 3)
+                                             (unbound 4))))))
+               [(unbound 0) (unbound 1) (unbound 2) :tofu]
+               (cons (unbound 0)
+                     (cons (unbound 1)
+                           (cons (unbound 2)
+                                 (cons (unbound 3)
+                                       (cons :tofu
+                                             (cons (unbound 4)
+                                                   (unbound 5)))))))
+               [(unbound 0) (unbound 1) (unbound 2)
+                (unbound 3) :tofu]
+               (cons (unbound 0)
+                     (cons (unbound 1)
+                           (cons (unbound 2)
+                                 (cons (unbound 3)
+                                       (cons (unbound 4)
+                                             (cons :tofu
+                                                   (cons (unbound 5)
+                                                         (unbound 6))))))))
+               [(unbound 0) (unbound 1) (unbound 2)
+                (unbound 3) (unbound 4) :tofu]])
 )

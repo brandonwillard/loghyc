@@ -157,3 +157,14 @@
                (restᵒ l d)
                (memberᵒ x d))]))
 (def membero memberᵒ)
+
+(defn pmemberᵒ [x l]
+  (condᵉ
+   [(firstᵒ l x)
+    (fresh [a d]
+           (restᵒ l (cons a d)))]
+   [(firstᵒ l x) (restᵒ l [])]
+   [#ss (fresh [d]
+               (restᵒ l d)
+               (pmemberᵒ x d))]))
+(def pmembero pmemberᵒ)
