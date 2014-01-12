@@ -66,4 +66,12 @@
             (lolᵒ (cons [:a :b] (cons [:c :d] q)))))
 )
 
+(frame "3.32" [true]
+       (run* q
+             (twinsᵒ [:tofu :tofu])
+             (≡ true q)))
+
+(frame "3.33" [:tofu]
+       (run* q
+             (twinsᵒ [q :tofu])))
 

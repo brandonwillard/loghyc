@@ -127,3 +127,7 @@
            (lolᵒ d))]
    [#ss #uu]))
 (def lolo lolᵒ)
+
+(defn twinsᵒ [s]
+  (fresh [x]
+         (≡ [x x] s)))
