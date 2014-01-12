@@ -115,3 +115,15 @@
                      (listᵒ d))]
    [#ss #uu]))
 (def listo listᵒ)
+
+(defn lolᵒ [l]
+  (condᵉ
+   [(emptyᵒ l) #ss]
+   [(fresh [a]
+           (firstᵒ l a)
+           (listᵒ a))
+    (fresh [d]
+           (restᵒ l d)
+           (lolᵒ d))]
+   [#ss #uu]))
+(def lolo lolᵒ)

@@ -37,6 +37,9 @@
        (run 5 q
             (listᵒ (cons :a (cons :b (cons :c q))))))
 
+(frame "3.20" [[]]
+       (run 1 q
+            (lolᵒ q)))
 )
 
 
