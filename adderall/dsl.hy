@@ -59,10 +59,8 @@
           (yield opt-s2))))))
 (def bothg bothᵍ)
 
-(defn allᵍ [goal &rest goals]
-  (if goals
-    (bothᵍ goal (apply allᵍ goals))
-    goal))
+(defn allᵍ [&rest goals]
+  (reduce bothg goals))
 (def allg allᵍ)
 
 (defn eitherᵍ [&rest goals]
