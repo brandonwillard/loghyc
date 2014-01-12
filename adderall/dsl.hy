@@ -131,3 +131,4 @@
 (defn twinsᵒ [s]
   (fresh [x]
          (≡ [x x] s)))
+(def twinso twinsᵒ)
