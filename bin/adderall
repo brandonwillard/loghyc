@@ -1,2 +1,2 @@
 #! /bin/sh
-exec hy -i "(import [adderall.dsl [*]]) (require adderall.dsl)"
+exec hy -i "(import [adderall.dsl [*]]) (require adderall.dsl)" $@
