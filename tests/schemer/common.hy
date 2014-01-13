@@ -18,9 +18,6 @@
         [hy.models.symbol [HySymbol]])
 (require adderall.dsl)
 
-(defn unbound [n]
-  (LVar (.format "_.{0}" n)))
-
 (defreader _ [&rest _])
 
 (defmacro frame [frame-num value expr]

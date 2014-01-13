@@ -17,7 +17,7 @@
 (import [itertools [islice]]
         [functools [reduce]]
         [adderall.internal [unify interleave lvar? seq? reify]]
-        [adderall.lvar [LVar]])
+        [adderall.lvar [LVar unbound]])
 
 ;; Top level stuff
 

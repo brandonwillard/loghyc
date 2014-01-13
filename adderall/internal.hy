@@ -14,7 +14,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.lvar [LVar]]
+(import [adderall.lvar [LVar unbound]]
         [hy [HyCons]])
 
 (defn lvar? [x] (instance? LVar x))
@@ -37,9 +37,6 @@
     (setv (, var val s) s)
     (yield (tuple [var val]))))
 
-(defn free-lvar [id]
-  (LVar (.format "_.{0}" id)))
-
 (defn reify [val s]
   (setv free-vars {})
   (defn reifying [val]
@@ -47,7 +44,7 @@
     (cond [(lvar? val) (do
                         (unless (in val free-vars)
                           (setv (get free_vars val)
-                                (free-lvar (len free-vars))))
+                                (unbound (len free-vars))))
                         (get free-vars val))]
           [(seq? val) ((type val) (map reifying val))]
           [(cons? val) (cons (reifying (first val))
@@ -55,13 +52,9 @@
           [true val]))
   (reifying val))
 
-(defn unbound? [l]
-  (and (lvar? l)
-       (.startswith l.name "_.")))
-
 (defn cons-substitute [c s]
   (cond
-   [(cons? c) (cons (if (unbound? (first c))
+   [(cons? c) (cons (if (and (lvar? c) (.is_bound (first c)))
                       (reify (first c) s)
                       (first c)) (cons-substitute (rest c) s))]
    [(lvar? c) (reify c s)]

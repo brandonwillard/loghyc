@@ -15,8 +15,10 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (defclass LVar [object]
-  [[--init-- (fn [self name]
+  [[--init-- (fn [self name &optional unbound]
                (setv self.name name)
+               (when unbound
+                 (setv self.unbound true))
                nil)]
    [--hash-- (fn [self]
                (hash self.name))]
@@ -24,4 +26,11 @@
                (and (= (type self) (type other))
                     (= self.name other.name)))]
    [--repr-- (fn [self]
-               (.format "<{0!r}>" self.name))]])
+               (.format "<{0!r}>" self.name))]
+   [bound? (fn [self]
+             (if self.unbound
+               true
+               false))]])
+
+(defn unbound [n]
+  (LVar (.format "_.{0}" n) :unbound))
