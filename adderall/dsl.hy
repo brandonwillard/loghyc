@@ -76,12 +76,15 @@
     (interleave (list-comp (goal s) [goal goals]))))
 (def eitherg eitherᵍ)
 
-(defn condᵉ [&rest cs]
-  (let [[goal (apply allᵍ (first cs))]]
-    (if (rest cs)
-      (eitherᵍ goal (apply condᵉ (rest cs)))
-      goal)))
-(def conde condᵉ)
+(defmacro condᵉ [&rest cs]
+  (let [[g (first cs)]
+        [r (rest cs)]]
+    (if r
+      `(eitherᵍ (allᵍ ~@g) (condᵉ ~@r))
+      `(allᵍ ~@g))))
+
+(defmacro conde [&rest cs]
+  `(condᵉ ~@cs))
 
 (defn consᵒ [f r l]
   (cond
