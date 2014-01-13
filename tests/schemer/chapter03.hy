@@ -22,24 +22,24 @@
 (experimental
 
 (frame "3.7" [(unbound 0)]
-       (run* [q]
-             (listᵒ [:a :b q :d])))
+       (run* [x]
+             (listᵒ [:a :b x :d])))
 
 (frame "3.10" [[]]
-       (run 1 [q]
-            (listᵒ (cons :a (cons :b (cons :c q))))))
+       (run 1 [x]
+            (listᵒ (cons :a (cons :b (cons :c x))))))
 
 (frame "3.14" [[]
                [(unbound 0)]
                [(unbound 0) (unbound 1)]
                [(unbound 0) (unbound 1) (unbound 2)]
                [(unbound 0) (unbound 1) (unbound 2) (unbound 3)]]
-       (run 5 [q]
-            (listᵒ (cons :a (cons :b (cons :c q))))))
+       (run 5 [x]
+            (listᵒ (cons :a (cons :b (cons :c x))))))
 
 (frame "3.20" [[]]
-       (run 1 [q]
-            (lolᵒ q)))
+       (run 1 [l]
+            (lolᵒ l)))
 
 (frame "3.21" [true]
        (run* [q]
@@ -54,16 +54,16 @@
                     (≡ true q))))
 
 (frame "3.23" [[]]
-       (run 1 q
-            (lolᵒ (cons [:a :b] (cons [:c :d] q)))))
+       (run 1 x
+            (lolᵒ (cons [:a :b] (cons [:c :d] x)))))
 
 (frame "3.24" [[]
                [[]]
                [[] []]
                [[] [] []]
                [[] [] [] []]]
-       (run 5 q
-            (lolᵒ (cons [:a :b] (cons [:c :d] q)))))
+       (run 5 x
+            (lolᵒ (cons [:a :b] (cons [:c :d] x)))))
 )
 
 (frame "3.32" [true]
@@ -72,14 +72,14 @@
              (≡ true q)))
 
 (frame "3.33" [:tofu]
-       (run* [q]
-             (twinsᵒ [q :tofu])))
+       (run* [z]
+             (twinsᵒ [z :tofu])))
 
 (experimental
 
 (frame "3.38" [[]]
-       (run 1 [q]
-            (lotᵒ (cons [:g :g] q))))
+       (run 1 [z]
+            (lotᵒ (cons [:g :g] z))))
 
 (frame "3.42" [[]
                [[(unbound 0) (unbound 0)]]
@@ -88,15 +88,15 @@
                 [(unbound 2) (unbound 2)]]
                [[(unbound 0) (unbound 0)] [(unbound 1) (unbound 1)]
                 [(unbound 2) (unbound 2)] [(unbound 3) (unbound 3)]]]
-       (run 5 [q]
-            (lotᵒ (cons [:g :g] q))))
+       (run 5 [z]
+            (lotᵒ (cons [:g :g] z))))
 
 (frame "3.45" [[:e [(unbound 0) (unbound 0) []]]
                [:e [(unbound 0) (unbound 0) []]]
                [:e [(unbound 0) (unbound 0) []]]
                [:e [(unbound 0) (unbound 0) []]]
                [:e [(unbound 0) (unbound 0) []]]]
-       (run 5 [q]
+       (run 5 [r]
             (fresh [w x y z]
                    (lotᵒ (cons [:g :g] (cons [:e w] (cons [x y] z))))
                    (≡ [w [x y] z] r))))
@@ -106,20 +106,20 @@
                 [(unbound 1) (unbound 1)]]
                [[:g :g] [:e :e] [(unbound 0) (unbound 0)]
                 [(unbound 1) (unbound 1)] [(unbound 2) (unbound 2)]]]
-       (run 3 [q]
+       (run 3 [out]
             (fresh [w x y z]
-                   (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) q)
-                   (lotᵒ q))))
+                   (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) out)
+                   (lotᵒ out))))
 
 (frame "3.49" [[[:g :g] [:e :e] [(unbound 0) (unbound 0)]]
                [[:g :g] [:e :e] [(unbound 0) (unbound 0)]
                 [(unbound 1) (unbound 1)]]
                [[:g :g] [:e :e] [(unbound 0) (unbound 0)]
                 [(unbound 1) (unbound 1)] [(unbound 2) (unbound 2)]]]
-       (run 3 [q]
+       (run 3 [out]
             (fresh [w x y z]
-                   (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) q)
-                   (listofᵒ twinsᵒ q))))
+                   (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) out)
+                   (listofᵒ twinsᵒ out))))
 
 (frame "3.57" [true]
        (run* [q]
@@ -127,46 +127,46 @@
              (≡ true q)))
 
 (frame "3.58" [:hummus]
-       (run 1 [q]
-            (memberᵒ q [:hummus :with :pita])))
+       (run 1 [y]
+            (memberᵒ y [:hummus :with :pita])))
 
 (frame "3.59" [:with]
-       (run 1 [q]
-            (memberᵒ q [:with :pita])))
+       (run 1 [y]
+            (memberᵒ y [:with :pita])))
 
 (frame "3.60" [:pita]
-       (run 1 [q]
-            (memberᵒ q [:pita])))
+       (run 1 [y]
+            (memberᵒ y [:pita])))
 
 (frame "3.61" []
-       (run* [q]
-             (memberᵒ q [])))
+       (run* [y]
+             (memberᵒ y [])))
 
 (frame "3.62" [:hummus :with :pita]
-       (run* [q]
-             (memberᵒ q [:hummus :with :pita])))
+       (run* [y]
+             (memberᵒ y [:hummus :with :pita])))
 
 (frame "3.66" [:e]
-       (run* [q]
-            (memberᵒ :e [:pasta q :fagioli])))
+       (run* [x]
+            (memberᵒ :e [:pasta x :fagioli])))
 
 (frame "3.69" [(unbound 0)]
-       (run 1 [q]
-            (memberᵒ :e [:pasta :e q :fagioli])))
+       (run 1 [x]
+            (memberᵒ :e [:pasta :e x :fagioli])))
 
 (frame "3.70" [:e]
-       (run 1 [q]
-            (memberᵒ :e [:pasta q :e :fagioli])))
+       (run 1 [x]
+            (memberᵒ :e [:pasta x :e :fagioli])))
 
 (frame "3.71" [[:e (unbound 0)] [(unbound 0) :e]]
-       (run* [q]
+       (run* [r]
              (fresh [x y]
                     (memberᵒ :e [:pasta x :fagioli y])
                     (≡ [x y] r))))
 
 (frame "3.73" [(cons :tofu (unbound 0))]
-       (run 1 [q]
-            (memberᵒ :tofu q)))
+       (run 1 [l]
+            (memberᵒ :tofu l)))
 
 (frame "3.76" [(cons :tofu (unbound 0))
                (cons (unbound 0) (cons :tofu (unbound 1)))
@@ -182,7 +182,7 @@
                            (cons (unbound 2)
                                  (cons (unbound 3)
                                        (cons :tofu (unbound 4))))))]
-       (run 5 [q]
+       (run 5 [l]
             (memberᵒ :tofu l)))
 
 (frame "3.80" [[:tofu]
@@ -191,7 +191,7 @@
                [(unbound 0) (unbound 1) (unbound 2) :tofu]
                [(unbound 0) (unbound 1) (unbound 2) (unbound 3)
                 :tofu]]
-       (run 5 [q]
+       (run 5 [l]
             (pmemberᵒ :tofu l)))
 
 (frame "3.88" [true true]
@@ -237,9 +237,11 @@
                                                    (cons (unbound 5)
                                                          (unbound 6))))))))
                [(unbound 0) (unbound 1) (unbound 2)
-                (unbound 3) (unbound 4) :tofu]])
+                (unbound 3) (unbound 4) :tofu]]
+       (run 12 [l]
+            (pmemberᵒ :tofu l)))
 
 (frame "3.100" [:fagioli :e :pasta]
-       (run* [q]
-             (memberrevᵒ q [:pasta :e :figoli])))
+       (run* [x]
+             (memberrevᵒ x [:pasta :e :figoli])))
 )

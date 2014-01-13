@@ -20,8 +20,8 @@
 (require tests.schemer.common)
 
 (frame "2.6" [:a]
-       (run* [q]
-             (firstᵒ (cons :a (cons :c (cons :o (cons :r (cons :n nil))))) q)))
+       (run* [r]
+             (firstᵒ (cons :a (cons :c (cons :o (cons :r (cons :n nil))))) r)))
 
 (frame "2.7" [true]
        (run* [q]
@@ -29,30 +29,30 @@
              (≡ true q)))
 
 (frame "2.8" [:pear]
-       (run* [q]
+       (run* [r]
              (fresh [x y]
-                    (firstᵒ [q y] x)
+                    (firstᵒ [r y] x)
                     (≡ :pear x))))
 
 (frame "2.11" [[:grape :a]]
-       (run* [q]
+       (run* [r]
              (fresh [x y]
                     (firstᵒ [:grape :raisin :pear] x)
                     (firstᵒ [[:a] [:b] [:c]] y)
-                    (≡ (cons x y) q))))
+                    (≡ (cons x y) r))))
 
 (frame "2.15" [:c]
-       (run* [q]
+       (run* [r]
              (fresh [v]
                     (restᵒ [:a :c :o :r :n] v)
-                    (firstᵒ v q))))
+                    (firstᵒ v r))))
 
 (frame "2.18" [[[:raisin :pear] :a]]
-       (run* [q]
+       (run* [r]
              (fresh [x y]
                     (restᵒ [:grapre :raisin :pear] x)
                     (firstᵒ [[:a] [:b] [:c]] y)
-                    (≡ (cons x y) q))))
+                    (≡ (cons x y) r))))
 
 (frame "2.19" [true]
        (run* [q]
@@ -60,54 +60,54 @@
              (≡ true q)))
 
 (frame "2.20" [:o]
-       (run* [q]
-             (restᵒ [:c :o :r :n] [q :r :n])))
+       (run* [x]
+             (restᵒ [:c :o :r :n] [x :r :n])))
 
 (frame "2.21" [[:a :c :o :r :n]]
-       (run* [q]
+       (run* [l]
              (fresh [x]
-                    (restᵒ q [:c :o :r :n])
-                    (firstᵒ q x)
+                    (restᵒ l [:c :o :r :n])
+                    (firstᵒ l x)
                     (≡ :a x))))
 
 (frame "2.22" [[[:a :b :c] :d :e]]
-       (run* [q]
-             (consᵒ [:a :b :c] [:d :e] q)))
+       (run* [l]
+             (consᵒ [:a :b :c] [:d :e] l)))
 
 (frame "2.23" [:d]
-       (run* [q]
-             (consᵒ q [:a :b :c] [:d :a :b :c])))
+       (run* [x]
+             (consᵒ x [:a :b :c] [:d :a :b :c])))
 
 (frame "2.24" [[:e :a :d :c]]
-       (run* [q]
+       (run* [r]
              (fresh [x y z]
-                    (≡ [:e :a :d x] q)
-                    (consᵒ y [:a z :c] q))))
+                    (≡ [:e :a :d x] r)
+                    (consᵒ y [:a z :c] r))))
 
 (frame "2.25" [:d]
-       (run* [q]
-             (consᵒ q [:a q :c] [:d :a q :c])))
+       (run* [x]
+             (consᵒ x [:a x :c] [:d :a x :c])))
 
 (frame "2.26" [[:d :a :d :c]]
-       (run* [q]
+       (run* [l]
              (fresh [x]
-                    (≡ [:d :a x :c] q)
-                    (consᵒ x [:a x :c] q))))
+                    (≡ [:d :a x :c] l)
+                    (consᵒ x [:a x :c] l))))
 
 (frame "2.27" [[:d :a :d :c]]
-       (run* [q]
+       (run* [l]
              (fresh [x]
-                    (consᵒ x [:a x :c] q)
-                    (≡ [:d :a x :c] q))))
+                    (consᵒ x [:a x :c] l)
+                    (≡ [:d :a x :c] l))))
 
 (frame "2.29" [[:b :e :a :n :s]]
-       (run* [q]
+       (run* [l]
              (fresh [d x y w s]
                     (consᵒ w [:a :n :s] s)
-                    (restᵒ q s)
-                    (firstᵒ q x)
+                    (restᵒ l s)
+                    (firstᵒ l x)
                     (≡ :b x)
-                    (restᵒ q d)
+                    (restᵒ l d)
                     (firstᵒ d y)
                     (≡ :e y))))
 
@@ -122,8 +122,8 @@
              (≡ true q)))
 
 (frame "2.34" [[]]
-       (run* [q]
-             (emptyᵒ q)))
+       (run* [x]
+             (emptyᵒ x)))
 
 (frame "2.38" []
        (run* [q]
@@ -136,9 +136,9 @@
              (≡ true q)))
 
 (frame "2.52" [(cons (unbound 0) (cons (unbound 1) :salad))]
-       (run* [q]
+       (run* [r]
              (fresh [x y]
-                    (≡ q (cons x (cons y :salad))))))
+                    (≡ r (cons x (cons y :salad))))))
 
 (frame "2.54" [true]
        (run* [q]
@@ -156,9 +156,9 @@
              (≡ true q)))
 
 (frame "2.57" [(cons (unbound 0) (unbound 1))]
-       (run* [q]
-             (pairᵒ q)))
+       (run* [x]
+             (pairᵒ x)))
 
 (frame "2.58" [(unbound 0)]
-       (run* [q]
-             (pairᵒ (cons q :pear))))
+       (run* [r]
+             (pairᵒ (cons r :pear))))

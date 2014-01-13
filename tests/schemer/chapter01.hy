@@ -37,15 +37,15 @@
              #ss
              (≡ true q)))
 
-(frame "1.15" ['corn]
-       (run* [q]
+(frame "1.16" ['corn]
+       (run* [r]
              #ss
-             (≡ 'corn q)))
+             (≡ 'corn r)))
 
 (frame "1.17" []
-       (run* [q]
+       (run* [r]
              #uu
-             (≡ 'corn q)))
+             (≡ 'corn r)))
 
 (frame "1.18" [false]
        (run* [q]
@@ -53,7 +53,7 @@
              (≡ false q)))
 
 (frame "1.22" []
-       (run* [q]
+       (run* [x]
              (let [[x false]]
                (≡ true x))))
 
@@ -76,38 +76,38 @@
                     (≡ q true))))
 
 (frame "1.28" [(unbound 0)]
-       (run* [q]
+       (run* [x]
              #ss))
 
 (frame "1.29" [(unbound 0)]
-       (run* [q]
-             (let [[q false]]
-               (fresh [q]
-                      (≡ true q)))))
+       (run* [x]
+             (let [[x false]]
+               (fresh [x]
+                      (≡ true x)))))
 
 (frame "1.30" [[(unbound 0) (unbound 1)]]
-       (run* [q]
+       (run* [r]
              (fresh [x y]
-                    (≡ (cons x (cons y ())) q))))
+                    (≡ (cons x (cons y ())) r))))
 
 (frame "1.31" [[(unbound 0) (unbound 1)]]
-       (run* [q]
+       (run* [s]
              (fresh [t u]
-                    (≡ (cons t (cons u ())) q))))
+                    (≡ (cons t (cons u ())) s))))
 
 (frame "1.32" [[(unbound 0) (unbound 1) (unbound 0)]]
-       (run* [q]
+       (run* [r]
              (fresh [x]
                     (let [[y x]]
                       (fresh [x]
-                             (≡ (cons y (cons x (cons y ()))) q))))))
+                             (≡ (cons y (cons x (cons y ()))) r))))))
 
 (frame "1.33" [[(unbound 0) (unbound 1) (unbound 0)]]
-       (run* [q]
+       (run* [r]
              (fresh [x]
                     (let [[y x]]
                       (fresh [x]
-                             (≡ (cons x (cons y (cons x ()))) q))))))
+                             (≡ (cons x (cons y (cons x ()))) r))))))
 
 (frame "1.34" []
        (run* [q]
@@ -125,9 +125,9 @@
                (≡ true x))))
 
 (frame "1.37" [(unbound 0)]
-       (run* [q]
+       (run* [r]
              (fresh [x]
-                    (≡ x q))))
+                    (≡ x r))))
 
 (frame "1.38" [true]
        (run* [q]
@@ -142,61 +142,61 @@
                     (≡ true x))))
 
 (frame "1.47" [:olive :oil]
-       (run* [q]
+       (run* [x]
              (condᵉ
-              [(≡ :olive q) #ss]
-              [(≡ :oil q) #ss]
+              [(≡ :olive x) #ss]
+              [(≡ :oil x) #ss]
               [#uu])))
 
 (frame "1.49" [:olive]
-       (run 1 [q]
+       (run 1 [x]
             (condᵉ
-             [(≡ :olive q) #ss]
-             [(≡ :oil q) #ss]
+             [(≡ :olive x) #ss]
+             [(≡ :oil x) #ss]
              [#uu])))
 
 (frame "1.50" [:olive (unbound 0) :oil]
-       (run* [q]
+       (run* [x]
              (condᵉ
-              [(≡ :virgin q) #uu]
-              [(≡ :olive q) #ss]
+              [(≡ :virgin x) #uu]
+              [(≡ :olive x) #ss]
               [#ss #ss]
-              [(≡ :oil q) #ss]
+              [(≡ :oil x) #ss]
               [#uu])))
 
 (frame "1.52" [:extra :olive]
-       (run 2 [q]
+       (run 2 [x]
             (condᵉ
-             [(≡ :extra q) #ss]
-             [(≡ :virgin q) #uu]
-             [(≡ :olive q) #ss]
-             [(≡ :oil q) #ss]
+             [(≡ :extra x) #ss]
+             [(≡ :virgin x) #uu]
+             [(≡ :olive x) #ss]
+             [(≡ :oil x) #ss]
              [#uu])))
 
 (frame "1.53" [[:split :pea]]
-       (run* [q]
+       (run* [r]
              (fresh [x y]
                     (≡ :split x)
                     (≡ :pea y)
-                    (≡ (cons x (cons y ())) q))))
+                    (≡ (cons x (cons y ())) r))))
 
 (frame "1.54" [[:split :pea] [:navy :bean]]
-       (run* [q]
+       (run* [r]
              (fresh [x y]
                     (condᵉ
                      [(≡ :split x) (≡ :pea y)]
                      [(≡ :navy x) (≡ :bean y)]
                      [#uu])
-                    (≡ (cons x (cons y ())) q))))
+                    (≡ (cons x (cons y ())) r))))
 
 (frame "1.55" [[:split :pea :soup] [:navy :bean :soup]]
-       (run* [q]
+       (run* [r]
              (fresh [x y]
                     (condᵉ
                      [(≡ :split x) (≡ :pea y)]
                      [(≡ :navy x) (≡ :bean y)]
                      [#uu])
-                    (≡ (cons x (cons y (cons :soup ()))) q))))
+                    (≡ (cons x (cons y (cons :soup ()))) r))))
 
 (defn teacupᵒ [x]
   (condᵉ
@@ -205,39 +205,39 @@
    [#uu]))
 
 (frame "1.56" [:tea :cup]
-       (run* [q]
-             (teacupᵒ q)))
+       (run* [x]
+             (teacupᵒ x)))
 
 ;; NOTE: This was modified, because our evaluation order differs from
 ;; that of the Reasoned Schemer. In TRS, (, false true) comes last.
 (frame "1.57" [[:tea true] [false true] [:cup true]]
-       (run* [q]
+       (run* [r]
              (fresh [x y]
                     (condᵉ
                      [(teacupᵒ x) (≡ true y) #ss]
                      [(≡ false x) (≡ true y)]
                      [#uu])
-                    (≡ (cons x (cons y ())) q))))
+                    (≡ (cons x (cons y ())) r))))
 
 (frame "1.58" [[(unbound 0) (unbound 1)]
                [(unbound 0) (unbound 1)]]
-       (run* [q]
+       (run* [r]
              (fresh [x y z]
                     (condᵉ
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
                      [#uu])
-                    (≡ (cons y (cons z ())) q))))
+                    (≡ (cons y (cons z ())) r))))
 
 (frame "1.59" [[false (unbound 0)] [(unbound 0) false]]
-       (run* [q]
+       (run* [r]
              (fresh [x y z]
                     (condᵉ
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
                      [#uu])
                     (≡ false x)
-                    (≡ (cons y (cons z ())) q))))
+                    (≡ (cons y (cons z ())) r))))
 
 (frame "1.60" [false]
        (run* [q]
