@@ -17,8 +17,7 @@
 (import [itertools [islice]]
         [functools [reduce]]
         [adderall.internal [unify interleave lvar? seq? reify]]
-        [adderall.lvar [LVar]]
-        [hy.models.list [HyList]])
+        [adderall.lvar [LVar]])
 
 ;; Top level stuff
 
