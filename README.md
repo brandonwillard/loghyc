@@ -32,7 +32,7 @@ Example
 
 (defreader h [_] "#hy")
 (defn lovesᵒ [u v] (≡ v #hy))
-(run* [who what] (lovesᵒ who #hy)
+(run* [who what] (lovesᵒ who what)
                  (≡ who (getuser))
                  (≡ what #hy))
 ;; => [['algernon', '#hy']]
