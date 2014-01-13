@@ -76,10 +76,10 @@
     (interleave (list-comp (goal s) [goal goals]))))
 (def eitherg eitherᵍ)
 
-(defn condᵉ [c &rest cs]
-  (let [[goal (apply allᵍ c)]]
-    (if cs
-      (eitherᵍ goal (apply condᵉ cs))
+(defn condᵉ [&rest cs]
+  (let [[goal (apply allᵍ (first cs))]]
+    (if (rest cs)
+      (eitherᵍ goal (apply condᵉ (rest cs)))
       goal)))
 (def conde condᵉ)
 
