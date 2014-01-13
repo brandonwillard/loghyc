@@ -21,7 +21,7 @@
 (defn unbound [n]
   (LVar (.format "_.{0}" n)))
 
-(defmacro experimental [&rest _])
+(defreader _ [&rest _])
 
 (defmacro frame [frame-num value expr]
   (let [[res (gensym)]
