@@ -23,12 +23,13 @@
 ;; Top level stuff
 
 (defmacro run [n var &rest goals]
-  (let [[q (first var)]]
+  (let [[q (first var)]
+        [s (gensym)]]
    `(do
      (let [[~q (LVar (gensym))]
-           [res (list-comp (reify ~q s)
-                           [s ((apply allᵍ [~@goals]) (,))]
-                           (not (nil? s)))]]
+           [res (list-comp (reify ~q ~s)
+                           [~s ((apply allᵍ [~@goals]) (,))]
+                           (not (nil? ~s)))]]
        (if ~n
          (list (islice res 0 ~n))
          (list res))))))
