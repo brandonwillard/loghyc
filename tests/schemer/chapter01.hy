@@ -208,9 +208,7 @@
        (run* [x]
              (teacupᵒ x)))
 
-;; NOTE: This was modified, because our evaluation order differs from
-;; that of the Reasoned Schemer. In TRS, (, false true) comes last.
-(frame "1.57" [[:tea true] [false true] [:cup true]]
+(frame "1.57" [[:tea true] [:cup true] [false true]]
        (run* [r]
              (fresh [x y]
                     (condᵉ

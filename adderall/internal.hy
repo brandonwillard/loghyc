@@ -113,4 +113,4 @@
     (try
      (yield (next (get iters 0)))
      (catch [e StopIteration] (setv iters (slice iters 1)))
-     (else (setv iters (+ (slice iters 1) [(get iters 0)]))))))
+     (else (setv iters (+ [(get iters 0)] (slice iters 1)))))))
