@@ -21,17 +21,18 @@
 
 ;; Top level stuff
 
-(defmacro run [n var &rest goals]
-  (let [[q (first var)]
-        [s (gensym)]]
-   `(do
-     (let [[~q (LVar (gensym))]
-           [res (list-comp (reify ~q ~s)
-                           [~s ((apply allᵍ [~@goals]) (,))]
-                           (not (nil? ~s)))]]
-       (if ~n
-         (list (islice res 0 ~n))
-         (list res))))))
+(defmacro run [n vars &rest goals]
+  (let [[s (gensym)]]
+    `(do
+      (let [~@(list-comp `[~x (LVar (gensym))] [x vars])
+            [res (list-comp (reify (if (= (len ~vars) 1)
+                                     (first ~vars)
+                                     [~@vars]) ~s)
+                            [~s ((apply allᵍ [~@goals]) (,))]
+                            (not (nil? ~s)))]]
+        (if ~n
+          (list (islice res 0 ~n))
+          (list res))))))
 (defmacro run* [var &rest goals]
   `(run nil ~var ~@goals))
 
