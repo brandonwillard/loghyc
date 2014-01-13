@@ -15,6 +15,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (import [itertools [islice]]
+        [functools [reduce]]
         [adderall.internal [*]]
         [adderall.lvar [LVar]]
         [hy.models.list [HyList]])
