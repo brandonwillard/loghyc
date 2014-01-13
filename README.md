@@ -28,10 +28,14 @@ Example
                           fail)))
 ;; => [:tea]
 
-(defreader h [_] #ss)
+(import [getpass [getuser]])
+
+(defreader h [_] "#hy")
 (defn lovesᵒ [u v] (≡ v #hy))
-(run* [q] (lovesᵒ :algernon #hy) (≡ q true))
-;; => [True]
+(run* [who what] (lovesᵒ who #hy)
+                 (≡ who (getuser))
+                 (≡ what #hy))
+;; => [['algernon', '#hy']]
 ```
 
 More examples can be found in the [test suite][t:generic], and in
