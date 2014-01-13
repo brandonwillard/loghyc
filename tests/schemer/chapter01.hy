@@ -69,7 +69,7 @@
                     (≡ x true)
                     (≡ true q))))
 
-(frame "1.26" [true]
+(frame "1.27" [true]
        (run* [q]
              (fresh [x]
                     (≡ x true)
