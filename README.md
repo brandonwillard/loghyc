@@ -14,7 +14,7 @@ maybe it won't.
 Example
 -------
 
-```lisp
+```clojure
 (import [adderall.dsl [*]])
 (require adderall.dsl)
 
