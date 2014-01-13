@@ -39,7 +39,7 @@ particular, the tests [adapted][t:trs] from
 [The Reasoned Schemer][trs].
 
  [t:generic]: https://github.com/algernon/adderall/blob/master/tests/adderall_test.hy
- [t:trs]: https://github.com/algernon/adderall/blob/master/tests/reasoned_schemer.hy
+ [t:trs]: https://github.com/algernon/adderall/blob/master/tests/schemer/
  [trs]: http://mitpress.mit.edu/books/reasoned-schemer
 
 License
