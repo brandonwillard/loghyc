@@ -21,17 +21,15 @@
 
 ;; By default, using cheezburger.kitty, you can has anything.
 (defn test-cheezburger-kitty []
-  (let [[q (fresh [q])]]
-    (assert (= (run* q (kitty.canhasᵒ :cheezburger) (≡ q true))
-               [true]))
-    (assert (= (run* q (kitty.canhasᵒ 'a-million-dollars) (≡ q true))
-               [true]))))
+  (assert (= (run* [q] (kitty.canhasᵒ :cheezburger) (≡ q true))
+             [true]))
+  (assert (= (run* [q] (kitty.canhasᵒ 'a-million-dollars) (≡ q true))
+             [true])))
 
 ;; When using cheezburger.grumpy-cat, you can has cheezburger. You
 ;; want to has anything else? No.
 (defn test-cheezburger-grumpy-cat []
-  (let [[q (fresh [q])]]
-    (assert (= (run* q (grumpy-cat.canhasᵒ :cheezburger) (≡ q true))
-               [true]))
-    (assert (= (run* q (grumpy-cat.canhasᵒ 'a-million-dollars) (≡ q true))
-               []))))
+  (assert (= (run* [q] (grumpy-cat.canhasᵒ :cheezburger) (≡ q true))
+             [true]))
+  (assert (= (run* [q] (grumpy-cat.canhasᵒ 'a-million-dollars) (≡ q true))
+             [])))

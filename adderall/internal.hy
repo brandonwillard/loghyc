@@ -17,19 +17,6 @@
 (import [adderall.lvar [LVar]]
         [hy [HyCons]])
 
-(defn gen-solutions [var goal]
-  (list-comp (reify var opt-s)
-             [opt-s (goal (tuple []))]
-             (not (nil? opt-s))))
-
-(defn gen-goals [f goals]
-  (if (= (len goals) 1)
-   (get goals 0)
-   (apply f goals)))
-
-(defn run! [f var goals]
-  (gen-solutions var (gen-goals f goals)))
-
 (defn lvar? [x] (instance? LVar x))
 (defn tuple? [x] (instance? tuple x))
 (defn seq? [x] (or (tuple? x)

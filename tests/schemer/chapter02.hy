@@ -20,88 +20,88 @@
 (require tests.schemer.common)
 
 (frame "2.6" [:a]
-       (run* q
+       (run* [q]
              (firstᵒ (cons :a (cons :c (cons :o (cons :r (cons :n nil))))) q)))
 
 (frame "2.7" [true]
-       (run* q
+       (run* [q]
              (firstᵒ [:a :c :o :r :n] :a)
              (≡ true q)))
 
 (frame "2.8" [:pear]
-       (run* q
+       (run* [q]
              (fresh [x y]
                     (firstᵒ [q y] x)
                     (≡ :pear x))))
 
 (frame "2.11" [[:grape :a]]
-       (run* q
+       (run* [q]
              (fresh [x y]
                     (firstᵒ [:grape :raisin :pear] x)
                     (firstᵒ [[:a] [:b] [:c]] y)
                     (≡ (cons x y) q))))
 
 (frame "2.15" [:c]
-       (run* q
+       (run* [q]
              (fresh [v]
                     (restᵒ [:a :c :o :r :n] v)
                     (firstᵒ v q))))
 
 (frame "2.18" [[[:raisin :pear] :a]]
-       (run* q
+       (run* [q]
              (fresh [x y]
                     (restᵒ [:grapre :raisin :pear] x)
                     (firstᵒ [[:a] [:b] [:c]] y)
                     (≡ (cons x y) q))))
 
 (frame "2.19" [true]
-       (run* q
+       (run* [q]
              (restᵒ [:a :c :o :r :n] [:c :o :r :n])
              (≡ true q)))
 
 (frame "2.20" [:o]
-       (run* q
+       (run* [q]
              (restᵒ [:c :o :r :n] [q :r :n])))
 
 (frame "2.21" [[:a :c :o :r :n]]
-       (run* q
+       (run* [q]
              (fresh [x]
                     (restᵒ q [:c :o :r :n])
                     (firstᵒ q x)
                     (≡ :a x))))
 
 (frame "2.22" [[[:a :b :c] :d :e]]
-       (run* q
+       (run* [q]
              (consᵒ [:a :b :c] [:d :e] q)))
 
 (frame "2.23" [:d]
-       (run* q
+       (run* [q]
              (consᵒ q [:a :b :c] [:d :a :b :c])))
 
 (frame "2.24" [[:e :a :d :c]]
-       (run* q
+       (run* [q]
              (fresh [x y z]
                     (≡ [:e :a :d x] q)
                     (consᵒ y [:a z :c] q))))
 
 (frame "2.25" [:d]
-       (run* q
+       (run* [q]
              (consᵒ q [:a q :c] [:d :a q :c])))
 
 (frame "2.26" [[:d :a :d :c]]
-       (run* q
+       (run* [q]
              (fresh [x]
                     (≡ [:d :a x :c] q)
                     (consᵒ x [:a x :c] q))))
 
 (frame "2.27" [[:d :a :d :c]]
-       (run* q
+       (run* [q]
              (fresh [x]
                     (consᵒ x [:a x :c] q)
                     (≡ [:d :a x :c] q))))
 
 (frame "2.29" [[:b :e :a :n :s]]
-       (run* q
+       (run* [q]
              (fresh [d x y w s]
                     (consᵒ w [:a :n :s] s)
                     (restᵒ q s)
@@ -112,53 +112,53 @@
                     (≡ :e y))))
 
 (frame "2.32" []
-       (run* q
+       (run* [q]
              (emptyᵒ [:grape :raisin :pear])
              (≡ true q)))
 
 (frame "2.33" [true]
-       (run* q
+       (run* [q]
              (emptyᵒ [])
              (≡ true q)))
 
 (frame "2.34" [[]]
-       (run* q
+       (run* [q]
              (emptyᵒ q)))
 
 (frame "2.38" []
-       (run* q
+       (run* [q]
              (eqᵒ :pear :plum)
              (≡ true q)))
 
 (frame "2.39" [true]
-       (run* q
+       (run* [q]
              (eqᵒ :plum :plum)
              (≡ true q)))
 
 (frame "2.52" [(cons (unbound 0) (cons (unbound 1) :salad))]
-       (run* q
+       (run* [q]
              (fresh [x y]
                     (≡ q (cons x (cons y :salad))))))
 
 (frame "2.54" [true]
-       (run* q
+       (run* [q]
              (pairᵒ (cons q q))
              (≡ true q)))
 
 (frame "2.55" []
-       (run* q
+       (run* [q]
              (pairᵒ [])
              (≡ true q)))
 
 (frame "2.56" []
-       (run* q
+       (run* [q]
              (pairᵒ :pair)
              (≡ true q)))
 
 (frame "2.57" [(cons (unbound 0) (unbound 1))]
-       (run* q
+       (run* [q]
              (pairᵒ q)))
 
 (frame "2.58" [(unbound 0)]
-       (run* q
+       (run* [q]
              (pairᵒ (cons q :pear))))

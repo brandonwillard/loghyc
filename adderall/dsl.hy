@@ -16,18 +16,24 @@
 
 (import [itertools [islice]]
         [functools [reduce]]
-        [adderall.internal [*]]
+        [adderall.internal [unify interleave lvar? seq? reify]]
         [adderall.lvar [LVar]]
         [hy.models.list [HyList]])
 
 ;; Top level stuff
 
-(defn run* [var &rest goals]
-  (list (run! allᵍ var goals)))
-(def run_all run*)
-
-(defn run [n var &rest goals]
-  (list (islice (run! allᵍ var goals) 0 n)))
+(defmacro run [n var &rest goals]
+  (let [[q (first var)]]
+   `(do
+     (let [[~q (LVar (gensym))]
+           [res (list-comp (reify ~q s)
+                           [s ((apply allᵍ [~@goals]) (,))]
+                           (not (nil? s)))]]
+       (if ~n
+         (list (islice res 0 ~n))
+         (list res))))))
+(defmacro run* [var &rest goals]
+  `(run nil ~var ~@goals))
 
 (defmacro fresh [vars &rest goals]
   (cond

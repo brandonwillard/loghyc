@@ -27,6 +27,5 @@
   (let [[res (gensym)]
         [name (+ 'test-rs- frame-num)]]
     `(defn ~(HySymbol name) []
-       (let [[q (fresh [q])]
-             [~res ~expr]]
+       (let [[~res ~expr]]
          (assert (= ~value ~res))))))
