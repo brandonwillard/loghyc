@@ -16,21 +16,21 @@ Example
 
 ```lisp
 (import [adderall.dsl [*]])
-(def q (fresh [q]))
+(require adderall.dsl)
 
-(run* q (eitherᵍ (≡ q :tea)
-                 (bothᵍ (≡ q :coffee)
-                        succeed)))
+(run* [q] (eitherᵍ (≡ q :tea)
+                   (bothᵍ (≡ q :coffee)
+                          succeed)))
 ;; => [:tea :coffee]
 
-(run* q (eitherᵍ (≡ q :tea)
-                 (bothᵍ (≡ q :coffee)
-                        fail)))
+(run* [q] (eitherᵍ (≡ q :tea)
+                   (bothᵍ (≡ q :coffee)
+                          fail)))
 ;; => [:tea]
 
 (defreader h [_] #ss)
 (defn lovesᵒ [u v] (≡ v #hy))
-(run* q (lovesᵒ :algernon #hy) (≡ q true))
+(run* [q] (lovesᵒ :algernon #hy) (≡ q true))
 ;; => [True]
 ```
 
