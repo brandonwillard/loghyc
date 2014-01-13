@@ -1,2 +1,1 @@
-#hy>=0.9.12
--e git://github.com/olasd/hy.git@feature/cons#egg=hy
+-e git://github.com/algernon/hy.git@sandbox/adderall#egg=hy
