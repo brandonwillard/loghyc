@@ -121,8 +121,7 @@
    [(emptyᵒ l) succeed]
    [(pairᵒ l) (fresh [d]
                      (restᵒ l d)
-                     (listᵒ d))]
-   [#ss #uu]))
+                     (listᵒ d))]))
 (def listo listᵒ)
 
 (defn lolᵒ [l]
@@ -133,8 +132,7 @@
            (listᵒ a))
     (fresh [d]
            (restᵒ l d)
-           (lolᵒ d))]
-   [#ss #uu]))
+           (lolᵒ d))]))
 (def lolo lolᵒ)
 
 (defn twinsᵒ [s]
@@ -154,13 +152,11 @@
            (predᵒ a))
     (fresh [d]
            (restᵒ l d)
-           (listofᵒ predᵒ d))]
-   [#ss #uu]))
+           (listofᵒ predᵒ d))]))
 (def listofo listofᵒ)
 
 (defn memberᵒ [x l]
   (condᵉ
-   [(emptyᵒ l) #uu]
    [(firstᵒ l x) #ss]
    [#ss (fresh [d]
                (restᵒ l d)
