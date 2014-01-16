@@ -45,11 +45,11 @@
                     (lolᵒ [[:a :b] [x :c] [:d y]])
                     (≡ true q))))
 
-#_(frame "3.22" [true]
-         (run* [q]
-               (fresh [x]
-                      (lolᵒ (cons [:a :b] x))
-                      (≡ true q))))
+(frame "3.22" [true]
+       (run 1 [q]
+            (fresh [x]
+                   (lolᵒ (cons [:a :b] x))
+                   (≡ true q))))
 
 #_(frame "3.23" [[]]
          (run 1 [x]
@@ -77,15 +77,15 @@
          (run 1 [z]
               (lotᵒ (cons [:g :g] z))))
 
-#_(frame "3.42" [[]
-                 [[(unbound 0) (unbound 0)]]
-                 [[(unbound 0) (unbound 0)] [(unbound 1) (unbound 1)]]
-                 [[(unbound 0) (unbound 0)] [(unbound 1) (unbound 1)]
-                  [(unbound 2) (unbound 2)]]
-                 [[(unbound 0) (unbound 0)] [(unbound 1) (unbound 1)]
-                  [(unbound 2) (unbound 2)] [(unbound 3) (unbound 3)]]]
-         (run 5 [z]
-              (lotᵒ (cons [:g :g] z))))
+(frame "3.42" [[]
+               [[(unbound 0) (unbound 0)]]
+               [[(unbound 0) (unbound 0)] [(unbound 1) (unbound 1)]]
+               [[(unbound 0) (unbound 0)] [(unbound 1) (unbound 1)]
+                [(unbound 2) (unbound 2)]]
+               [[(unbound 0) (unbound 0)] [(unbound 1) (unbound 1)]
+                [(unbound 2) (unbound 2)] [(unbound 3) (unbound 3)]]]
+       (run 5 [z]
+            (lotᵒ (cons [:g :g] z))))
 
 #_(frame "3.45" [[:e [(unbound 0) (unbound 0) []]]
                  [:e [(unbound 0) (unbound 0) []]]
