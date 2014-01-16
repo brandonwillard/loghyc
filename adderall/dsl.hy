@@ -25,14 +25,15 @@
   (let [[s (gensym)]]
     `(do
       (let [~@(list-comp `[~x (LVar (gensym))] [x vars])
-            [res (list-comp (reify (if (= (len ~vars) 1)
-                                     (first ~vars)
-                                     [~@vars]) ~s)
-                            [~s ((apply allᵍ [~@goals]) (,))]
-                            (not (nil? ~s)))]]
+            [res (fn [] (for [~s ((apply allᵍ [~@goals]) (,))]
+                         (when (nil? ~s)
+                           (continue))
+                         (yield (reify (if (= (len ~vars) 1)
+                                         (first ~vars)
+                                         [~@vars]) ~s))))]]
         (if ~n
-          (list (islice res 0 ~n))
-          (list res))))))
+          (list (islice (res) 0 ~n))
+          (list (res)))))))
 (defmacro run* [var &rest goals]
   `(run nil ~var ~@goals))
 
