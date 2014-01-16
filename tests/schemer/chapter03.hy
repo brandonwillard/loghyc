@@ -19,9 +19,9 @@
 (require adderall.dsl)
 (require tests.schemer.common)
 
-#_(frame "3.7" [(unbound 0)]
-         (run* [x]
-               (listᵒ [:a :b x :d])))
+(frame "3.7" [(unbound 0)]
+       (run* [x]
+             (listᵒ [:a :b x :d])))
 
 #_(frame "3.10" [[]]
          (run 1 [x]
@@ -35,15 +35,15 @@
          (run 5 [x]
               (listᵒ (cons :a (cons :b (cons :c x))))))
 
-#_(frame "3.20" [[]]
-         (run 1 [l]
-              (lolᵒ l)))
+(frame "3.20" [[]]
+       (run 1 [l]
+            (lolᵒ l)))
 
-#_(frame "3.21" [true]
-         (run* [q]
-               (fresh [x y]
-                      (lolᵒ [[:a :b] [x :c] [:d y]])
-                      (≡ true q))))
+(frame "3.21" [true]
+       (run* [q]
+             (fresh [x y]
+                    (lolᵒ [[:a :b] [x :c] [:d y]])
+                    (≡ true q))))
 
 #_(frame "3.22" [true]
          (run* [q]
@@ -122,25 +122,25 @@
                (memberᵒ :olive [:virgin :olive :oil])
                (≡ true q)))
 
-#_(frame "3.58" [:hummus]
-         (run 1 [y]
-              (memberᵒ y [:hummus :with :pita])))
+(frame "3.58" [:hummus]
+       (run 1 [y]
+            (memberᵒ y [:hummus :with :pita])))
 
-#_(frame "3.59" [:with]
+(frame "3.59" [:with]
          (run 1 [y]
               (memberᵒ y [:with :pita])))
 
-#_(frame "3.60" [:pita]
-         (run 1 [y]
-              (memberᵒ y [:pita])))
+(frame "3.60" [:pita]
+       (run 1 [y]
+            (memberᵒ y [:pita])))
 
-#_(frame "3.61" []
-         (run* [y]
-               (memberᵒ y [])))
+(frame "3.61" []
+       (run* [y]
+             (memberᵒ y [])))
 
-#_(frame "3.62" [:hummus :with :pita]
-         (run* [y]
-               (memberᵒ y [:hummus :with :pita])))
+(frame "3.62" [:hummus :with :pita]
+       (run* [y]
+             (memberᵒ y [:hummus :with :pita])))
 
 #_(frame "3.66" [:e]
          (run* [x]
@@ -160,9 +160,9 @@
                       (memberᵒ :e [:pasta x :fagioli y])
                       (≡ [x y] r))))
 
-#_(frame "3.73" [(cons :tofu (unbound 0))]
-         (run 1 [l]
-              (memberᵒ :tofu l)))
+(frame "3.73" [(cons :tofu (unbound 0))]
+       (run 1 [l]
+            (memberᵒ :tofu l)))
 
 #_(frame "3.76" [(cons :tofu (unbound 0))
                  (cons (unbound 0) (cons :tofu (unbound 1)))
