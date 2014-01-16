@@ -203,4 +203,6 @@
   (assert (= (run* [q] (conso 1 [2 3] [1 q 3]))
              [2]))
   (assert (= (run* [q] (conso 1 [2 3] [1 2 q]))
-             [3])))
+             [3]))
+  (assert (= (run* [q] (conso 1 2 q))
+             [(cons 1 2)])))

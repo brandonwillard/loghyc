@@ -89,7 +89,7 @@
   (cond
    [(or (is r nil) (= r [])) (≡ [f] l)]
    [(or (lvar? r) (seq? r)) (≡ (cons f r) l)]
-   [true (≡ (cons f [r]) l)]))
+   [true (≡ (cons f r) l)]))
 
 (defn-alias [firstᵒ firsto] [l a]
   (fresh [d]
