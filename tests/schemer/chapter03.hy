@@ -52,7 +52,7 @@
                       (≡ true q))))
 
 #_(frame "3.23" [[]]
-         (run 1 x
+         (run 1 [x]
               (lolᵒ (cons [:a :b] (cons [:c :d] x)))))
 
 #_(frame "3.24" [[]
@@ -60,7 +60,7 @@
                  [[] []]
                  [[] [] []]
                  [[] [] [] []]]
-         (run 5 x
+         (run 5 [x]
               (lolᵒ (cons [:a :b] (cons [:c :d] x)))))
 
 
