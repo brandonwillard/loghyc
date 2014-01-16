@@ -16,7 +16,7 @@
 
 (import [itertools [islice]]
         [functools [reduce]]
-        [adderall.internal [unify interleave lvar? seq? reify]]
+        [adderall.internal [unify lvar? seq? reify]]
         [adderall.lvar [LVar unbound]])
 
 ;; Top level stuff
@@ -72,17 +72,23 @@
   (reduce bothg goals))
 (def allg allᵍ)
 
-(defn eitherᵍ [&rest goals]
-  (fn [s]
-    (interleave (list-comp (goal s) [goal goals]))))
-(def eitherg eitherᵍ)
+(defmacro eitherᵍ [&rest goals]
+  `(fn [s]
+     (for [goal [~@goals]]
+       (for [r (goal s)]
+         (yield r)))))
+(defmacro eitherg [&rest goals]
+  `(eitherᵍ ~@goals))
+
+(defmacro Zzz [g]
+  `(fn [s] (~g s)))
 
 (defmacro condᵉ [&rest cs]
   (let [[g (first cs)]
         [r (rest cs)]]
     (if r
-      `(eitherᵍ (allᵍ ~@g) (condᵉ ~@r))
-      `(allᵍ ~@g))))
+      `(eitherᵍ (Zzz (allᵍ ~@g)) (Zzz (condᵉ ~@r)))
+      `(Zzz (allᵍ ~@g)))))
 
 (defmacro conde [&rest cs]
   `(condᵉ ~@cs))
