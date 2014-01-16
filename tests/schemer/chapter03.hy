@@ -117,10 +117,10 @@
                      (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) out)
                      (listofᵒ twinsᵒ out))))
 
-#_(frame "3.57" [true]
-         (run* [q]
-               (memberᵒ :olive [:virgin :olive :oil])
-               (≡ true q)))
+(frame "3.57" [true]
+       (run* [q]
+             (memberᵒ :olive [:virgin :olive :oil])
+             (≡ true q)))
 
 (frame "3.58" [:hummus]
        (run 1 [y]
@@ -150,15 +150,15 @@
          (run 1 [x]
               (memberᵒ :e [:pasta :e x :fagioli])))
 
-#_(frame "3.70" [:e]
-         (run 1 [x]
-              (memberᵒ :e [:pasta x :e :fagioli])))
+(frame "3.70" [:e]
+       (run 1 [x]
+            (memberᵒ :e [:pasta x :e :fagioli])))
 
-#_(frame "3.71" [[:e (unbound 0)] [(unbound 0) :e]]
-         (run* [r]
-               (fresh [x y]
-                      (memberᵒ :e [:pasta x :fagioli y])
-                      (≡ [x y] r))))
+(frame "3.71" [[:e (unbound 0)] [(unbound 0) :e]]
+       (run* [r]
+             (fresh [x y]
+                    (memberᵒ :e [:pasta x :fagioli y])
+                    (≡ [x y] r))))
 
 (frame "3.73" [(cons :tofu (unbound 0))]
        (run 1 [l]
@@ -190,10 +190,10 @@
          (run 5 [l]
               (pmemberᵒ :tofu l)))
 
-#_(frame "3.88" [true true]
-         (run* [q]
-               (pmemberᵒ :tofu [:a :b :tofu :d :tofu])
-               (≡ true q)))
+(frame "3.88" [true true]
+       (run* [q]
+             (pmemberᵒ :tofu [:a :b :tofu :d :tofu])
+             (≡ true q)))
 
 #_(frame "3.94" [(cons :tofu (cons (unbound 0) (unbound 1)))
                  [:tofu]
@@ -237,6 +237,6 @@
          (run 12 [l]
               (pmemberᵒ :tofu l)))
 
-#_(frame "3.100" [:fagioli :e :pasta]
-         (run* [x]
-               (memberrevᵒ x [:pasta :e :figoli])))
+(frame "3.100" [:fagioli :e :pasta]
+       (run* [x]
+             (memberrevᵒ x [:pasta :e :fagioli])))

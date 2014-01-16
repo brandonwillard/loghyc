@@ -79,10 +79,12 @@
   (and (seq? c) (> (len c) 0)))
 
 (defn unify [u v s]
-  (setv u (substitute u s))
-  (setv v (substitute v s))
+  (when s
+    (setv u (substitute u s))
+    (setv v (substitute v s)))
 
   (cond
+   [(nil? s) s]
    [(is u v) s]
    [(lvar? u) (if (lvar? v) (extend-unchecked u v s) (extend u v s))]
    [(lvar? v) (extend v u s)]
