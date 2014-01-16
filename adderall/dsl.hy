@@ -18,6 +18,7 @@
         [functools [reduce]]
         [adderall.internal [unify lvar? seq? reify]]
         [adderall.lvar [LVar unbound]])
+(require adderall.internal)
 
 ;; Top level stuff
 
@@ -46,11 +47,9 @@
 
 ;; Goals
 
-(defn ≡ [u v]
+(defn-alias [≡ == unifyo] [u v]
   (fn [s]
     (yield (unify u v s))))
-(def == ≡)
-(def unifyo ≡)
 
 (defn succeed [s]
   (yield s))
@@ -60,78 +59,64 @@
   (iter ()))
 (defreader u [_] fail)
 
-(defn bothᵍ [g1 g2]
+(defn-alias [bothᵍ bothg] [g1 g2]
   (fn [s]
     (for [opt-s1 (g1 s)]
       (unless (nil? opt-s1)
         (for [opt-s2 (g2 opt-s1)]
           (yield opt-s2))))))
-(def bothg bothᵍ)
 
-(defn allᵍ [&rest goals]
+(defn-alias [allᵍ allg] [&rest goals]
   (reduce bothg goals))
-(def allg allᵍ)
 
-(defmacro eitherᵍ [&rest goals]
+(defmacro-alias [eitherᵍ eitherg] [&rest goals]
   `(fn [s]
      (for [goal [~@goals]]
        (for [r (goal s)]
          (yield r)))))
-(defmacro eitherg [&rest goals]
-  `(eitherᵍ ~@goals))
 
 (defmacro Zzz [g]
   `(fn [s] (~g s)))
 
-(defmacro condᵉ [&rest cs]
+(defmacro-alias [condᵉ conde] [&rest cs]
   (let [[g (first cs)]
         [r (rest cs)]]
     (if r
       `(eitherᵍ (Zzz (allᵍ ~@g)) (Zzz (condᵉ ~@r)))
       `(Zzz (allᵍ ~@g)))))
 
-(defmacro conde [&rest cs]
-  `(condᵉ ~@cs))
-
-(defn consᵒ [f r l]
+(defn-alias [consᵒ conso] [f r l]
   (cond
    [(or (is r nil) (= r [])) (≡ [f] l)]
    [(or (lvar? r) (seq? r)) (≡ (cons f r) l)]
    [true (≡ (cons f [r]) l)]))
-(def conso consᵒ)
 
-(defn firstᵒ [l a]
+(defn-alias [firstᵒ firsto] [l a]
   (fresh [d]
          (consᵒ a d l)))
-(def firsto firstᵒ)
 
-(defn restᵒ [l d]
+(defn-alias [restᵒ resto] [l d]
   (fresh [a]
          (≡ (cons a d) l)))
-(def resto restᵒ)
 
-(defn emptyᵒ [l]
+(defn-alias [emptyᵒ emptyo] [l]
   (≡ [] l))
-(def emptyo emptyᵒ)
 
-(defn eqᵒ [u v]
+(defn-alias [eqᵒ eqo] [u v]
   (≡ u v))
-(def eqo eqᵒ)
 
-(defn pairᵒ [l]
+(defn-alias [pairᵒ pairo] [l]
   (fresh [a d]
          (consᵒ a d l)))
-(def pairo pairᵒ)
 
-(defn listᵒ [l]
+(defn-alias [listᵒ listo] [l]
   (condᵉ
    [(emptyᵒ l) succeed]
    [(pairᵒ l) (fresh [d]
                      (restᵒ l d)
                      (listᵒ d))]))
-(def listo listᵒ)
 
-(defn lolᵒ [l]
+(defn-alias [lolᵒ lolo] [l]
   (condᵉ
    [(emptyᵒ l) #ss]
    [(fresh [a]
@@ -140,18 +125,15 @@
     (fresh [d]
            (restᵒ l d)
            (lolᵒ d))]))
-(def lolo lolᵒ)
 
-(defn twinsᵒ [s]
+(defn-alias [twinsᵒ twinso] [s]
   (fresh [x]
          (≡ [x x] s)))
-(def twinso twinsᵒ)
 
-(defn lotᵒ [l]
+(defn-alias [lotᵒ loto] [l]
   (listofᵒ twinsᵒ l))
-(def loto lotᵒ)
 
-(defn listofᵒ [predᵒ l]
+(defn-alias [listofᵒ listofo] [predᵒ l]
   (condᵉ
    [(emptyᵒ l) #ss]
    [(fresh [a]
@@ -160,17 +142,15 @@
     (fresh [d]
            (restᵒ l d)
            (listofᵒ predᵒ d))]))
-(def listofo listofᵒ)
 
-(defn memberᵒ [x l]
+(defn-alias [memberᵒ membero] [x l]
   (condᵉ
    [(firstᵒ l x) #ss]
    [#ss (fresh [d]
                (restᵒ l d)
                (memberᵒ x d))]))
-(def membero memberᵒ)
 
-(defn pmemberᵒ [x l]
+(defn-alias [pmemberᵒ pmembero] [x l]
   (condᵉ
    [(firstᵒ l x)
     (fresh [a d]
@@ -179,12 +159,10 @@
    [#ss (fresh [d]
                (restᵒ l d)
                (pmemberᵒ x d))]))
-(def pmembero pmemberᵒ)
 
-(defn memberrevᵒ [x l]
+(defn-alias [memberrevᵒ memberrevo] [x l]
   (condᵉ
    [#ss (fresh [d]
                (restᵒ l d)
                (memberrevᵒ x d))]
    [#ss (firstᵒ l x)]))
-(def memberrevo memberrevᵒ)
