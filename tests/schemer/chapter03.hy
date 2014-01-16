@@ -73,7 +73,7 @@
        (run* [z]
              (twinsᵒ [z :tofu])))
 
-#_(frame "3.38" [[]]
+(frame "3.38" [[]]
          (run 1 [z]
               (lotᵒ (cons [:g :g] z))))
 

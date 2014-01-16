@@ -94,7 +94,7 @@
          (break)))
      s)]
    [(or (and (cons? u) (or (cons? v) (neseq? v)))
-        (and (or (cons? v) (neseq? u)) (cons? v)))
+        (and (or (cons? u) (neseq? u)) (cons? v)))
     (do
      (setv s (unify (first u) (first v) s))
      (setv s (unify (rest u) (rest v) s))
