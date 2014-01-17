@@ -20,7 +20,5 @@
 (require adderall.dsl)
 (require adderall.extra.zebra)
 
-(defclass BenchMark_Zebra [benchmark.Benchmark]
-  [[each 25]
-   [test_zebra (fn [self]
-                 (run* [water horse] (zebraᵖ water horse)))]])
+(defn zebra-benchmark []
+  (run* [water horse] (zebraᵖ water horse)))
