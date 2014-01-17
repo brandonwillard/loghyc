@@ -18,14 +18,12 @@ Example
 (import [adderall.dsl [*]])
 (require adderall.dsl)
 
-(run* [q] (eitherᵍ (≡ q :tea)
-                   (bothᵍ (≡ q :coffee)
-                          succeed)))
+(run* [q] (condᵉ [(≡ q :tea)]
+                 [(≡ q :coffee) succeed]))
 ;; => [:tea :coffee]
 
-(run* [q] (eitherᵍ (≡ q :tea)
-                   (bothᵍ (≡ q :coffee)
-                          fail)))
+(run* [q] (condᵉ [(≡ q :tea)]
+                 [(≡ q :coffee) fail]))
 ;; => [:tea]
 
 (import [getpass [getuser]])
