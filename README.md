@@ -33,7 +33,7 @@ Example
 (run* [who what] (lovesᵒ who what)
                  (≡ who (getuser))
                  (≡ what #hy))
-;; => [['algernon', '#hy']]
+;; => [['algernon' '#hy']]
 ```
 
 More examples can be found in the [test suite][t:generic], and in
