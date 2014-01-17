@@ -44,6 +44,19 @@ particular, the tests [adapted][t:trs] from
  [t:trs]: https://github.com/algernon/adderall/blob/master/tests/schemer/
  [trs]: http://mitpress.mit.edu/books/reasoned-schemer
 
+Adderall also comes with a set of extra functions, which are there
+mostly to show the power of the system, or for fun:
+
+```clojure
+(import [adderall.dsl [*]]
+        [adderall.extra.zebra [*]])
+(require adderall.dsl)
+(require adderall.extra.zebra)
+
+(run* [water-drinker horse-owner] (zebraᵖ water-drinker horse-owner))
+;; => [['norvegian 'japanese]]
+```
+
 License
 -------
 
