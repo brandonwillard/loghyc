@@ -67,7 +67,7 @@
           (yield opt-s2))))))
 
 (defn-alias [allᵍ allg] [&rest goals]
-  (reduce bothg goals))
+  (reduce bothᵍ goals))
 
 (defmacro-alias [eitherᵍ eitherg] [&rest goals]
   `(fn [s]
