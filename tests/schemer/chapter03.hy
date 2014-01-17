@@ -25,7 +25,7 @@
 
 #_(frame "3.10" [[]]
          (run 1 [x]
-              (listᵒ (cons :a (cons :b (cons :c x))))))
+              (listᵒ (list* :a :b :c x))))
 
 #_(frame "3.14" [[]
                  [(unbound 0)]
@@ -33,7 +33,7 @@
                  [(unbound 0) (unbound 1) (unbound 2)]
                  [(unbound 0) (unbound 1) (unbound 2) (unbound 3)]]
          (run 5 [x]
-              (listᵒ (cons :a (cons :b (cons :c x))))))
+              (listᵒ (list* :a :b :c x))))
 
 (frame "3.20" [[]]
        (run 1 [l]
@@ -53,7 +53,7 @@
 
 #_(frame "3.23" [[]]
          (run 1 [x]
-              (lolᵒ (cons [:a :b] (cons [:c :d] x)))))
+              (lolᵒ (list* [:a :b] [:c :d] x))))
 
 #_(frame "3.24" [[]
                  [[]]
@@ -61,7 +61,7 @@
                  [[] [] []]
                  [[] [] [] []]]
          (run 5 [x]
-              (lolᵒ (cons [:a :b] (cons [:c :d] x)))))
+              (lolᵒ (list* [:a :b] [:c :d] x))))
 
 
 (frame "3.32" [true]
@@ -94,7 +94,7 @@
                  [:e [(unbound 0) (unbound 0) []]]]
          (run 5 [r]
               (fresh [w x y z]
-                     (lotᵒ (cons [:g :g] (cons [:e w] (cons [x y] z))))
+                     (lotᵒ (list* [:g :g] [:e w] [x y] z))
                      (≡ [w [x y] z] r))))
 
 #_(frame "3.47" [[[:g :g] [:e :e] [(unbound 0) (unbound 0)]]
@@ -104,7 +104,7 @@
                   [(unbound 1) (unbound 1)] [(unbound 2) (unbound 2)]]]
          (run 3 [out]
               (fresh [w x y z]
-                     (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) out)
+                     (≡ (list* [:g :g] [:e w] [x y] z) out)
                      (lotᵒ out))))
 
 #_(frame "3.49" [[[:g :g] [:e :e] [(unbound 0) (unbound 0)]]
@@ -114,7 +114,7 @@
                   [(unbound 1) (unbound 1)] [(unbound 2) (unbound 2)]]]
          (run 3 [out]
               (fresh [w x y z]
-                     (≡ (cons [:g :g] (cons [:e w] (cons [x y] z))) out)
+                     (≡ (list* [:g :g] [:e w] [x y] z) out)
                      (listofᵒ twinsᵒ out))))
 
 (frame "3.57" [true]
@@ -164,20 +164,12 @@
        (run 1 [l]
             (memberᵒ :tofu l)))
 
-#_(frame "3.76" [(cons :tofu (unbound 0))
-                 (cons (unbound 0) (cons :tofu (unbound 1)))
-                 (cons (unbound 0) (cons (unbound 1)
-                                         (cons :tofu
-                                               (unbound 2))))
-                 (cons (unbound 0)
-                       (cons (unbound 1)
-                             (cons (unbound 2)
-                                   (cons :tofu (unbound 3)))))
-                 (cons (unbound 0)
-                       (cons (unbound 1)
-                             (cons (unbound 2)
-                                   (cons (unbound 3)
-                                         (cons :tofu (unbound 4))))))]
+#_(frame "3.76" [(list* :tofu (unbound 0))
+                 (list* (unbound 0) :tofu (unbound 1))
+                 (list* (unbound 0) (unbound 1) :tofu (unbound 2))
+                 (list* (unbound 0) (unbound 1) (unbound 2) :tofu (unbound 3))
+                 (list* (unbound 0) (unbound 1) (unbound 2)
+                        (unbound 3) :tofu (unbound 4))]
          (run 5 [l]
               (memberᵒ :tofu l)))
 
@@ -195,43 +187,22 @@
              (pmemberᵒ :tofu [:a :b :tofu :d :tofu])
              (≡ true q)))
 
-#_(frame "3.94" [(cons :tofu (cons (unbound 0) (unbound 1)))
+#_(frame "3.94" [(list* :tofu (unbound 0) (unbound 1))
                  [:tofu]
-                 (cons (unbound 0)
-                       (cons :tofu
-                             (cons (unbound 1)
-                                   (unbound 2))))
+                 (list* (unbound 0) :tofu (unbound 1) (unbound 2))
                  [(unbound 0) :tofu]
-                 (cons (unbound 0)
-                       (cons (unbound 1)
-                             (cons :tofu
-                                   (cons (unbound 2)
-                                         (unbound 3)))))
+                 (list* (unbound 0) (unbound 1) :tofu (unbound 2) (unbound 3))
                  [(unbound 0) (unbound 1) :tofu]
-                 (cons (unbound 0)
-                       (cons (unbound 1)
-                             (cons (unbound 2)
-                                   (cons :tofu
-                                         (cons (unbound 3)
-                                               (unbound 4))))))
+                 (list* (unbound 0) (unbound 1) (unbound 2) :tofu
+                        (unbound 3) (unbound 4))
                  [(unbound 0) (unbound 1) (unbound 2) :tofu]
-                 (cons (unbound 0)
-                       (cons (unbound 1)
-                             (cons (unbound 2)
-                                   (cons (unbound 3)
-                                         (cons :tofu
-                                               (cons (unbound 4)
-                                                     (unbound 5)))))))
+                 (list* (unbound 0) (unbound 1) (unbound 2) (unbound 3) :tofu
+                        (unbound 4) (unbound 5))
                  [(unbound 0) (unbound 1) (unbound 2)
                   (unbound 3) :tofu]
-                 (cons (unbound 0)
-                       (cons (unbound 1)
-                             (cons (unbound 2)
-                                   (cons (unbound 3)
-                                         (cons (unbound 4)
-                                               (cons :tofu
-                                                     (cons (unbound 5)
-                                                           (unbound 6))))))))
+                 (list* (unbound 0) (unbound 1) (unbound 2)
+                        (unbound 3) (unbound 4) :tofu
+                        (unbound 5) (unbound 6))
                  [(unbound 0) (unbound 1) (unbound 2)
                   (unbound 3) (unbound 4) :tofu]]
          (run 12 [l]

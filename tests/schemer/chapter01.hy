@@ -88,26 +88,26 @@
 (frame "1.30" [[(unbound 0) (unbound 1)]]
        (run* [r]
              (fresh [x y]
-                    (≡ (cons x (cons y ())) r))))
+                    (≡ (list* x y ()) r))))
 
 (frame "1.31" [[(unbound 0) (unbound 1)]]
        (run* [s]
              (fresh [t u]
-                    (≡ (cons t (cons u ())) s))))
+                    (≡ (list* t u ()) s))))
 
 (frame "1.32" [[(unbound 0) (unbound 1) (unbound 0)]]
        (run* [r]
              (fresh [x]
                     (let [[y x]]
                       (fresh [x]
-                             (≡ (cons y (cons x (cons y ()))) r))))))
+                             (≡ (list* y x y ()) r))))))
 
 (frame "1.33" [[(unbound 0) (unbound 1) (unbound 0)]]
        (run* [r]
              (fresh [x]
                     (let [[y x]]
                       (fresh [x]
-                             (≡ (cons x (cons y (cons x ()))) r))))))
+                             (≡ (list* x y x ()) r))))))
 
 (frame "1.34" []
        (run* [q]
@@ -178,7 +178,7 @@
              (fresh [x y]
                     (≡ :split x)
                     (≡ :pea y)
-                    (≡ (cons x (cons y ())) r))))
+                    (≡ (list* x y ()) r))))
 
 (frame "1.54" [[:split :pea] [:navy :bean]]
        (run* [r]
@@ -187,7 +187,7 @@
                      [(≡ :split x) (≡ :pea y)]
                      [(≡ :navy x) (≡ :bean y)]
                      [#uu])
-                    (≡ (cons x (cons y ())) r))))
+                    (≡ (list* x y ()) r))))
 
 (frame "1.55" [[:split :pea :soup] [:navy :bean :soup]]
        (run* [r]
@@ -196,7 +196,7 @@
                      [(≡ :split x) (≡ :pea y)]
                      [(≡ :navy x) (≡ :bean y)]
                      [#uu])
-                    (≡ (cons x (cons y (cons :soup ()))) r))))
+                    (≡ (list* x y :soup ()) r))))
 
 (defn teacupᵒ [x]
   (condᵉ
@@ -215,7 +215,7 @@
                      [(teacupᵒ x) (≡ true y) #ss]
                      [(≡ false x) (≡ true y)]
                      [#uu])
-                    (≡ (cons x (cons y ())) r))))
+                    (≡ (list* x y ()) r))))
 
 (frame "1.58" [[(unbound 0) (unbound 1)]
                [(unbound 0) (unbound 1)]]
@@ -225,7 +225,7 @@
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
                      [#uu])
-                    (≡ (cons y (cons z ())) r))))
+                    (≡ (list* y z ()) r))))
 
 (frame "1.59" [[false (unbound 0)] [(unbound 0) false]]
        (run* [r]
@@ -235,7 +235,7 @@
                      [(fresh [x] (≡ y x)) (≡ z x)]
                      [#uu])
                     (≡ false x)
-                    (≡ (cons y (cons z ())) r))))
+                    (≡ (list* y z ()) r))))
 
 (frame "1.60" [false]
        (run* [q]

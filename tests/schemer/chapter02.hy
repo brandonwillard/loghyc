@@ -21,7 +21,7 @@
 
 (frame "2.6" [:a]
        (run* [r]
-             (firstᵒ (cons :a (cons :c (cons :o (cons :r (cons :n nil))))) r)))
+             (firstᵒ (list* :a :c :o :r :n nil) r)))
 
 (frame "2.7" [true]
        (run* [q]
@@ -135,10 +135,10 @@
              (eqᵒ :plum :plum)
              (≡ true q)))
 
-(frame "2.52" [(cons (unbound 0) (cons (unbound 1) :salad))]
+(frame "2.52" [(list* (unbound 0) (unbound 1) :salad)]
        (run* [r]
              (fresh [x y]
-                    (≡ r (cons x (cons y :salad))))))
+                    (≡ r (list* x y :salad)))))
 
 (frame "2.54" [true]
        (run* [q]
@@ -155,7 +155,7 @@
              (pairᵒ :pair)
              (≡ true q)))
 
-(frame "2.57" [(cons (unbound 0) (unbound 1))]
+(frame "2.57" [(list* (unbound 0) (unbound 1))]
        (run* [x]
              (pairᵒ x)))
 
