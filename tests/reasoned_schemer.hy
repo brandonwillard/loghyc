@@ -16,4 +16,5 @@
 
 (import [tests.schemer.chapter01 [*]]
         [tests.schemer.chapter02 [*]]
-        [tests.schemer.chapter03 [*]])
+        [tests.schemer.chapter03 [*]]
+        [tests.schemer.chapter04 [*]])

@@ -166,3 +166,10 @@
                (restᵒ l d)
                (memberrevᵒ x d))]
    [#ss (firstᵒ l x)]))
+
+(defn-alias [memᵒ memo] [x l out]
+  (condᵉ
+   [(firstᵒ l x) (≡ l out)]
+   [(fresh [d]
+           (restᵒ l d)
+           (memᵒ x d out))]))
