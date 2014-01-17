@@ -15,8 +15,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]]
-        [adderall.extra.zebra [*]]
-        [benchmark])
+        [adderall.extra.zebra [*]])
 (require adderall.dsl)
 (require adderall.extra.zebra)
 
