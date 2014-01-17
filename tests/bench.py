@@ -33,3 +33,4 @@ def benchmark(module, function, times = 10):
 
 if __name__ == '__main__':
     benchmark("tests.extra.zebra_bench", "zebra_benchmark")
+    benchmark("tests.extra.cheetah_bench", "cheetah_benchmark", 100)
