@@ -15,8 +15,8 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]]
-        [adderall.contrib.cheezburger.kitteh :as kitteh]
-        [adderall.contrib.cheezburger.grumpy-cat :as grumpy-cat])
+        [adderall.extra.cheezburger.kitteh :as kitteh]
+        [adderall.extra.cheezburger.grumpy-cat :as grumpy-cat])
 (require adderall.dsl)
 
 ;; By default, using cheezburger.kitteh, you can has anything.
