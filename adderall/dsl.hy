@@ -59,6 +59,8 @@
   (iter ()))
 (defreader u [_] fail)
 
+(defreader ? [v] (LVar (gensym)))
+
 (defn-alias [bothᵍ bothg] [g1 g2]
   (fn [s]
     (for [opt-s1 (g1 s)]
