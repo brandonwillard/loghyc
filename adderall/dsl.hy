@@ -26,7 +26,7 @@
   (let [[s (gensym)]
         [res (gensym)]]
     `(do
-      (let [~@(list-comp `[~x (LVar (gensym))] [x vars])
+      (let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])
             [~res (fn [] (for [~s ((apply allᵍ [~@goals]) (,))]
                           (when (nil? ~s)
                             (continue))
