@@ -70,7 +70,9 @@
           (yield opt-s2))))))
 
 (defn-alias [allᵍ allg] [&rest goals]
-  (reduce bothᵍ goals))
+  (if goals
+    (reduce bothᵍ goals)
+    succeed))
 
 (defmacro-alias [eitherᵍ eitherg] [&rest goals]
   (let [[s (gensym)]

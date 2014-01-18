@@ -110,7 +110,9 @@
                                (eitherᵍ (≡ q x)
                                         (≡ q y)
                                         (≡ q :milk)))))
-             [:coffee :tea :milk])))
+             [:coffee :tea :milk]))
+  (assert (= (run* [q] (allᵍ) (≡ q true))
+             [true])))
 
 (defn test-run* []
   (let [[[x y] (fresh [x y])]]
