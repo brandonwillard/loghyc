@@ -189,3 +189,11 @@
            (consᵒ a d l)
            (rememberᵒ x d res)
            (consᵒ a res out))]))
+
+(defn-alias [appendᵒ appendo] [l s out]
+  (condᵉ
+   [(emptyᵒ l) (≡ s out)]
+   [(fresh [a d res]
+           (consᵒ a d l)
+           (appendᵒ d s res)
+           (consᵒ a res out))]))
