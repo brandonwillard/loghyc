@@ -175,3 +175,12 @@
    [(fresh [d]
            (restᵒ l d)
            (memᵒ x d out))]))
+
+(defn-alias [rememberᵒ remembero] [x l out]
+  (condᵉ
+   [(emptyᵒ l) (≡ [] out)]
+   [(firstᵒ l x) (restᵒ l out)]
+   [(fresh [a d res]
+           (consᵒ a d l)
+           (rememberᵒ x d res)
+           (consᵒ a res out))]))

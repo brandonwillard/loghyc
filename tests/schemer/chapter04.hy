@@ -85,3 +85,66 @@
          (run 12 [z]
               (fresh [u]
                      (memᵒ :tofu (cons [:a :b :tofu :d :tofu :e] z) u))))
+
+(frame "4.30" [[:a :b :d :peas :e]]
+       (run 1 [out]
+            (fresh [y]
+                   (rememberᵒ :peas [:a :b y :d :peas :e] out))))
+
+(frame "4.31" [[:b :a :d (unbound 0) :e]
+               [:a :b :d (unbound 0) :e]
+               [:a :b :d (unbound 0) :e]
+               [:a :b :d (unbound 0) :e]
+               [:a :b (unbound 0) :d :e]
+               [:a :b :e :d (unbound 0)]
+               [:a :b (unbound 0) :d (unbound 1) :e]]
+       (run* [out]
+             (fresh [y z]
+                    (rememberᵒ y [:a :b y :d z :e] out))))
+
+;; FIXME: This fails, becuase the last one ends up being
+;;        [:e (unbound 0)].
+#_(frame "4.49" [[:d :d]
+                 [:d :d]
+                 [(unbound 0) (unbound 0)]
+                 [:e :e]]
+         (run* [r]
+               (fresh [y z]
+                      (rememberᵒ y [y :d z :e] [y :d :e])
+                      (≡ [y z] r))))
+
+;; FIXME: This only returns the first 5 values, none of the others.
+#_(frame "4.57" [(unbound 0)
+                 (unbound 0)
+                 (unbound 0)
+                 (unbound 0)
+                 (unbound 0)
+                 []
+                 (cons (unbound 0) (unbound 1))
+                 [(unbound 0)]
+                 (list* (unbound 0) (unbound 1) (unbound 2))
+                 [(unbound 0) (unbound 1)]
+                 (list* (unbound 0) (unbound 1) (unbound 2) (unbound 3))
+                 [(unbound 0) (unbound 1) (unbound 3)]
+                 (list* (unbound 0) (unbound 1) (unbound 2) (unbound 3)
+                        (unbound 4))]
+         (run 13 [w]
+              (fresh [y z out]
+                     (rememberᵒ y (list* :a :b y :d z :w) out))))
+
+(defn surpriseᵒ [s]
+  (rememberᵒ s [:a :b :c] [:a :b :c]))
+
+(frame "4.69" [:d]
+       (run* [r]
+             (≡ :d r)
+             (surpriseᵒ r)))
+
+(frame "4.70" [(unbound 0)]
+       (run* [r]
+             (surpriseᵒ r)))
+
+(frame "4.72" [:b]
+       (run* [r]
+             (≡ :b r)
+             (surpriseᵒ r)))
