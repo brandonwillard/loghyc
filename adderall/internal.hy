@@ -59,7 +59,7 @@
 
 (defn cons-substitute [c s]
   (cond
-   [(cons? c) (cons (if (and (lvar? c) (.is_bound (first c)))
+   [(cons? c) (cons (if (and (lvar? c) (.bound? (first c)))
                       (reify (first c) s)
                       (first c)) (cons-substitute (rest c) s))]
    [(lvar? c) (reify c s)]
