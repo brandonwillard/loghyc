@@ -238,3 +238,8 @@
 
 (def alwaysᵒ (anyᵒ #ss))
 (def alwayso alwaysᵒ)
+
+(defn-alias [salᵒ salo] [g]
+  (condᵉ
+   [#ss #ss]
+   [g]))

@@ -38,3 +38,13 @@
        (run 5 [q]
             (≡ true q)
             alwaysᵒ))
+
+(frame "6.13" [true]
+       (run 1 [q]
+            (salᵒ alwaysᵒ)
+            (≡ true q)))
+
+(frame "6.14" [true]
+       (run 1 [q]
+            (salᵒ neverᵒ)
+            (≡ true q)))
