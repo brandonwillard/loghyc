@@ -34,3 +34,4 @@
 
 (defn unbound [n]
   (LVar (.format "_.{0}" n) :unbound))
+(defreader U [n] `(unbound ~n))
