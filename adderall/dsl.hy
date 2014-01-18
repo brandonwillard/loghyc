@@ -197,3 +197,11 @@
            (consᵒ a d l)
            (appendᵒ d s res)
            (consᵒ a res out))]))
+
+(defn-alias [unwrapᵒ unwrapo] [x out]
+  (condᵉ
+   [#ss (≡ x out)]
+   [(pairᵒ x)
+    (fresh [a]
+           (firstᵒ x a)
+           (unwrapᵒ a out))]))

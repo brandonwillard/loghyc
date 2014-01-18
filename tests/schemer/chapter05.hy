@@ -181,3 +181,36 @@
               (fresh [x y z]
                      (appendᵒ x y z)
                      (≡ [x y z] r))))
+
+(frame "5.46" [:pizza
+               [:pizza]
+               [[:pizza]]
+               [[[:pizza]]]]
+       (run* [x]
+             (unwrapᵒ [[[:pizza]]] x)))
+
+;; FIXME: This returns correct-ish value, but the unbound variables
+;; are all #U0, instead of being different.
+#_(frame "5.53" [:pizza
+                 (cons :pizza #U0)
+                 (cons (cons :pizza #U0) #U1)
+                 (cons (cons (cons :pizza #U0) #U1) #U2)
+                 (cons (cons (cons (cons :pizza #U0) #U1) #U2) #U3)]
+         (run 5 [x]
+              (unwrapᵒ x :pizza)))
+
+#_(frame "5.54" [[[:pizza]]
+                 (cons [[:pizza]] #U0)
+                 (cons (cons [[:pizza]] #U0) #U1)
+                 (cons (cons (cons [[:pizza]] #U0) #U1) #U2)
+                 (cons (cons (cons (cons [[:pizza]] #U0) #U1) #U2) #U3)]
+         (run 5 [x]
+              (unwrapᵒ x [[:pizza]])))
+
+#_(frame "5.55" [:pizza
+                 (cons :pizza #U0)
+                 (cons (cons :pizza #U0) #U1)
+                 (cons (cons (cons :pizza #U0) #U1) #U2)
+                 (cons (cons (cons (cons :pizza #U0) #U1) #U2) #U3)]
+         (run 5 [x]
+              (unwrapᵒ [[x]] :pizza)))
