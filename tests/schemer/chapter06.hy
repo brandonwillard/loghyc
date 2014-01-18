@@ -14,9 +14,27 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(import [tests.schemer.chapter01 [*]]
-        [tests.schemer.chapter02 [*]]
-        [tests.schemer.chapter03 [*]]
-        [tests.schemer.chapter04 [*]]
-        [tests.schemer.chapter05 [*]]
-        [tests.schemer.chapter06 [*]])
+(import [adderall.dsl [*]]
+        [tests.schemer.common [*]])
+(require adderall.dsl)
+(require tests.schemer.common)
+
+(frame "6.6" []
+       (run 1 [q]
+            #uu
+            neverᵒ))
+
+(frame "6.7" [true]
+       (run 1 [q]
+            alwaysᵒ
+            (≡ true q)))
+
+(frame "6.10" [true true true true true]
+       (run 5 [q]
+            alwaysᵒ
+            (≡ true q)))
+
+(frame "6.11" [true true true true true]
+       (run 5 [q]
+            (≡ true q)
+            alwaysᵒ))

@@ -227,3 +227,14 @@
            (flattenrevᵒ a res-a)
            (flattenrevᵒ d res-d)
            (appendᵒ res-a res-d out))]))
+
+(defn-alias [anyᵒ anyo] [g]
+  (condᵉ
+   [g #ss]
+   [#ss (anyᵒ g)]))
+
+(def neverᵒ (anyᵒ #uu))
+(def nevero neverᵒ)
+
+(def alwaysᵒ (anyᵒ #ss))
+(def alwayso alwaysᵒ)
