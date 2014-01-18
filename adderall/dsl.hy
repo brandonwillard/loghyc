@@ -40,11 +40,10 @@
   `(run nil ~var ~@goals))
 
 (defmacro fresh [vars &rest goals]
-  (cond
-   [goals `(let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])]
-             (allᵍ ~@goals))]
-   [(= (len vars) 1) `(LVar (gensym '~(first vars)))]
-   [true `[~@(list-comp `(LVar (gensym '~x)) [x vars])]]))
+  (if goals
+    `(let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])]
+        (allᵍ ~@goals))
+    `succeed))
 
 ;; Goals
 
