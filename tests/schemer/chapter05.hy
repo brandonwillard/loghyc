@@ -215,3 +215,109 @@
                  (cons (cons (cons (cons :pizza #U0) #U1) #U2) #U3)]
          (run 5 [x]
               (unwrapᵒ [[x]] :pizza)))
+
+(frame "5.60" [[:a :b :c]]
+       (run 1 [x]
+            (flattenᵒ [[:a :b] :c] x)))
+
+(frame "5.61" [[:a :b :c]]
+       (run 1 [x]
+            (flattenᵒ [:a [:b :c]] x)))
+
+(frame "5.62" [[:a]
+               [:a []]
+               [[:a]]]
+       (run* [x]
+             (flattenᵒ [:a] x)))
+
+(frame "5.64" [[:a]
+               [:a []]
+               [:a []]
+               [:a [] []]
+               [[:a]]
+               [[:a] []]
+               [[[:a]]]]
+       (run* [x]
+             (flattenᵒ [[:a]] x)))
+
+(frame "5.66" [[:a]
+               [:a []]
+               [:a []]
+               [:a [] []]
+               [:a []]
+               [:a [] []]
+               [:a [] []]
+               [:a [] [] []]
+               [[:a]]
+               [[:a] []]
+               [[:a] []]
+               [[:a] [] []]
+               [[[:a]]]
+               [[[:a]] []]
+               [[[[:a]]]]]
+       (run* [x]
+             (flattenᵒ [[[:a]]] x)))
+
+(frame "5.68" [[:a :b :c]
+               [:a :b :c []]
+               [:a :b [:c]]
+               [:a :b [] :c]
+               [:a :b [] :c []]
+               [:a :b [] [:c]]
+               [:a [:b] :c]
+               [:a [:b] :c []]
+               [:a [:b] [:c]]
+               [[:a :b] :c]
+               [[:a :b] :c []]
+               [[:a :b] [:c]]
+               [[[:a :b] :c]]]
+       (run* [x]
+             (flattenᵒ [[:a :b] :c] x)))
+
+(frame "5.75" [[[[:a :b] :c]]
+               [[:a :b] [:c]]
+               [[:a :b] :c []]
+               [[:a :b] :c]
+               [:a [:b] [:c]]
+               [:a [:b] :c []]
+               [:a [:b] :c]
+               [:a :b [] [:c]]
+               [:a :b [] :c []]
+               [:a :b [] :c]
+               [:a :b [:c]]
+               [:a :b :c []]
+               [:a :b :c]]
+       (run* [x]
+             (flattenrevᵒ [[:a :b] :c] x)))
+
+(defn reverse [l]
+  (let [[new-l (list l)]]
+    (.reverse new-l)
+    new-l))
+
+(frame "5.76" [[:a :b :c]
+               [:a :b :c []]
+               [:a :b [:c]]
+               [:a :b [] :c]
+               [:a :b [] :c []]
+               [:a :b [] [:c]]
+               [:a [:b] :c]
+               [:a [:b] :c []]
+               [:a [:b] [:c]]
+               [[:a :b] :c]
+               [[:a :b] :c []]
+               [[:a :b] [:c]]
+               [[[:a :b] :c]]]
+       (reverse
+        (run* [x]
+              (flattenrevᵒ [[:a :b] :c] x))))
+
+#_(frame "5.77" [(list* :a :b :c)
+                 [:a :b :c]]
+         (run 2 [x]
+              (flattenrevᵒ x [:a :b :c])))
+
+
+(frame "5.80" 574
+       (len (run* [x]
+                  (flattenrevᵒ [[[[:a [[[:b]]] :c]]] :d] x))))

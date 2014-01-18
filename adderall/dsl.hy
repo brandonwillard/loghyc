@@ -205,3 +205,25 @@
     (fresh [a]
            (firstᵒ x a)
            (unwrapᵒ a out))]))
+
+(defn-alias [flattenᵒ flatteno] [s out]
+  (condᵉ
+   [(emptyᵒ s) (≡ [] out)]
+   [(pairᵒ s)
+    (fresh [a d res-a res-d]
+           (consᵒ a d s)
+           (flattenᵒ a res-a)
+           (flattenᵒ d res-d)
+           (appendᵒ res-a res-d out))]
+   [#ss (consᵒ s [] out)]))
+
+(defn-alias [flattenrevᵒ flattenrevo] [s out]
+  (condᵉ
+   [#ss (consᵒ s [] out)]
+   [(emptyᵒ s) (≡ [] out)]
+   [(pairᵒ s)
+    (fresh [a d res-a res-d]
+           (consᵒ a d s)
+           (flattenrevᵒ a res-a)
+           (flattenrevᵒ d res-d)
+           (appendᵒ res-a res-d out))]))
