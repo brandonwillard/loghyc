@@ -23,18 +23,19 @@
 ;; Top level stuff
 
 (defmacro run [n vars &rest goals]
-  (let [[s (gensym)]]
+  (let [[s (gensym)]
+        [res (gensym)]]
     `(do
       (let [~@(list-comp `[~x (LVar (gensym))] [x vars])
-            [res (fn [] (for [~s ((apply allᵍ [~@goals]) (,))]
-                         (when (nil? ~s)
-                           (continue))
-                         (yield (reify (if (= (len ~vars) 1)
-                                         (first ~vars)
-                                         [~@vars]) ~s))))]]
+            [~res (fn [] (for [~s ((apply allᵍ [~@goals]) (,))]
+                          (when (nil? ~s)
+                            (continue))
+                          (yield (reify (if (= (len ~vars) 1)
+                                          (first ~vars)
+                                          [~@vars]) ~s))))]]
         (if ~n
-          (list (islice (res) 0 ~n))
-          (list (res)))))))
+          (list (islice (~res) 0 ~n))
+          (list (~res)))))))
 (defmacro run* [var &rest goals]
   `(run nil ~var ~@goals))
 
@@ -72,13 +73,17 @@
   (reduce bothᵍ goals))
 
 (defmacro-alias [eitherᵍ eitherg] [&rest goals]
-  `(fn [s]
-     (for [goal [~@goals]]
-       (for [r (goal s)]
-         (yield r)))))
+  (let [[s (gensym)]
+        [r (gensym)]
+        [goal (gensym)]]
+    `(fn [~s]
+       (for [~goal [~@goals]]
+         (for [~r (~goal ~s)]
+           (yield ~r))))))
 
 (defmacro Zzz [g]
-  `(fn [s] (~g s)))
+  (let [[s (gensym)]]
+    `(fn [~s] (~g ~s))))
 
 (defmacro-alias [condᵉ conde] [&rest cs]
   (let [[g (first cs)]
