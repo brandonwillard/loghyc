@@ -17,6 +17,7 @@
 (import [adderall.dsl [*]]
         [tests.schemer.common [*]])
 (require adderall.dsl)
+(require adderall.lvar)
 (require tests.schemer.common)
 
 (frame "4.10" [[:tofu :d :tofu :e]]
@@ -57,31 +58,17 @@
              (fresh [x]
                     (memᵒ :tofu [:a :b x :d :tofu :e] out))))
 
-#_(frame "4.18" [(unbound 0)
-                 (unbound 0)
-                 (cons [(unbound 0) :tofu] (unbound 1))
-                 (cons [(unbound 0) (unbound 1) :tofu] (unbound 2))
-                 (cons [(unbound 0) (unbound 1) (unbound 2) :tofu]
-                       (unbound 3))
-                 (cons [(unbound 0) (unbound 1) (unbound 2) (unbound 3) :tofu]
-                       (unbound 4))
-                 (cons [(unbound 0) (unbound 1) (unbound 2) (unbound 3)
-                        (unbound 4) :tofu]
-                       (unbound 5))
-                 (cons [(unbound 0) (unbound 1) (unbound 2) (unbound 3)
-                        (unbound 4) (unbound 5) :tofu]
-                       (unbound 6))
-                 (cons [(unbound 0) (unbound 1) (unbound 2) (unbound 3)
-                        (unbound 4) (unbound 5) (unbound 6) :tofu]
-                       (unbound 7))
-                 (cons [(unbound 0) (unbound 1) (unbound 2) (unbound 3)
-                        (unbound 4) (unbound 5) (unbound 6) (unbound 7)
-                        :tofu]
-                       (unbound 8))
-                 (cons [(unbound 0) (unbound 1) (unbound 2) (unbound 3)
-                        (unbound 4) (unbound 5) (unbound 6) (unbound 7)
-                        (unbound 8) :tofu]
-                       (unbound 9))]
+#_(frame "4.18" [#U0
+                 #U0
+                 (cons [#U0 :tofu] #U1)
+                 (cons [#U0 #U1 :tofu] #U2)
+                 (cons [#U0 #U1 #U2 :tofu] #U3)
+                 (cons [#U0 #U1 #U2 #U3 :tofu] #U4)
+                 (cons [#U0 #U1 #U2 #U3 #U4 :tofu] #U5)
+                 (cons [#U0 #U1 #U2 #U3 #U4 #U5 :tofu] #U6)
+                 (cons [#U0 #U1 #U2 #U3 #U4 #U5 #U6 :tofu] #U7)
+                 (cons [#U0 #U1 #U2 #U3 #U4 #U5 #U6 #U7 :tofu] #U8)
+                 (cons [#U0 #U1 #U2 #U3 #U4 #U5 #U6 #U7 #U8 :tofu] #U9)]
          (run 12 [z]
               (fresh [u]
                      (memᵒ :tofu (cons [:a :b :tofu :d :tofu :e] z) u))))
@@ -91,43 +78,42 @@
             (fresh [y]
                    (rememberᵒ :peas [:a :b y :d :peas :e] out))))
 
-(frame "4.31" [[:b :a :d (unbound 0) :e]
-               [:a :b :d (unbound 0) :e]
-               [:a :b :d (unbound 0) :e]
-               [:a :b :d (unbound 0) :e]
-               [:a :b (unbound 0) :d :e]
-               [:a :b :e :d (unbound 0)]
-               [:a :b (unbound 0) :d (unbound 1) :e]]
+(frame "4.31" [[:b :a :d  #U0 :e]
+               [:a :b :d  #U0 :e]
+               [:a :b :d  #U0 :e]
+               [:a :b :d  #U0 :e]
+               [:a :b #U0 :d  :e]
+               [:a :b :e  :d  #U0]
+               [:a :b #U0 :d  #U1 :e]]
        (run* [out]
              (fresh [y z]
                     (rememberᵒ y [:a :b y :d z :e] out))))
 
 ;; FIXME: This fails, becuase the last one ends up being
-;;        [:e (unbound 0)].
-#_(frame "4.49" [[:d :d]
-                 [:d :d]
-                 [(unbound 0) (unbound 0)]
-                 [:e :e]]
+;;        [:e #U0].
+#_(frame "4.49" [[:d  :d]
+                 [:d  :d]
+                 [#U0 #U0]
+                 [:e  :e]]
          (run* [r]
                (fresh [y z]
                       (rememberᵒ y [y :d z :e] [y :d :e])
                       (≡ [y z] r))))
 
 ;; FIXME: This only returns the first 5 values, none of the others.
-#_(frame "4.57" [(unbound 0)
-                 (unbound 0)
-                 (unbound 0)
-                 (unbound 0)
-                 (unbound 0)
+#_(frame "4.57" [#U0
+                 #U0
+                 #U0
+                 #U0
+                 #U0
                  []
-                 (cons (unbound 0) (unbound 1))
-                 [(unbound 0)]
-                 (list* (unbound 0) (unbound 1) (unbound 2))
-                 [(unbound 0) (unbound 1)]
-                 (list* (unbound 0) (unbound 1) (unbound 2) (unbound 3))
-                 [(unbound 0) (unbound 1) (unbound 3)]
-                 (list* (unbound 0) (unbound 1) (unbound 2) (unbound 3)
-                        (unbound 4))]
+                 (cons #U0 #U1)
+                 [#U0]
+                 (list* #U0 #U1 #U2)
+                 [#U0 #U1]
+                 (list* #U0 #U1 #U2 #U3)
+                 [#U0 #U1 #U3]
+                 (list* #U0 #U1 #U2 #U3 #U4)]
          (run 13 [w]
               (fresh [y z out]
                      (rememberᵒ y (list* :a :b y :d z :w) out))))
@@ -140,7 +126,7 @@
              (≡ :d r)
              (surpriseᵒ r)))
 
-(frame "4.70" [(unbound 0)]
+(frame "4.70" [#U0]
        (run* [r]
              (surpriseᵒ r)))
 

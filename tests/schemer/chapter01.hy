@@ -17,6 +17,7 @@
 (import [adderall.dsl [*]]
         [tests.schemer.common [*]])
 (require adderall.dsl)
+(require adderall.lvar)
 (require tests.schemer.common)
 
 (frame "1.10" []
@@ -75,34 +76,34 @@
                     (≡ x true)
                     (≡ q true))))
 
-(frame "1.28" [(unbound 0)]
+(frame "1.28" [#U0]
        (run* [x]
              #ss))
 
-(frame "1.29" [(unbound 0)]
+(frame "1.29" [#U0]
        (run* [x]
              (let [[x false]]
                (fresh [x]
                       (≡ true x)))))
 
-(frame "1.30" [[(unbound 0) (unbound 1)]]
+(frame "1.30" [[#U0 #U1]]
        (run* [r]
              (fresh [x y]
                     (≡ (list* x y ()) r))))
 
-(frame "1.31" [[(unbound 0) (unbound 1)]]
+(frame "1.31" [[#U0 #U1]]
        (run* [s]
              (fresh [t u]
                     (≡ (list* t u ()) s))))
 
-(frame "1.32" [[(unbound 0) (unbound 1) (unbound 0)]]
+(frame "1.32" [[#U0 #U1 #U0]]
        (run* [r]
              (fresh [x]
                     (let [[y x]]
                       (fresh [x]
                              (≡ (list* y x y ()) r))))))
 
-(frame "1.33" [[(unbound 0) (unbound 1) (unbound 0)]]
+(frame "1.33" [[#U0 #U1 #U0]]
        (run* [r]
              (fresh [x]
                     (let [[y x]]
@@ -124,7 +125,7 @@
              (let [[x q]]
                (≡ true x))))
 
-(frame "1.37" [(unbound 0)]
+(frame "1.37" [#U0]
        (run* [r]
              (fresh [x]
                     (≡ x r))))
@@ -155,7 +156,7 @@
              [(≡ :oil x) #ss]
              [#uu])))
 
-(frame "1.50" [:olive (unbound 0) :oil]
+(frame "1.50" [:olive #U0 :oil]
        (run* [x]
              (condᵉ
               [(≡ :virgin x) #uu]
@@ -217,8 +218,8 @@
                      [#uu])
                     (≡ (list* x y ()) r))))
 
-(frame "1.58" [[(unbound 0) (unbound 1)]
-               [(unbound 0) (unbound 1)]]
+(frame "1.58" [[#U0 #U1]
+               [#U0 #U1]]
        (run* [r]
              (fresh [x y z]
                     (condᵉ
@@ -227,7 +228,7 @@
                      [#uu])
                     (≡ (list* y z ()) r))))
 
-(frame "1.59" [[false (unbound 0)] [(unbound 0) false]]
+(frame "1.59" [[false #U0] [#U0 false]]
        (run* [r]
              (fresh [x y z]
                     (condᵉ

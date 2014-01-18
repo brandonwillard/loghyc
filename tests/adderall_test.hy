@@ -16,26 +16,25 @@
 
 (import [adderall.dsl [*]])
 (require adderall.dsl)
-
-(def unbound (LVar "_.0"))
+(require adderall.lvar)
 
 (defn test-fail-and-succeed []
   (assert (= (run* [q] fail) []))
-  (assert (= (run* [q] succeed) [unbound])))
+  (assert (= (run* [q] succeed) [#U0])))
 
 (defn test-#s-and-#u []
   (assert (= (run* [q] #uu) []))
-  (assert (= (run* [q] #ss) [unbound])))
+  (assert (= (run* [q] #ss) [#U0])))
 
 (defn test-eq []
-  (assert (= (run* [q] (≡ q q)) [unbound]))
+  (assert (= (run* [q] (≡ q q)) [#U0]))
   (assert (= (run* [q] (≡ q true)) [true]))
   (assert (= (run* [q] (≡ true q)) [true]))
   (assert (= (run* [q] (≡ [1 2 3] q)) [[1 2 3]]))
 )
 
 (defn test-fresh []
-  (assert (= (run* [q] (fresh [x])) [unbound])))
+  (assert (= (run* [q] (fresh [x])) [#U0])))
 
 (defn test-bothᵍ []
   (assert (= (run* [q] (bothᵍ (≡ q :tea) fail)) []))
@@ -58,7 +57,7 @@
              [:tea])))
 
 (defn test-eitherᵍ []
-  (assert (= (run* [q] (eitherᵍ succeed fail)) [unbound]))
+  (assert (= (run* [q] (eitherᵍ succeed fail)) [#U0]))
   (assert (= (run* [q] (eitherᵍ fail fail)) []))
   (assert (= (run* [q] (eitherᵍ (≡ q :tea) fail))
              [:tea]))
@@ -89,11 +88,11 @@
   (assert (= (run* [q] (eitherᵍ succeed
                                 (bothᵍ (≡ q :coffee)
                                        (≡ q :tea))))
-             [unbound]))
+             [#U0]))
   (assert (= (run* [q] (fresh [x y]
                               (eitherᵍ (bothᵍ (≡ q x) (≡ x x))
                                        (bothᵍ (≡ q y) (≡ y y)))))
-             [unbound unbound])))
+             [#U0 #U0])))
 
 (defn test-allᵍ []
   (assert (= (run* [q] (allᵍ (≡ q :coffee)
@@ -191,11 +190,11 @@
                               (condᵉ
                                [(≡ x 1) (≡ y 2)]
                                [(≡ x 1) (≡ q :tea)])))
-             [unbound :tea])))
+             [#U0 :tea])))
 
 (defn test-consᵒ []
   (assert (= (run* [q] (conso 1 [2 3] [1 2 3]))
-             [unbound]))
+             [#U0]))
   (assert (= (run* [q] (conso q [2 3] [1 2 3]))
              [1]))
   (assert (= (run* [q] (conso 1 q [1 2 3]))

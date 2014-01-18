@@ -17,6 +17,7 @@
 (import [adderall.dsl [*]]
         [tests.schemer.common [*]])
 (require adderall.dsl)
+(require adderall.lvar)
 (require tests.schemer.common)
 
 (frame "5.10" [[:cake :tastes :yummy]]
@@ -66,7 +67,7 @@
                             [:d :t]
                             x))))
 
-;; FIXME: This returns (unbound 0) times 5, likely stems from the same
+;; FIXME: This returns #U0 times 5, likely stems from the same
 ;; problem as the rest of the (x . y) stuff.
 #_(frame "5.17" [[]
                  [#U0]

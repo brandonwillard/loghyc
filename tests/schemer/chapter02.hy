@@ -17,6 +17,7 @@
 (import [adderall.dsl [*]]
         [tests.schemer.common [*]])
 (require adderall.dsl)
+(require adderall.lvar)
 (require tests.schemer.common)
 
 (frame "2.6" [:a]
@@ -135,7 +136,7 @@
              (eqᵒ :plum :plum)
              (≡ true q)))
 
-(frame "2.52" [(list* (unbound 0) (unbound 1) :salad)]
+(frame "2.52" [(list* #U0 #U1 :salad)]
        (run* [r]
              (fresh [x y]
                     (≡ r (list* x y :salad)))))
@@ -155,10 +156,10 @@
              (pairᵒ :pair)
              (≡ true q)))
 
-(frame "2.57" [(list* (unbound 0) (unbound 1))]
+(frame "2.57" [(list* #U0 #U1)]
        (run* [x]
              (pairᵒ x)))
 
-(frame "2.58" [(unbound 0)]
+(frame "2.58" [#U0]
        (run* [r]
              (pairᵒ (cons r :pear))))
