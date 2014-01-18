@@ -53,13 +53,13 @@
 
 (defn succeed [s]
   (yield s))
-(defreader s [_] succeed)
+(defreader s [_] `succeed)
 
 (defn fail [s]
   (iter ()))
-(defreader u [_] fail)
+(defreader u [_] `fail)
 
-(defreader ? [v] (LVar (gensym)))
+(defreader ? [v] `(LVar (gensym)))
 
 (defn-alias [bothᵍ bothg] [g1 g2]
   (fn [s]
