@@ -14,11 +14,12 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(import [itertools [islice]]
+(import [itertools [islice chain imap]]
         [functools [reduce]]
         [adderall.internal [unify lvar? seq? reify list*]]
         [adderall.lvar [LVar unbound]])
 (require adderall.internal)
+(require monaxhyd.core)
 
 ;; Top level stuff
 
@@ -80,16 +81,30 @@
          (for [~r (~goal ~s)]
            (yield ~r))))))
 
+(defmonad logic-m
+  [[m-result (fn [v] (list v))]
+   [m-bind   (defn m-bind-sequence [mv f]
+               (when mv
+                 (let [[vs (list mv)]]
+                   (chain (f (first vs))
+                          (m-bind-sequence (rest vs) f)))))]
+   [m-zero   []]
+   [m-plus   (fn [mvs]
+               (apply chain mvs))]])
+
 (defmacro Zzz [g]
   (let [[s (gensym)]]
     `(fn [~s] (~g ~s))))
 
 (defmacro-alias [condᵉ conde] [&rest cs]
-  (let [[g (first cs)]
-        [r (rest cs)]]
-    (if r
-      `(eitherᵍ (Zzz (all ~@g)) (Zzz (condᵉ ~@r)))
-      `(Zzz (all ~@g)))))
+  (let [[s (gensym "s")]
+        [c (gensym "c")]]
+    `(with-monad logic-m
+       (fn [~s]
+         (m-plus (imap (fn [~c]
+                         (print "condᵉ" ~c)
+                         ((apply all ~c) ~s))
+                       [~@cs]))))))
 
 (defmacro-alias [condⁱ condi] [&rest cs]
   (let [[g (first cs)]
