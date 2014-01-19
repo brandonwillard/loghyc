@@ -14,7 +14,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(import [itertools [islice chain imap]]
+(import [itertools [islice chain]]
         [functools [reduce]]
         [adderall.internal [unify lvar? seq? reify list*]]
         [adderall.lvar [LVar unbound]])
@@ -101,10 +101,10 @@
         [c (gensym "c")]]
     `(with-monad logic-m
        (fn [~s]
-         (m-plus (imap (fn [~c]
-                         (print "condᵉ" ~c)
-                         ((apply all ~c) ~s))
-                       [~@cs]))))))
+         (m-plus (map (fn [~c]
+                        (print "condᵉ" ~c)
+                        ((apply all ~c) ~s))
+                      [~@cs]))))))
 
 (defmacro-alias [condⁱ condi] [&rest cs]
   (let [[g (first cs)]
