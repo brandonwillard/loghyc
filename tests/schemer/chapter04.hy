@@ -99,23 +99,22 @@
                     (rememberᵒ y [y :d z :e] [y :d :e])
                     (≡ [y z] r))))
 
-;; FIXME: This only returns the first 5 values, none of the others.
-#_(frame "4.57" [#U0
-                 #U0
-                 #U0
-                 #U0
-                 #U0
-                 []
-                 (cons #U0 #U1)
-                 [#U0]
-                 (list* #U0 #U1 #U2)
-                 [#U0 #U1]
-                 (list* #U0 #U1 #U2 #U3)
-                 [#U0 #U1 #U3]
-                 (list* #U0 #U1 #U2 #U3 #U4)]
-         (run 13 [w]
-              (fresh [y z out]
-                     (rememberᵒ y (list* :a :b y :d z :w) out))))
+(frame "4.57" [#U0
+               #U0
+               #U0
+               #U0
+               #U0
+               []
+               (cons #U0 #U1)
+               [#U0]
+               (list* #U0 #U1 #U2)
+               [#U0 #U1]
+               (list* #U0 #U1 #U2 #U3)
+               [#U0 #U1 #U2]
+               (list* #U0 #U1 #U2 #U3 #U4)]
+       (run 13 [w]
+            (fresh [y z out]
+                   (rememberᵒ y (list* :a :b y :d z w) out))))
 
 (defn surpriseᵒ [s]
   (rememberᵒ s [:a :b :c] [:a :b :c]))
