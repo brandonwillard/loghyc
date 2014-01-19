@@ -58,20 +58,21 @@
              (fresh [x]
                     (memᵒ :tofu [:a :b x :d :tofu :e] out))))
 
-#_(frame "4.18" [#U0
-                 #U0
-                 (cons [#U0 :tofu] #U1)
-                 (cons [#U0 #U1 :tofu] #U2)
-                 (cons [#U0 #U1 #U2 :tofu] #U3)
-                 (cons [#U0 #U1 #U2 #U3 :tofu] #U4)
-                 (cons [#U0 #U1 #U2 #U3 #U4 :tofu] #U5)
-                 (cons [#U0 #U1 #U2 #U3 #U4 #U5 :tofu] #U6)
-                 (cons [#U0 #U1 #U2 #U3 #U4 #U5 #U6 :tofu] #U7)
-                 (cons [#U0 #U1 #U2 #U3 #U4 #U5 #U6 #U7 :tofu] #U8)
-                 (cons [#U0 #U1 #U2 #U3 #U4 #U5 #U6 #U7 #U8 :tofu] #U9)]
+(frame "4.18" [#U0
+               #U0
+               (list* :tofu #U0)
+               (list* #U0 :tofu #U1)
+               (list* #U0 #U1 :tofu #U2)
+               (list* #U0 #U1 #U2 :tofu #U3)
+               (list* #U0 #U1 #U2 #U3 :tofu #U4)
+               (list* #U0 #U1 #U2 #U3 #U4 :tofu #U5)
+               (list* #U0 #U1 #U2 #U3 #U4 #U5 :tofu #U6)
+               (list* #U0 #U1 #U2 #U3 #U4 #U5 #U6 :tofu #U7)
+               (list* #U0 #U1 #U2 #U3 #U4 #U5 #U6 #U7 :tofu #U8)
+               (list* #U0 #U1 #U2 #U3 #U4 #U5 #U6 #U7 #U8 :tofu #U9)]
          (run 12 [z]
               (fresh [u]
-                     (memᵒ :tofu (cons [:a :b :tofu :d :tofu :e] z) u))))
+                     (memᵒ :tofu (list* :a :b :tofu :d :tofu :e z) u))))
 
 (frame "4.30" [[:a :b :d :peas :e]]
        (run 1 [out]
