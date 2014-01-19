@@ -30,31 +30,10 @@
   (assert (= (run* [q] (≡ q q)) [#U0]))
   (assert (= (run* [q] (≡ q true)) [true]))
   (assert (= (run* [q] (≡ true q)) [true]))
-  (assert (= (run* [q] (≡ [1 2 3] q)) [[1 2 3]]))
-)
+  (assert (= (run* [q] (≡ [1 2 3] q)) [[1 2 3]])))
 
 (defn test-fresh []
   (assert (= (run* [q] (fresh [x])) [#U0])))
-
-(defn test-bothᵍ []
-  (assert (= (run* [q] (bothᵍ (≡ q :tea) fail)) []))
-  (assert (= (run* [q] (bothᵍ (≡ q :tea) succeed)) [:tea]))
-  (assert (= (run* [q] (fresh [x]
-                              (bothᵍ (≡ x :tea) (≡ x q))))
-             [:tea]))
-  (assert (= (run* [q] (fresh [x]
-                              (bothᵍ (≡ x :tea) (≡ q x))))
-             [:tea]))
-  (assert (= (run* [q] (fresh [x]
-                              (bothᵍ (≡ q x)
-                                (bothᵍ (≡ x :tea)
-                                       fail))))
-             []))
-  (assert (= (run* [q] (fresh [x]
-                              (bothᵍ (≡ q x)
-                                (bothᵍ (≡ x :tea)
-                                       succeed))))
-             [:tea])))
 
 (defn test-eitherᵍ []
   (assert (= (run* [q] (eitherᵍ succeed fail)) [#U0]))
@@ -71,51 +50,6 @@
                                 (≡ q :coffee)
                                 (≡ q :milk)))
              [:tea :coffee :milk])))
-
-(defn test-eitherᵍ-and-bothᵍ []
-  (assert (= (run* [q] (eitherᵍ (≡ q :tea)
-                                (bothᵍ (≡ q :coffee)
-                                       succeed)))
-             [:tea :coffee]))
-  (assert (= (run* [q] (eitherᵍ (≡ q :tea)
-                                (bothᵍ (≡ q :coffee)
-                                       fail)))
-             [:tea]))
-  (assert (= (run* [q] (eitherᵍ fail
-                                (bothᵍ (≡ q :coffee)
-                                       (≡ q :tea))))
-             []))
-  (assert (= (run* [q] (eitherᵍ succeed
-                                (bothᵍ (≡ q :coffee)
-                                       (≡ q :tea))))
-             [#U0]))
-  (assert (= (run* [q] (fresh [x y]
-                              (eitherᵍ (bothᵍ (≡ q x) (≡ x x))
-                                       (bothᵍ (≡ q y) (≡ y y)))))
-             [#U0 #U0])))
-
-(defn test-allᵍ []
-  (assert (= (run* [q] (allᵍ (≡ q :coffee)
-                             succeed
-                             succeed))
-             [:coffee]))
-  (assert (= (run* [q] (allᵍ (≡ q :coffee)
-                             succeed
-                             fail))
-             []))
-  (assert (= (run* [q] (allᵍ (≡ q :coffee)
-                             (≡ q :tea)
-                             (≡ q :milk)))
-             []))
-  (assert (= (run* [q] (fresh [x y]
-                              (allᵍ (≡ x :coffee)
-                                    (≡ y :tea)
-                                    (eitherᵍ (≡ q x)
-                                             (≡ q y)
-                                             (≡ q :milk)))))
-             [:coffee :tea :milk]))
-  (assert (= (run* [q] (allᵍ) (≡ q true))
-             [true])))
 
 (defn test-run* []
   (assert (= (run* [q]

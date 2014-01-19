@@ -40,7 +40,7 @@
    [(rightᵒ y x l)]))
 
 (defmacro-alias [zebra-tableᵖ zebra-tablep] [hs]
-  `(allᵍ
+  `(runall
     (≡ [#?_ #?_ [#?_ #?_ 'milk #?_ #?_] #?_ #?_] ~hs)
     (firstᵒ ~hs ['norwegian #?_ #?_ #?_ #?_])
     (nextᵒ ['norwegian #?_ #?_ #?_ #?_]
