@@ -92,3 +92,39 @@
              [alwaysᵒ #ss]
              [#ss (neverᵒ)])
             (≡ true q)))
+
+#_(frame "6.32" [true]
+         (run 1 [q]
+              (allⁱ
+               (condᵉ
+                [(≡ false q) #ss]
+                [#ss (≡ true q)])
+               alwaysᵒ)
+              (≡ true q)))
+
+#_(frame "6.33" [true true true true true]
+         (run 5 [q]
+              (allⁱ
+               (condᵉ
+                [(≡ false q) #ss]
+                [#ss (≡ true q)])
+               alwaysᵒ)
+              (≡ true q)))
+
+#_(frame "6.34" [true true true true true]
+         (run 5 [q]
+              (allⁱ
+               (condᵉ
+                [(≡ true q) #ss]
+                [#ss (≡ false q)])
+               alwaysᵒ)
+              (≡ true q)))
+
+#_(frame "6.36" [true true true true true]
+         (run 5 [q]
+              (all
+               (condᵉ
+                [(≡ true q) #ss]
+                [#ss (≡ false q)])
+               alwaysᵒ)
+              (≡ true q)))
