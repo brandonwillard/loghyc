@@ -178,13 +178,14 @@
                    (appendᵒ x y z)
                    (≡ [x y z] r))))
 
-;; FIXME: We return the correct values here, but in the wrong order.
-#_(frame "5.46" [:pizza
-                 [:pizza]
-                 [[:pizza]]
-                 [[[:pizza]]]]
-         (run* [x]
-               (unwrapᵒ [[[:pizza]]] x)))
+;; The order is different here than in The Reasoned Schemer, because
+;; in frame 5.52, we swap the conditions, which reverses the order.
+(frame "5.46" [[[[:pizza]]]
+               [[:pizza]]
+               [:pizza]
+               :pizza]
+       (run* [x]
+             (unwrapᵒ [[[:pizza]]] x)))
 
 (frame "5.53" [:pizza
                (cons :pizza #U0)
