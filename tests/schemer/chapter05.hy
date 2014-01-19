@@ -126,18 +126,16 @@
                    (appendᵒ x y [:cake :with :ice :d :t])
                    (≡ [x y] r))))
 
-;; FIXME: This runs forever. If the last two conditions of appendᵒ are
-;; swapped, as TRS suggests, then previous tests break.
-#_(frame "5.32" [[[] [:cake :with :ice :d :t]]
-                 [[:cake] [:with :ice :d :t]]
-                 [[:cake :with] [:ice :d :t]]
-                 [[:cake :with :ice] [:d :t]]
-                 [[:cake :with :ice :d] [:t]]
-                 [[:cake :with :ice :d :t []]]]
-         (run 7 [r]
-              (fresh [x y]
-                     (appendᵒ x y [:cake :with :ice :d :t])
-                     (≡ [x y] r))))
+(frame "5.32" [[[] [:cake :with :ice :d :t]]
+               [[:cake] [:with :ice :d :t]]
+               [[:cake :with] [:ice :d :t]]
+               [[:cake :with :ice] [:d :t]]
+               [[:cake :with :ice :d] [:t]]
+               [[:cake :with :ice :d :t] []]]
+       (run 7 [r]
+            (fresh [x y]
+                   (appendᵒ x y [:cake :with :ice :d :t])
+                   (≡ [x y] r))))
 
 #_(frame "5.33" [[]
                  [#U0]
@@ -166,19 +164,19 @@
             (fresh [x y]
                    (appendᵒ x y z))))
 
-#_(frame "5.37" [[[] #U0 #U0]
-                 [[#U0] #U1 (list* #U0 #U1)]
-                 [[#U0 #U1] #U2 (list* #U0 #U1 #U2)]
-                 [[#U0 #U1 #U2] #U3 (list* #U0 #U1 #U2 #U3)]
-                 [[#U0 #U1 #U2 #U3] #U4 (list* #U0 #U1 #U2 #U3 #U4)]
-                 [[#U0 #U1 #U2 #U3 #U4] #U5
-                  (list* #U0 #U1 #U2 #U3 #U4 #U5)]
-                 [[#U0 #U1 #U2 #U3 #U4 #U5] #U6
-                  (list* #U0 #U1 #U2 #U3 #U4 #U5 #U6)]]
-         (run 7 [r]
-              (fresh [x y z]
-                     (appendᵒ x y z)
-                     (≡ [x y z] r))))
+(frame "5.37" [[[] #U0 #U0]
+               [[#U0] #U1 (list* #U0 #U1)]
+               [[#U0 #U1] #U2 (list* #U0 #U1 #U2)]
+               [[#U0 #U1 #U2] #U3 (list* #U0 #U1 #U2 #U3)]
+               [[#U0 #U1 #U2 #U3] #U4 (list* #U0 #U1 #U2 #U3 #U4)]
+               [[#U0 #U1 #U2 #U3 #U4] #U5
+                (list* #U0 #U1 #U2 #U3 #U4 #U5)]
+               [[#U0 #U1 #U2 #U3 #U4 #U5] #U6
+                (list* #U0 #U1 #U2 #U3 #U4 #U5 #U6)]]
+       (run 7 [r]
+            (fresh [x y z]
+                   (appendᵒ x y z)
+                   (≡ [x y z] r))))
 
 ;; FIXME: We return the correct values here, but in the wrong order.
 #_(frame "5.46" [:pizza
@@ -308,10 +306,10 @@
         (run* [x]
               (flattenrevᵒ [[:a :b] :c] x))))
 
-#_(frame "5.77" [(list* :a :b :c)
-                 [:a :b :c]]
-         (run 2 [x]
-              (flattenrevᵒ x [:a :b :c])))
+(frame "5.77" [(list* :a :b :c)
+               [:a :b :c]]
+       (run 2 [x]
+            (flattenrevᵒ x [:a :b :c])))
 
 
 (frame "5.80" 574

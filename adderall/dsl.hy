@@ -196,8 +196,8 @@
    [(emptyᵒ l) (≡ s out)]
    [(fresh [a d res]
            (consᵒ a d l)
-           (appendᵒ d s res)
-           (consᵒ a res out))]))
+           (consᵒ a res out)
+           (appendᵒ d s res))]))
 
 (defn-alias [unwrapᵒ unwrapo] [x out]
   (condᵉ
