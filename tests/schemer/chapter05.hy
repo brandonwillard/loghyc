@@ -137,16 +137,16 @@
                    (appendᵒ x y [:cake :with :ice :d :t])
                    (≡ [x y] r))))
 
-#_(frame "5.33" [[]
-                 [#U0]
-                 [#U0 #U1]
-                 [#U0 #U1 #U2]
-                 [#U0 #U1 #U2 #U3]
-                 [#U0 #U1 #U2 #U3 #U4]
-                 [#U0 #U1 #U2 #U3 #U4 #U5]]
-         (run 7 [z]
-              (fresh [x y]
-                     (appendᵒ x y z))))
+(frame "5.33" [[]
+               [#U0]
+               [#U0 #U1]
+               [#U0 #U1 #U2]
+               [#U0 #U1 #U2 #U3]
+               [#U0 #U1 #U2 #U3 #U4]
+               [#U0 #U1 #U2 #U3 #U4 #U5]]
+       (run 7 [x]
+            (fresh [y z]
+                   (appendᵒ x y z))))
 
 (frame "5.34" [#U0 #U0 #U0 #U0 #U0 #U0 #U0]
        (run 7 [y]
