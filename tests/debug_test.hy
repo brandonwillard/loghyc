@@ -15,7 +15,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]]
-        [StringIO [StringIO]]
+        [io [StringIO]]
         [sys])
 (require adderall.dsl)
 (require adderall.debug)
