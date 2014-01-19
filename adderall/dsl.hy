@@ -27,7 +27,7 @@
         [res (gensym)]]
     `(do
       (let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])
-            [~res (fn [] (for [~s ((apply runall [~@goals]) (,))]
+            [~res (fn [] (for [~s ((apply all [~@goals]) (,))]
                           (when (nil? ~s)
                             (continue))
                           (yield (reify (if (= (len ~vars) 1)
@@ -42,7 +42,7 @@
 (defmacro fresh [vars &rest goals]
   (if goals
     `(let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])]
-        (runall ~@goals))
+        (all ~@goals))
     `succeed))
 
 ;; Goals
@@ -61,7 +61,7 @@
 
 (defreader ? [v] `(LVar (gensym)))
 
-(defn runall [&rest goals]
+(defn all [&rest goals]
   (if goals
     (reduce (fn [g1 g2]
               (fn [s]
@@ -88,8 +88,8 @@
   (let [[g (first cs)]
         [r (rest cs)]]
     (if r
-      `(eitherᵍ (Zzz (runall ~@g)) (Zzz (condᵉ ~@r)))
-      `(Zzz (runall ~@g)))))
+      `(eitherᵍ (Zzz (all ~@g)) (Zzz (condᵉ ~@r)))
+      `(Zzz (all ~@g)))))
 
 (defmacro-alias [condⁱ condi] [&rest cs]
   (let [[g (first cs)]
