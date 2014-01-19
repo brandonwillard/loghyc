@@ -19,4 +19,5 @@
         [tests.schemer.chapter03 [*]]
         [tests.schemer.chapter04 [*]]
         [tests.schemer.chapter05 [*]]
-        [tests.schemer.chapter06 [*]])
+        [tests.schemer.chapter06 [*]]
+        [tests.schemer.chapter07 [*]])

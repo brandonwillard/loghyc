@@ -16,7 +16,7 @@
 
 (import [itertools [islice]]
         [functools [reduce]]
-        [adderall.internal [unify lvar? seq? reify]]
+        [adderall.internal [unify lvar? seq? reify list*]]
         [adderall.lvar [LVar unbound]])
 (require adderall.internal)
 
@@ -251,3 +251,53 @@
   (condᵉ
    [#ss #ss]
    [g]))
+
+(defn-alias [bit/nandᵒ bit/nanod] [x y r]
+  (condᵉ
+   [(≡ 0 x) (≡ 0 y) (≡ 1 r)]
+   [(≡ 1 x) (≡ 0 y) (≡ 1 r)]
+   [(≡ 0 x) (≡ 1 y) (≡ 1 r)]
+   [(≡ 1 x) (≡ 1 y) (≡ 0 r)]))
+
+(defn-alias [bit/xorᵒ bit/xoro] [x y r]
+  (fresh [s t u]
+         (bit/nandᵒ x y s)
+         (bit/nandᵒ x s t)
+         (bit/nandᵒ s y u)
+         (bit/nandᵒ t u r)))
+
+(defn-alias [bit/notᵒ bit/noto] [x r]
+  (bit/nandᵒ x x r))
+
+(defn-alias [bit/andᵒ bit/ando] [x y r]
+  (fresh [s]
+         (bit/nandᵒ x y s)
+         (bit/notᵒ s r)))
+
+(defn-alias [num/half-adderᵒ num/half-addero] [x y r c]
+  (condᵉ
+   [(≡ 0 x) (≡ 0 y) (≡ 0 r) (≡ 0 c)]
+   [(≡ 1 x) (≡ 0 y) (≡ 1 r) (≡ 0 c)]
+   [(≡ 0 x) (≡ 1 y) (≡ 1 r) (≡ 0 c)]
+   [(≡ 1 x) (≡ 1 y) (≡ 0 r) (≡ 1 c)]))
+
+(defn-alias [num/full-adderᵒ num/full-addero] [b x y r c]
+  (fresh [w xy wz]
+         (num/half-adderᵒ x y w xy)
+         (num/half-adderᵒ w b r wz)
+         (bit/xorᵒ xy wz c)))
+
+(defn num/build-num [n]
+  (cond
+   [(odd? n) (cons 1 (num/build-num (// (- n 1) 2)))]
+   [(and (not (zero? n)) (even? n))
+    (cons 0 (num/build-num (// n 2)))]
+   [(zero? n) []]))
+
+(defn-alias [num/posᵒ num/poso] [n]
+  (fresh [a d]
+         (≡ (cons a d) n)))
+
+(defn-alias [num/>1ᵒ num/>1o] [n]
+  (fresh [a ad dd]
+         (≡ (list* a ad dd) n)))
