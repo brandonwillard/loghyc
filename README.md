@@ -60,4 +60,5 @@ mostly to show the power of the system, or for fun:
 License
 -------
 
-All the code is licensed under the GNU General Public License (v3+).
+All the code is licensed under the GNU Lesser General Public License
+(v3+).
