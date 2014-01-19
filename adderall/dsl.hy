@@ -60,7 +60,7 @@
   (iter ()))
 (defreader u [_] `fail)
 
-(defreader ? [v] `(LVar (gensym)))
+(defreader ? [v] `(LVar (gensym '~v)))
 
 (defn all [&rest goals]
   (if goals
