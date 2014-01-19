@@ -24,17 +24,17 @@
        (run* [x]
              (listᵒ [:a :b x :d])))
 
-#_(frame "3.10" [[]]
-         (run 1 [x]
-              (listᵒ (list* :a :b :c x))))
+(frame "3.10" [[]]
+       (run 1 [x]
+            (listᵒ (list* :a :b :c x))))
 
-#_(frame "3.14" [[]
-                 [#U0]
-                 [#U0 #U1]
-                 [#U0 #U1 #U2]
-                 [#U0 #U1 #U2 #U3]]
-         (run 5 [x]
-              (listᵒ (list* :a :b :c x))))
+(frame "3.14" [[]
+               [#U0]
+               [#U0 #U1]
+               [#U0 #U1 #U2]
+               [#U0 #U1 #U2 #U3]]
+       (run 5 [x]
+            (listᵒ (list* :a :b :c x))))
 
 (frame "3.20" [[]]
        (run 1 [l]
@@ -52,17 +52,17 @@
                    (lolᵒ (cons [:a :b] x))
                    (≡ true q))))
 
-#_(frame "3.23" [[]]
-         (run 1 [x]
-              (lolᵒ (list* [:a :b] [:c :d] x))))
+(frame "3.23" [[]]
+       (run 1 [x]
+            (lolᵒ (list* [:a :b] [:c :d] x))))
 
-#_(frame "3.24" [[]
-                 [[]]
-                 [[] []]
-                 [[] [] []]
-                 [[] [] [] []]]
-         (run 5 [x]
-              (lolᵒ (list* [:a :b] [:c :d] x))))
+(frame "3.24" [[]
+               [[]]
+               [[] []]
+               [[] [] []]
+               [[] [] [] []]]
+       (run 5 [x]
+            (lolᵒ (list* [:a :b] [:c :d] x))))
 
 
 (frame "3.32" [true]
@@ -96,7 +96,7 @@
                      (lotᵒ (list* [:g :g] [:e w] [x y] z))
                      (≡ [w [x y] z] r))))
 
-#_(frame "3.47" [[[:g :g] [:e :e] [#U0 #U0]]
+(frame "3.47" [[[:g :g] [:e :e] [#U0 #U0]]
                  [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1]]
                  [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1] [#U2 #U2]]]
          (run 3 [out]
@@ -104,13 +104,13 @@
                      (≡ (list* [:g :g] [:e w] [x y] z) out)
                      (lotᵒ out))))
 
-#_(frame "3.49" [[[:g :g] [:e :e] [#U0 #U0]]
-                 [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1]]
-                 [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1] [#U2 #U2]]]
-         (run 3 [out]
-              (fresh [w x y z]
-                     (≡ (list* [:g :g] [:e w] [x y] z) out)
-                     (listofᵒ twinsᵒ out))))
+(frame "3.49" [[[:g :g] [:e :e] [#U0 #U0]]
+               [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1]]
+               [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1] [#U2 #U2]]]
+       (run 3 [out]
+            (fresh [w x y z]
+                   (≡ (list* [:g :g] [:e w] [x y] z) out)
+                   (listofᵒ twinsᵒ out))))
 
 (frame "3.57" [true]
        (run* [q]
@@ -159,13 +159,13 @@
        (run 1 [l]
             (memberᵒ :tofu l)))
 
-#_(frame "3.76" [(list* :tofu #U0)
-                 (list* #U0 :tofu #U1)
-                 (list* #U0 #U1 :tofu #U2)
-                 (list* #U0 #U1 #U2 :tofu #U3)
-                 (list* #U0 #U1 #U2 #U3 :tofu #U4)]
-         (run 5 [l]
-              (memberᵒ :tofu l)))
+(frame "3.76" [(list* :tofu #U0)
+               (list* #U0 :tofu #U1)
+               (list* #U0 #U1 :tofu #U2)
+               (list* #U0 #U1 #U2 :tofu #U3)
+               (list* #U0 #U1 #U2 #U3 :tofu #U4)]
+       (run 5 [l]
+            (memberᵒ :tofu l)))
 
 #_(frame "3.80" [[:tofu]
                  [#U0 :tofu]
@@ -180,21 +180,21 @@
              (pmemberᵒ :tofu [:a :b :tofu :d :tofu])
              (≡ true q)))
 
-#_(frame "3.94" [(list* :tofu #U0 #U1)
-                 [:tofu]
-                 (list* #U0 :tofu #U1 #U2)
-                 [#U0 :tofu]
-                 (list* #U0 #U1 :tofu #U2 #U3)
-                 [#U0 #U1 :tofu]
-                 (list* #U0 #U1 #U2 :tofu #U3 #U4)
-                 [#U0 #U1 #U2 :tofu]
-                 (list* #U0 #U1 #U2 #U3 :tofu #U4 #U5)
-                 [#U0 #U1 #U2
-                  #U3 :tofu]
-                 (list* #U0 #U1 #U2 #U3 #U4 :tofu #U5 #U6)
-                 [#U0 #U1 #U2 #U3 #U4 :tofu]]
-         (run 12 [l]
-              (pmemberᵒ :tofu l)))
+(frame "3.94" [(list* :tofu #U0 #U1)
+               [:tofu]
+               (list* #U0 :tofu #U1 #U2)
+               [#U0 :tofu]
+               (list* #U0 #U1 :tofu #U2 #U3)
+               [#U0 #U1 :tofu]
+               (list* #U0 #U1 #U2 :tofu #U3 #U4)
+               [#U0 #U1 #U2 :tofu]
+               (list* #U0 #U1 #U2 #U3 :tofu #U4 #U5)
+               [#U0 #U1 #U2
+                #U3 :tofu]
+               (list* #U0 #U1 #U2 #U3 #U4 :tofu #U5 #U6)
+               [#U0 #U1 #U2 #U3 #U4 :tofu]]
+       (run 12 [l]
+            (pmemberᵒ :tofu l)))
 
 (frame "3.100" [:fagioli :e :pasta]
        (run* [x]

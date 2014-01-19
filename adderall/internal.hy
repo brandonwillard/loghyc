@@ -57,18 +57,8 @@
           [true val]))
   (reifying val))
 
-(defn cons-substitute [c s]
-  (cond
-   [(cons? c) (cons (if (and (lvar? c) (.bound? (first c)))
-                      (reify (first c) s)
-                      (first c)) (cons-substitute (rest c) s))]
-   [(lvar? c) (reify c s)]
-   [True c]))
-
 (defn extend-unchecked [var val s]
-  (if (cons? val)
-    (tuple [var (cons-substitute val s) s])
-    (tuple [var val s])))
+  (tuple [var val s]))
 
 (defn extend [var val s]
   (unless (occurs var val s)

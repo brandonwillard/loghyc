@@ -89,16 +89,14 @@
              (fresh [y z]
                     (rememberᵒ y [:a :b y :d z :e] out))))
 
-;; FIXME: This fails, becuase the last one ends up being
-;;        [:e #U0].
-#_(frame "4.49" [[:d  :d]
-                 [:d  :d]
-                 [#U0 #U0]
-                 [:e  :e]]
-         (run* [r]
-               (fresh [y z]
-                      (rememberᵒ y [y :d z :e] [y :d :e])
-                      (≡ [y z] r))))
+(frame "4.49" [[:d  :d]
+               [:d  :d]
+               [#U0 #U0]
+               [:e  :e]]
+       (run* [r]
+             (fresh [y z]
+                    (rememberᵒ y [y :d z :e] [y :d :e])
+                    (≡ [y z] r))))
 
 ;; FIXME: This only returns the first 5 values, none of the others.
 #_(frame "4.57" [#U0

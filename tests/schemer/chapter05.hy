@@ -47,13 +47,12 @@
                             [:d :t]
                             x))))
 
-;; FIXME: This does not work, likely due to cons stuff.
-#_(frame "5.14" [[]]
-         (run 1 [y]
-              (fresh [x]
-                     (appendᵒ (list* :cake :with :ice y)
-                              [:d :t]
-                              x))))
+(frame "5.14" [[]]
+       (run 1 [y]
+            (fresh [x]
+                   (appendᵒ (list* :cake :with :ice y)
+                            [:d :t]
+                            x))))
 
 
 (frame "5.16" [[:cake :with :ice :d :t]
@@ -67,29 +66,27 @@
                             [:d :t]
                             x))))
 
-;; FIXME: This returns #U0 times 5, likely stems from the same
-;; problem as the rest of the (x . y) stuff.
-#_(frame "5.17" [[]
-                 [#U0]
-                 [#U0 #U1]
-                 [#U0 #U1 #U2]
-                 [#U0 #U1 #U2 #U3]]
-         (run 5 [y]
-              (fresh [x]
-                     (appendᵒ (list* :cake :with :ice y)
-                              [:d :t]
-                              x))))
+(frame "5.17" [[]
+               [#U0]
+               [#U0 #U1]
+               [#U0 #U1 #U2]
+               [#U0 #U1 #U2 #U3]]
+       (run 5 [y]
+            (fresh [x]
+                   (appendᵒ (list* :cake :with :ice y)
+                            [:d :t]
+                            x))))
 
-#_(frame "5.20" [[:cake :with :ice :d :t]
-                 [:cake :with :ice #U0 :d :t #U0]
-                 [:cake :with :ice #U0 #U1 :d :t #U0 #U1]
-                 [:cake :with :ice #U0 #U1 #U2 :d :t #U0 #U1 #U2]
-                 [:cake :with :ice #U0 #U1 #U2 #U3 :d :t #U0 #U1 #U2 #U3]]
-         (run 5 [x]
-              (fresh [y]
-                     (appendᵒ (list* :cake :with :ice y)
-                              (list* :d :t y)
-                              x))))
+(frame "5.20" [[:cake :with :ice :d :t]
+               [:cake :with :ice #U0 :d :t #U0]
+               [:cake :with :ice #U0 #U1 :d :t #U0 #U1]
+               [:cake :with :ice #U0 #U1 #U2 :d :t #U0 #U1 #U2]
+               [:cake :with :ice #U0 #U1 #U2 #U3 :d :t #U0 #U1 #U2 #U3]]
+       (run 5 [x]
+            (fresh [y]
+                   (appendᵒ (list* :cake :with :ice y)
+                            (list* :d :t y)
+                            x))))
 
 (frame "5.21" [(list* :cake :with :ice :cream :d :t #U0)]
        (run* [x]
@@ -98,36 +95,36 @@
                              (list* :d :t z)
                              x))))
 
-#_(frame "5.23" [[]
-                 [:cake]
-                 [:cake :with]
-                 [:cake :with :ice]
-                 [:cake :with :ice :d]
-                 [:cake :with :ice :d :t]]
-         (run 6 [x]
-              (fresh [y]
-                     (appendᵒ x y [:cake :with :ice :d :t]))))
+(frame "5.23" [[]
+               [:cake]
+               [:cake :with]
+               [:cake :with :ice]
+               [:cake :with :ice :d]
+               [:cake :with :ice :d :t]]
+       (run 6 [x]
+            (fresh [y]
+                   (appendᵒ x y [:cake :with :ice :d :t]))))
 
-#_(frame "5.25" [[:cake :with :ice :d :t]
-                 [:with :ice :d :t]
-                 [:ice :d :t]
-                 [:d :t]
-                 [:t]
-                 []]
-         (run 6 [y]
-              (fresh [x]
-                     (appendᵒ x y [:cake :with :ice :d :t]))))
+(frame "5.25" [[:cake :with :ice :d :t]
+               [:with :ice :d :t]
+               [:ice :d :t]
+               [:d :t]
+               [:t]
+               []]
+       (run 6 [y]
+            (fresh [x]
+                   (appendᵒ x y [:cake :with :ice :d :t]))))
 
-#_(frame "5.27" [[[] [:cake :with :ice :d :t]]
-                 [[:cake] [:with :ice :d :t]]
-                 [[:cake :with] [:ice :d :t]]
-                 [[:cake :with :ice] [:d :t]]
-                 [[:cake :with :ice :d] [:t]]
-                 [[:cake :with :ice :d :t []]]]
-         (run 6 [r]
-              (fresh [x y]
-                     (appendᵒ x y [:cake :with :ice :d :t])
-                     (≡ [x y] r))))
+(frame "5.27" [[[] [:cake :with :ice :d :t]]
+               [[:cake] [:with :ice :d :t]]
+               [[:cake :with] [:ice :d :t]]
+               [[:cake :with :ice] [:d :t]]
+               [[:cake :with :ice :d] [:t]]
+               [[:cake :with :ice :d :t] []]]
+       (run 6 [r]
+            (fresh [x y]
+                   (appendᵒ x y [:cake :with :ice :d :t])
+                   (≡ [x y] r))))
 
 ;; FIXME: This runs forever. If the last two conditions of appendᵒ are
 ;; swapped, as TRS suggests, then previous tests break.
@@ -149,7 +146,7 @@
                  [#U0 #U1 #U2 #U3]
                  [#U0 #U1 #U2 #U3 #U4]
                  [#U0 #U1 #U2 #U3 #U4 #U5]]
-         (run 7 [x]
+         (run 7 [z]
               (fresh [x y]
                      (appendᵒ x y z))))
 
@@ -191,31 +188,29 @@
          (run* [x]
                (unwrapᵒ [[[:pizza]]] x)))
 
-;; FIXME: This returns correct-ish value, but the unbound variables
-;; are all #U0, instead of being different.
-#_(frame "5.53" [:pizza
-                 (cons :pizza #U0)
-                 (cons (cons :pizza #U0) #U1)
-                 (cons (cons (cons :pizza #U0) #U1) #U2)
-                 (cons (cons (cons (cons :pizza #U0) #U1) #U2) #U3)]
-         (run 5 [x]
-              (unwrapᵒ x :pizza)))
+(frame "5.53" [:pizza
+               (cons :pizza #U0)
+               (cons (cons :pizza #U0) #U1)
+               (cons (cons (cons :pizza #U0) #U1) #U2)
+               (cons (cons (cons (cons :pizza #U0) #U1) #U2) #U3)]
+       (run 5 [x]
+            (unwrapᵒ x :pizza)))
 
-#_(frame "5.54" [[[:pizza]]
-                 (cons [[:pizza]] #U0)
-                 (cons (cons [[:pizza]] #U0) #U1)
-                 (cons (cons (cons [[:pizza]] #U0) #U1) #U2)
-                 (cons (cons (cons (cons [[:pizza]] #U0) #U1) #U2) #U3)]
-         (run 5 [x]
-              (unwrapᵒ x [[:pizza]])))
+(frame "5.54" [[[:pizza]]
+               (cons [[:pizza]] #U0)
+               (cons (cons [[:pizza]] #U0) #U1)
+               (cons (cons (cons [[:pizza]] #U0) #U1) #U2)
+               (cons (cons (cons (cons [[:pizza]] #U0) #U1) #U2) #U3)]
+       (run 5 [x]
+            (unwrapᵒ x [[:pizza]])))
 
-#_(frame "5.55" [:pizza
-                 (cons :pizza #U0)
-                 (cons (cons :pizza #U0) #U1)
-                 (cons (cons (cons :pizza #U0) #U1) #U2)
-                 (cons (cons (cons (cons :pizza #U0) #U1) #U2) #U3)]
-         (run 5 [x]
-              (unwrapᵒ [[x]] :pizza)))
+(frame "5.55" [:pizza
+               (cons :pizza #U0)
+               (cons (cons :pizza #U0) #U1)
+               (cons (cons (cons :pizza #U0) #U1) #U2)
+               (cons (cons (cons (cons :pizza #U0) #U1) #U2) #U3)]
+       (run 5 [x]
+            (unwrapᵒ [[x]] :pizza)))
 
 (frame "5.60" [[:a :b :c]]
        (run 1 [x]
