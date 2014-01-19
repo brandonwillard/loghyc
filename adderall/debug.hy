@@ -18,10 +18,10 @@
 
 (defmacro/g! log [&rest message]
   `(fn [~g!s]
-     (print ~@message)
+     (print (string ~@message))
      (yield ~g!s)))
 
 (defmacro/g! trace-s []
   `(fn [~g!s]
-     (print ~g!s)
+     (print (string ~g!s))
      (yield ~g!s)))
