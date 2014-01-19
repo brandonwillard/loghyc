@@ -167,14 +167,6 @@
        (run 5 [l]
             (memberᵒ :tofu l)))
 
-#_(frame "3.80" [[:tofu]
-                 [#U0 :tofu]
-                 [#U0 #U1 :tofu]
-                 [#U0 #U1 #U2 :tofu]
-                 [#U0 #U1 #U2 #U3 :tofu]]
-         (run 5 [l]
-              (pmemberᵒ :tofu l)))
-
 (frame "3.88" [true true]
        (run* [q]
              (pmemberᵒ :tofu [:a :b :tofu :d :tofu])
