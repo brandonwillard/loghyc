@@ -102,7 +102,6 @@
     `(with-monad logic-m
        (fn [~s]
          (m-plus (map (fn [~c]
-                        (print "condᵉ" ~c)
                         ((apply all ~c) ~s))
                       [~@cs]))))))
 
