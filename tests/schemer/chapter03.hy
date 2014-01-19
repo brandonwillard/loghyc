@@ -86,15 +86,15 @@
        (run 5 [z]
             (lotᵒ (cons [:g :g] z))))
 
-#_(frame "3.45" [[:e [#U0 #U0 []]]
-                 [:e [#U0 #U0 []]]
-                 [:e [#U0 #U0 []]]
-                 [:e [#U0 #U0 []]]
-                 [:e [#U0 #U0 []]]]
-         (run 5 [r]
-              (fresh [w x y z]
-                     (lotᵒ (list* [:g :g] [:e w] [x y] z))
-                     (≡ [w [x y] z] r))))
+(frame "3.45" [[:e [#U0 #U0] []]
+               [:e [#U0 #U0] [[#U1 #U1]]]
+               [:e [#U0 #U0] [[#U1 #U1] [#U2 #U2]]]
+               [:e [#U0 #U0] [[#U1 #U1] [#U2 #U2] [#U3 #U3]]]
+               [:e [#U0 #U0] [[#U1 #U1] [#U2 #U2] [#U3 #U3] [#U4 #U4]]]]
+       (run 5 [r]
+            (fresh [w x y z]
+                   (lotᵒ (list* [:g :g] [:e w] [x y] z))
+                   (≡ [w [x y] z] r))))
 
 (frame "3.47" [[[:g :g] [:e :e] [#U0 #U0]]
                  [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1]]
