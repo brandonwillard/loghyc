@@ -93,6 +93,13 @@
       `(eitherᵍ (Zzz (allᵍ ~@g)) (Zzz (condᵉ ~@r)))
       `(Zzz (allᵍ ~@g)))))
 
+(defmacro-alias [condⁱ condi] [&rest cs]
+  (let [[g (first cs)]
+        [r (rest cs)]]
+    (if r
+      `(eitherᵍ (Zzz (eitherᵍ ~@g)) (Zzz (condⁱ ~@r)))
+      `(Zzz (eitherᵍ ~@g)))))
+
 (defn-alias [consᵒ conso] [f r l]
   (cond
    [(or (is r nil) (= r [])) (≡ [f] l)]

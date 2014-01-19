@@ -48,3 +48,47 @@
        (run 1 [q]
             (salᵒ neverᵒ)
             (≡ true q)))
+
+(frame "6.19" [true]
+       (run 1 [q]
+            (condⁱ
+             [(≡ false q) alwaysᵒ]
+             [(≡ true q)])
+            (≡ true q)))
+
+(frame "6.21" [true true true true true]
+       (run 5 [q]
+            (condⁱ
+             [(≡ false q) alwaysᵒ]
+             [(anyᵒ (≡ true q))])
+            (≡ true q)))
+
+(defn teacupᵒ [x]
+  (condᵉ
+   [(≡ :tea x) #ss]
+   [(≡ :cup x) #ss]
+   [#uu]))
+
+;; FIXME: This is disabled, because condⁱ does not behave properly yet
+;; - it does not interleave.
+#_(frame "6.24" [:tea false :cup]
+         (run 5 [r]
+              (condⁱ
+               [(teacupᵒ r) #ss]
+               [(≡ false r) #ss]
+               [#ss #uu])))
+
+(frame "6.25" [true true true true true]
+       (run 5 [q]
+            (condⁱ
+             [(≡ false q) alwaysᵒ]
+             [(≡ true q) alwaysᵒ]
+             [#ss #uu])
+            (≡ true q)))
+
+(frame "6.28" [true true true true true]
+       (run 5 [q]
+            (condᵉ
+             [alwaysᵒ #ss]
+             [#ss (neverᵒ)])
+            (≡ true q)))
