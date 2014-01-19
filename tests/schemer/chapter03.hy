@@ -137,13 +137,13 @@
        (run* [y]
              (memberᵒ y [:hummus :with :pita])))
 
-#_(frame "3.66" [:e]
-         (run* [x]
-               (memberᵒ :e [:pasta x :fagioli])))
+(frame "3.66" [:e]
+       (run* [x]
+             (memberᵒ :e [:pasta x :fagioli])))
 
-#_(frame "3.69" [#U0]
-         (run 1 [x]
-              (memberᵒ :e [:pasta :e x :fagioli])))
+(frame "3.69" [#U0]
+       (run 1 [x]
+            (memberᵒ :e [:pasta :e x :fagioli])))
 
 (frame "3.70" [:e]
        (run 1 [x]
