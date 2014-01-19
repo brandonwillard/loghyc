@@ -90,7 +90,7 @@
        (run 5 [q]
             (condᵉ
              [alwaysᵒ #ss]
-             [#ss (neverᵒ)])
+             [#ss neverᵒ])
             (≡ true q)))
 
 #_(frame "6.32" [true]
