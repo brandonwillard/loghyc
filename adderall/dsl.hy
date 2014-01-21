@@ -46,6 +46,22 @@
         (all ~@goals))
     `succeed))
 
+(eval-and-compile
+ (defn project-binding [s]
+   (fn [var]
+     `[[~var (reify ~(HySymbol (+ "__" var)) ~s)]]))
+
+ (defn project-bindings [vars s]
+   (reduce chain (map (project-binding s) vars))))
+
+(defmacro/g! project [vars &rest goals]
+  (if goals
+    `(fn [~g!s]
+       (let [~@(list-comp `[~(HySymbol (+ "__" x)) ~x] [x vars])]
+         (let [~@(project-bindings vars g!s)]
+           ((all ~@goals) ~g!s))))
+    `succeed))
+
 ;; Goals
 
 (defn-alias [≡ == unifyo] [u v]

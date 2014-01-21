@@ -50,3 +50,14 @@
              [3]))
   (assert (= (run* [q] (consᵒ 1 2 q))
              [(cons 1 2)])))
+
+(defn test-project []
+  (assert (= (run* [q] (fresh [x]
+                              (≡ x 2)
+                              (≡ q (type x))))
+             [LVar]))
+  (assert (= (run* [q] (fresh [x]
+                              (≡ x 2)
+                              (project [x]
+                                       (≡ q (type x)))))
+             [(type 2)])))
