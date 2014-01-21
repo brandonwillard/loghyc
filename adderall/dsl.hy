@@ -96,18 +96,27 @@
   (let [[s (gensym)]]
     `(fn [~s] (~g ~s))))
 
+(eval-and-compile
+ (defn __subst-else [conds]
+   (map (fn [c]
+          (if (= (first c) 'else)
+            (HyList `(#ss . ~(rest c)))
+            c)) conds)))
+
 (defmacro-alias [condᵉ conde] [&rest cs]
   (let [[s (gensym "s")]
-        [c (gensym "c")]]
+        [c (gensym "c")]
+        [ncs (__subst-else cs)]]
     `(with-monad logic-m
        (fn [~s]
          (m-plus (map (fn [~c]
                         ((apply all ~c) ~s))
-                      [~@cs]))))))
+                      [~@ncs]))))))
 
 (defmacro-alias [condⁱ condi] [&rest cs]
-  (let [[g (first cs)]
-        [r (rest cs)]]
+  (let [[ncs (__subst-else cs)]
+        [g (first ncs)]
+        [r (rest ncs)]]
     (if r
       `(eitherᵍ (Zzz (eitherᵍ ~@g)) (Zzz (condⁱ ~@r)))
       `(Zzz (eitherᵍ ~@g)))))
@@ -173,9 +182,9 @@
 (defn-alias [memberᵒ membero] [x l]
   (condᵉ
    [(firstᵒ l x) #ss]
-   [#ss (fresh [d]
-               (restᵒ l d)
-               (memberᵒ x d))]))
+   (else (fresh [d]
+                (restᵒ l d)
+                (memberᵒ x d)))))
 
 (defn-alias [pmemberᵒ pmembero] [x l]
   (condᵉ
@@ -183,16 +192,16 @@
     (fresh [a d]
            (restᵒ l (cons a d)))]
    [(firstᵒ l x) (restᵒ l [])]
-   [#ss (fresh [d]
-               (restᵒ l d)
-               (pmemberᵒ x d))]))
+   (else (fresh [d]
+                (restᵒ l d)
+                (pmemberᵒ x d)))))
 
 (defn-alias [memberrevᵒ memberrevo] [x l]
   (condᵉ
    [#ss (fresh [d]
                (restᵒ l d)
                (memberrevᵒ x d))]
-   [#ss (firstᵒ l x)]))
+   (else (firstᵒ l x))))
 
 (defn-alias [memᵒ memo] [x l out]
   (condᵉ
@@ -235,7 +244,7 @@
            (flattenᵒ a res-a)
            (flattenᵒ d res-d)
            (appendᵒ res-a res-d out))]
-   [#ss (consᵒ s [] out)]))
+   (else (consᵒ s [] out))))
 
 (defn-alias [flattenrevᵒ flattenrevo] [s out]
   (condᵉ
@@ -251,7 +260,7 @@
 (defn-alias [anyᵒ anyo] [g]
   (condᵉ
    [g #ss]
-   [#ss (anyᵒ g)]))
+   (else (anyᵒ g))))
 
 (def neverᵒ (anyᵒ #uu))
 (def nevero neverᵒ)
@@ -262,4 +271,4 @@
 (defn-alias [salᵒ salo] [g]
   (condᵉ
    [#ss #ss]
-   [g]))
+   (else g)))

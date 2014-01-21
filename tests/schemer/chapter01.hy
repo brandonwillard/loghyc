@@ -147,14 +147,14 @@
              (condᵉ
               [(≡ :olive x) #ss]
               [(≡ :oil x) #ss]
-              [#uu])))
+              (else #uu))))
 
 (frame "1.49" [:olive]
        (run 1 [x]
             (condᵉ
              [(≡ :olive x) #ss]
              [(≡ :oil x) #ss]
-             [#uu])))
+             (else #uu))))
 
 (frame "1.50" [:olive #U0 :oil]
        (run* [x]
@@ -163,7 +163,7 @@
               [(≡ :olive x) #ss]
               [#ss #ss]
               [(≡ :oil x) #ss]
-              [#uu])))
+              (else #uu))))
 
 (frame "1.52" [:extra :olive]
        (run 2 [x]
@@ -172,7 +172,7 @@
              [(≡ :virgin x) #uu]
              [(≡ :olive x) #ss]
              [(≡ :oil x) #ss]
-             [#uu])))
+             (else #uu))))
 
 (frame "1.53" [[:split :pea]]
        (run* [r]
@@ -187,7 +187,7 @@
                     (condᵉ
                      [(≡ :split x) (≡ :pea y)]
                      [(≡ :navy x) (≡ :bean y)]
-                     [#uu])
+                     (else #uu))
                     (≡ (list* x y ()) r))))
 
 (frame "1.55" [[:split :pea :soup] [:navy :bean :soup]]
@@ -196,14 +196,14 @@
                     (condᵉ
                      [(≡ :split x) (≡ :pea y)]
                      [(≡ :navy x) (≡ :bean y)]
-                     [#uu])
+                     (else #uu))
                     (≡ (list* x y :soup ()) r))))
 
 (defn teacupᵒ [x]
   (condᵉ
    [(≡ :tea x) #ss]
    [(≡ :cup x) #ss]
-   [#uu]))
+   (else #uu)))
 
 (frame "1.56" [:tea :cup]
        (run* [x]
@@ -215,7 +215,7 @@
                     (condᵉ
                      [(teacupᵒ x) (≡ true y) #ss]
                      [(≡ false x) (≡ true y)]
-                     [#uu])
+                     (else #uu))
                     (≡ (list* x y ()) r))))
 
 (frame "1.58" [[#U0 #U1]
@@ -225,7 +225,7 @@
                     (condᵉ
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
-                     [#uu])
+                     (else #uu))
                     (≡ (list* y z ()) r))))
 
 (frame "1.59" [[false #U0] [#U0 false]]
@@ -234,7 +234,7 @@
                     (condᵉ
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
-                     [#uu])
+                     (else #uu))
                     (≡ false x)
                     (≡ (list* y z ()) r))))
 

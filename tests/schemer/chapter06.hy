@@ -67,7 +67,7 @@
   (condᵉ
    [(≡ :tea x) #ss]
    [(≡ :cup x) #ss]
-   [#uu]))
+   (else #uu)))
 
 ;; FIXME: This is disabled, because condⁱ does not behave properly yet
 ;; - it does not interleave.
@@ -76,21 +76,21 @@
               (condⁱ
                [(teacupᵒ r) #ss]
                [(≡ false r) #ss]
-               [#ss #uu])))
+               (else #uu))))
 
 (frame "6.25" [true true true true true]
        (run 5 [q]
             (condⁱ
              [(≡ false q) alwaysᵒ]
              [(≡ true q) alwaysᵒ]
-             [#ss #uu])
+             (else #uu))
             (≡ true q)))
 
 (frame "6.28" [true true true true true]
        (run 5 [q]
             (condᵉ
              [alwaysᵒ #ss]
-             [#ss neverᵒ])
+             (else neverᵒ))
             (≡ true q)))
 
 #_(frame "6.32" [true]
@@ -98,7 +98,7 @@
               (allⁱ
                (condᵉ
                 [(≡ false q) #ss]
-                [#ss (≡ true q)])
+                (else (≡ true q)))
                alwaysᵒ)
               (≡ true q)))
 
@@ -107,7 +107,7 @@
               (allⁱ
                (condᵉ
                 [(≡ false q) #ss]
-                [#ss (≡ true q)])
+                (else (≡ true q)))
                alwaysᵒ)
               (≡ true q)))
 
@@ -116,7 +116,7 @@
               (allⁱ
                (condᵉ
                 [(≡ true q) #ss]
-                [#ss (≡ false q)])
+                (else (≡ false q)))
                alwaysᵒ)
               (≡ true q)))
 
@@ -125,6 +125,6 @@
               (all
                (condᵉ
                 [(≡ true q) #ss]
-                [#ss (≡ false q)])
+                (else (≡ false q)))
                alwaysᵒ)
               (≡ true q)))
