@@ -6,3 +6,4 @@ from .reasoned_schemer import *
 
 from .extra.cheezburger_test import *
 from .extra.zebra import *
+from .extra.misc import *
