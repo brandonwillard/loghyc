@@ -130,9 +130,8 @@
                       [~@ncs]))))))
 
 (defmacro-alias [condⁱ condi] [&rest cs]
-  (let [[ncs (__subst-else cs)]
-        [g (first ncs)]
-        [r (rest ncs)]]
+  (let [[g (first cs)]
+        [r (rest cs)]]
     (if r
       `(eitherᵍ (Zzz (eitherᵍ ~@g)) (Zzz (condⁱ ~@r)))
       `(Zzz (eitherᵍ ~@g)))))

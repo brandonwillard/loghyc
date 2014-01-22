@@ -76,14 +76,14 @@
               (condⁱ
                [(teacupᵒ r) #ss]
                [(≡ false r) #ss]
-               (else #uu))))
+               [#ss #uu])))
 
 (frame "6.25" [true true true true true]
        (run 5 [q]
             (condⁱ
              [(≡ false q) alwaysᵒ]
              [(≡ true q) alwaysᵒ]
-             (else #uu))
+             [#ss #uu])
             (≡ true q)))
 
 (frame "6.28" [true true true true true]
