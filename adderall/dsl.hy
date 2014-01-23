@@ -24,8 +24,7 @@
 ;; Top level stuff
 
 (defmacro run [n vars &rest goals]
-  (let [[s (gensym)]
-        [res (gensym)]]
+  (with-gensyms [s res]
     `(do
       (let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])
             [~res (fn [] (for [~s ((apply all [~@goals]) (,))]
@@ -89,9 +88,7 @@
     succeed))
 
 (defmacro-alias [eitherᵍ eitherg] [&rest goals]
-  (let [[s (gensym)]
-        [r (gensym)]
-        [goal (gensym)]]
+  (with-gensyms [s r goal]
     `(fn [~s]
        (for [~goal [~@goals]]
          (for [~r (~goal ~s)]
@@ -120,14 +117,13 @@
             c)) conds)))
 
 (defmacro-alias [condᵉ conde] [&rest cs]
-  (let [[s (gensym "s")]
-        [c (gensym "c")]
-        [ncs (__subst-else cs)]]
-    `(with-monad logic-m
+  (with-gensyms [s c]
+    (let [[ncs (__subst-else cs)]]
+      `(with-monad logic-m
        (fn [~s]
          (m-plus (map (fn [~c]
                         ((apply all ~c) ~s))
-                      [~@ncs]))))))
+                      [~@ncs])))))))
 
 (defmacro-alias [condⁱ condi] [&rest cs]
   (let [[g (first cs)]
