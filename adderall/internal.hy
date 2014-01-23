@@ -17,16 +17,10 @@
 (import [adderall.lvar [LVar unbound]]
         [hy [HyCons]])
 
-(defn list* [a b &rest tail]
-  (if tail
-    (cons a (apply list* (+ [b] (list tail))))
-    (cons a b)))
-
 (defn lvar? [x] (instance? LVar x))
 (defn tuple? [x] (instance? tuple x))
 (defn seq? [x] (or (tuple? x)
                    (instance? list x)))
-(defn cons? [x] (instance? HyCons x))
 
 (defn substitute [val s]
   (while (lvar? val)

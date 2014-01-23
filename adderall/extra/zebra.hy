@@ -20,8 +20,7 @@
 ;;  [zebra]: https://en.wikipedia.org/wiki/Zebra_Puzzle
 ;;
 
-(import [adderall.dsl [*]]
-        [adderall.internal [list*]])
+(import [adderall.dsl [*]])
 (require adderall.dsl)
 
 ;; Goals

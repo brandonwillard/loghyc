@@ -16,7 +16,7 @@
 
 (import [itertools [islice chain]]
         [functools [reduce]]
-        [adderall.internal [unify lvar? seq? reify list*]]
+        [adderall.internal [unify lvar? seq? reify]]
         [adderall.lvar [LVar unbound]])
 (require adderall.internal)
 (require monaxhyd.core)
