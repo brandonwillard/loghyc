@@ -65,7 +65,7 @@
            (any (list-comp (occurs var item s) [item val])))))
 
 (defn neseq? [c]
-  (and (seq? c) (> (len c) 0)))
+  (and (seq? c) (pos? (len c))))
 
 (defn unify [u v s]
   (when s
