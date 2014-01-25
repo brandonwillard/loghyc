@@ -91,10 +91,3 @@
      (setv s (unify (rest u) (rest v) s))
      s)]
    [(= u v) s]))
-
-(defmacro defn-alias [names lambda-list &rest body]
-  (setv ret `(do))
-  (for* [name names]
-        (.append ret
-                 `(defn ~name ~lambda-list ~@body)))
-  ret)
