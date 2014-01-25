@@ -81,7 +81,7 @@
     (do
      (for [[ui vi] (zip u v)]
        (setv s (unify ui vi s))
-       (if (nil? s)
+       (when (nil? s)
          (break)))
      s)]
    [(or (and (cons? u) (or (cons? v) (neseq? v)))
