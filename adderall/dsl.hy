@@ -25,17 +25,16 @@
 
 (defmacro run [n vars &rest goals]
   (with-gensyms [s res]
-    `(do
-      (let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])
-            [~res (fn [] (for [~s ((apply all [~@goals]) (,))]
-                          (when (nil? ~s)
-                            (continue))
-                          (yield (reify (if (= (len ~vars) 1)
-                                          (first ~vars)
-                                          [~@vars]) ~s))))]]
-        (if ~n
-          (list (islice (~res) 0 ~n))
-          (list (~res)))))))
+    `(let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])
+           [~res (fn [] (for [~s ((apply all [~@goals]) (,))]
+                         (when (nil? ~s)
+                           (continue))
+                         (yield (reify (if (= (len ~vars) 1)
+                                         (first ~vars)
+                                         [~@vars]) ~s))))]]
+       (if ~n
+         (list (islice (~res) 0 ~n))
+         (list (~res))))))
 (defmacro run* [var &rest goals]
   `(run nil ~var ~@goals))
 
