@@ -55,7 +55,7 @@
 
 (defn build-num [n]
   (cond
-   [(odd? n) (cons 1 (build-num (// (- n 1) 2)))]
+   [(odd? n) (cons 1 (build-num (// (dec n) 2)))]
    [(and (not (zero? n)) (even? n))
     (cons 0 (build-num (// n 2)))]
    [(zero? n) []]))
