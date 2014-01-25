@@ -32,9 +32,9 @@
   val)
 
 (defn substitutions [s]
-  (while (not (is s (tuple [])))
+  (while (not (is s (, )))
     (setv (, var val s) s)
-    (yield (tuple [var val]))))
+    (yield (, var val))))
 
 (defn reify [val s]
   (setv free-vars {})
@@ -52,7 +52,7 @@
   (reifying val))
 
 (defn extend-unchecked [var val s]
-  (tuple [var val s]))
+  (, var val s))
 
 (defn extend [var val s]
   (unless (occurs var val s)
