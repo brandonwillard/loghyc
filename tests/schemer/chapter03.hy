@@ -97,12 +97,12 @@
                    (≡ [w [x y] z] r))))
 
 (frame "3.47" [[[:g :g] [:e :e] [#U0 #U0]]
-                 [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1]]
-                 [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1] [#U2 #U2]]]
-         (run 3 [out]
-              (fresh [w x y z]
-                     (≡ (list* [:g :g] [:e w] [x y] z) out)
-                     (lotᵒ out))))
+               [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1]]
+               [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1] [#U2 #U2]]]
+       (run 3 [out]
+            (fresh [w x y z]
+                   (≡ (list* [:g :g] [:e w] [x y] z) out)
+                   (lotᵒ out))))
 
 (frame "3.49" [[[:g :g] [:e :e] [#U0 #U0]]
                [[:g :g] [:e :e] [#U0 #U0] [#U1 #U1]]
