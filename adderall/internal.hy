@@ -32,7 +32,7 @@
   val)
 
 (defn substitutions [s]
-  (while (not (is s (, )))
+  (while (is-not s (, ))
     (setv (, var val s) s)
     (yield (, var val))))
 
