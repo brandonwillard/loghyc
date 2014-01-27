@@ -119,10 +119,10 @@
   (with-gensyms [s c]
     (let [[ncs (__subst-else cs)]]
       `(with-monad logic-m
-       (fn [~s]
-         (m-plus (map (fn [~c]
-                        ((apply all ~c) ~s))
-                      [~@ncs])))))))
+         (fn [~s]
+           (m-plus (map (fn [~c]
+                          ((apply all ~c) ~s))
+                        [~@ncs])))))))
 
 (defmacro-alias [condⁱ condi] [&rest cs]
   (let [[g (first cs)]
