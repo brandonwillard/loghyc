@@ -23,9 +23,13 @@
 
 ;; Top level stuff
 
+(eval-and-compile
+ (defn --prep-fresh-vars-- [vars]
+   (list-comp `[~x (LVar (gensym '~x))] [x vars])))
+
 (defmacro run [n vars &rest goals]
   (with-gensyms [s res]
-    `(let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])
+    `(let [~@(--prep-fresh-vars-- vars)
            [~res (fn [] (for [~s ((apply all [~@goals]) (,))]
                          (when (nil? ~s)
                            (continue))
@@ -40,7 +44,7 @@
 
 (defmacro fresh [vars &rest goals]
   (if goals
-    `(let [~@(list-comp `[~x (LVar (gensym '~x))] [x vars])]
+    `(let [~@(--prep-fresh-vars-- vars)]
         (all ~@goals))
     `succeed))
 
