@@ -102,9 +102,8 @@
    [m-plus   (fn [mvs]
                (apply chain mvs))]])
 
-(defmacro Zzz [g]
-  (let [[s (gensym)]]
-    `(fn [~s] (~g ~s))))
+(defmacro/g! Zzz [g]
+  `(fn [~g!s] (~g ~g!s)))
 
 (eval-and-compile
  (defn __subst-else [conds]
