@@ -82,16 +82,14 @@
               (fn [s]
                 (for [opt-s1 (g1 s)]
                   (unless (nil? opt-s1)
-                    (for [opt-s2 (g2 opt-s1)]
-                      (yield opt-s2)))))) goals)
+                    (yield-from (g2 opt-s1)))))) goals)
     succeed))
 
 (defmacro-alias [eitherᵍ eitherg] [&rest goals]
-  (with-gensyms [s r goal]
+  (with-gensyms [s goal]
     `(fn [~s]
        (for [~goal [~@goals]]
-         (for [~r (~goal ~s)]
-           (yield ~r))))))
+         (yield-from (~goal ~s))))))
 
 (defmonad logic-m
   [[m-result (fn [v] (list v))]
