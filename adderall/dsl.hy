@@ -134,7 +134,7 @@
 
 (defn-alias [consᵒ conso] [f r l]
   (cond
-   [(or (is r nil) (= r [])) (≡ [f] l)]
+   [(or (nil? r) (= r [])) (≡ [f] l)]
    [(or (lvar? r) (seq? r)) (≡ (cons f r) l)]
    [true (≡ (cons f r) l)]))
 
