@@ -56,6 +56,11 @@ mostly to show the power of the system, or for fun:
 ;; => [['norvegian 'japanese]]
 ```
 
+For a practical use, see [Hydiomatic][hydiomatic], a static analyser
+and code transformer built upon Adderall.
+
+ [hydiomatic]: https://github.com/algernon/hydiomatic
+
 License
 -------
 
