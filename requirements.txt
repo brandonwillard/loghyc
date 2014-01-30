@@ -1,2 +1,2 @@
--e git://github.com/algernon/hy.git@sandbox/adderall#egg=hy
+-e git://github.com/hylang/hy.git@master#egg=hy
 monaxhyd>=0.1.0
