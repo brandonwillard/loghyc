@@ -15,6 +15,7 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.lvar [LVar unbound]]
+        [platform [python-implementation]]
         [hy [HyCons]])
 
 (defn lvar? [x] (instance? LVar x))
@@ -31,8 +32,14 @@
       (else (break))))
   val)
 
+(if (= (python-implementation) "PyPy")
+   (defn --subst-stop-- [s]
+     (and (instance? tuple s) (not (empty? s))))
+   (defn --subst-stop-- [s]
+     (is-not s (, ))))
+
 (defn substitutions [s]
-  (while (is-not s (, ))
+  (while (--subst-stop-- s)
     (setv (, var val s) s)
     (yield (, var val))))
 
