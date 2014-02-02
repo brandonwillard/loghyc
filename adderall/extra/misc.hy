@@ -18,8 +18,6 @@
 (require adderall.dsl)
 (require adderall.internal)
 
-(require adderall.debug)
-
 (defn-alias [typeᵒ typeo] [u v]
   (condᵉ
    [(project [u] (if (= (type u) LVar)
