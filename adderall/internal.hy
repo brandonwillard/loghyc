@@ -32,14 +32,8 @@
       (else (break))))
   val)
 
-(if (= (python-implementation) "PyPy")
-   (defn --subst-stop-- [s]
-     (and (instance? tuple s) (not (empty? s))))
-   (defn --subst-stop-- [s]
-     (is-not s (, ))))
-
 (defn substitutions [s]
-  (while (--subst-stop-- s)
+  (while (!= s (,))
     (setv (, var val s) s)
     (yield (, var val))))
 
