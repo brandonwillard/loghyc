@@ -61,3 +61,10 @@
                               (project [x]
                                        (≡ q (type x)))))
              [(type 2)])))
+
+(defn test-prep []
+  (assert (= (run* [q] (prep
+                        (≡ q ?x)
+                        (memberᵒ ?x [?y 4 2])
+                        (memberᵒ ?y [1 3 5])))
+             [1 3 5 4 4 4 2 2 2])))

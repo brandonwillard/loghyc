@@ -15,9 +15,11 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [itertools [islice chain]]
-        [functools [reduce]]
+        [functools [reduce partial]]
         [adderall.internal [unify lvar? seq? reify]]
-        [adderall.lvar [LVar unbound]])
+        [adderall.lvar [LVar unbound]]
+        [hy [HySymbol HyList]]
+        [hy.contrib.walk [prewalk]])
 (require adderall.internal)
 (require monaxhyd.core)
 
@@ -25,7 +27,13 @@
 
 (eval-and-compile
  (defn --prep-fresh-vars-- [vars]
-   (list-comp `[~x (LVar (gensym '~x))] [x vars])))
+   (list-comp `[~x (LVar (gensym '~x))] [x vars]))
+
+ (defn --prep-lvars-from-expr-- [lvars expr]
+   (when (and (instance? HySymbol expr)
+              (.startswith expr "?"))
+     (.add lvars expr))
+   expr))
 
 (defmacro run [n vars &rest goals]
   (with-gensyms [s res]
@@ -47,6 +55,12 @@
     `(let [~@(--prep-fresh-vars-- vars)]
         (all ~@goals))
     `succeed))
+
+(defmacro prep [&rest goals]
+  (let [[lvars (set [])]]
+    (prewalk (partial --prep-lvars-from-expr-- lvars) (HyList goals))
+    (setv lvars (HyList lvars))
+    `(fresh ~lvars ~@goals)))
 
 (eval-and-compile
  (defn project-binding [s]
