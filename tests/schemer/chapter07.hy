@@ -127,3 +127,44 @@
 (frame "7.90" [(list* #U0 #U1 #U2)]
        (run* [r]
              (>1ᵒ r)))
+
+(frame "7.97" [[#U0 [] #U0]
+               [() (cons #U0 #U1) (cons #U0 #U1)]
+               [[1] [1] [0 1]]]
+       (run 3 [s]
+            (fresh [x y r]
+                   (adderᵒ 0 x y r)
+                   (≡ [x y r] s))))
+
+;; This is diabled, because the order of solutions is different,
+;; likely because adderall.bitnum's adderᵒ does not use allⁱ (yet).
+#_(frame "7.101" [[#U0 () #U0]
+                  [[] (cons #U0 #U1) (cons #U0 #U1)]
+                  [[1] [1] [0 1]]
+                  [[1] (list* 0 #U0 #U1) (list* 1 #U0 #U1)]
+                  [(list* 0 #U0 #U1) [1] (list* 1 #U0 #U1)]
+                  [[0 1] [0 1] [0 0 1]]
+                  [[1] [1 1] [0 0 1]]
+                  [[1] (list* 1 0 #U0 #U1) (list* 0 1 #U0 #U1)]
+                  [[1 1] [1] [0 0 1]]
+                  [[1] [1 1 1] [0 0 0 1]]
+                  [[1 1] [0 1] [1 0 1]]
+                  [[1] (list* 1 1 0 #U0 #U1) (list* 0 0 1 #U0 #U1)]
+                  [(list* 1 0 #U0 #U1) [1] (list* 0 1 #U0 #U1)]
+                  [[1] [1 1 1 1] [0 0 0 0 1]]
+                  [[0 1] (list* 0 0 #U0 #U1) (list* 0 1 #U0 #U1)]
+                  [[1] (list* 1 1 1 0 #U0 #U1) (list* 0 0 0 1 #U0 #U1)]
+                  [[1 1 1] [1] [0 0 0 1]]
+                  [[1] [1 1 1 1 1] [0 0 0 0 0 1]]
+                  [[0 1] [1 1] [1 0 1]]
+                  [[1] (list* 1 1 1 1 0 #U0 #U1) (list* 0 0 0 0 1 #U0 #U1)]
+                  [(list* 1 1 0 #U0 #U1) [1] (list* 0 0 1 #U1 #U1)]
+                  [[1] [1 1 1 1 1 1] [0 0 0 0 0 0 1]]]
+         (run 22 [s]
+              (fresh [x y r]
+                     (adderᵒ 0 x y r)
+                     (≡ [x y r] s))))
+
+(frame "7.120" [[0 1 0 1]]
+       (run* [s]
+             (gen-adderᵒ 1 [0 1 1] [1 1] s)))

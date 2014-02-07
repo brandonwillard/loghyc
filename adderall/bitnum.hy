@@ -67,3 +67,29 @@
 (defn-alias [>1ᵒ >1o] [n]
   (fresh [a ad dd]
          (≡ (list* a ad dd) n)))
+
+(defn-alias [adderᵒ addero] [d n m r]
+  (condⁱ
+   [(≡ 0 d) (≡ [] m) (≡ n r)]
+   [(≡ 0 d) (≡ [] n) (≡ m r)
+    (posᵒ m)]
+   [(≡ 1 d) (≡ [] m)
+    (adderᵒ 0 n [1] r)]
+   [(≡ 1 d) (≡ [] n) (posᵒ m)
+    (adderᵒ 0 [1] m r)]
+   [(≡ [1] n) (≡ [1] m)
+    (fresh [a c]
+           (≡ [a c] r)
+           (full-adderᵒ d 1 1 a c))]
+   [(≡ [1] n) (gen-adderᵒ d n m r)]
+   [(≡ [1] m) (>1ᵒ n) (>1ᵒ r)
+    (adderᵒ d [1] n r)]
+   [(>1ᵒ n) (gen-adderᵒ d n m r)]))
+
+(defn-alias [gen-adderᵒ gen-addero] [d n m r]
+  (fresh [a b c e x y z]
+         (≡ (cons a x) n)
+         (≡ (cons b y) m) (posᵒ y)
+         (≡ (cons c z) r) (posᵒ z)
+         (full-adderᵒ d a b c e)
+         (adderᵒ e x y z)))
