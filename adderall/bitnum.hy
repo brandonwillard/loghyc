@@ -18,7 +18,7 @@
 (require adderall.dsl)
 (require adderall.internal)
 
-(defn-alias [nandᵒ nanod] [x y r]
+(defn-alias [nandᵒ nando] [x y r]
   (condᵉ
    [(≡ 0 x) (≡ 0 y) (≡ 1 r)]
    [(≡ 1 x) (≡ 0 y) (≡ 1 r)]
