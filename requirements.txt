@@ -1,2 +1,3 @@
 -e git://github.com/hylang/hy.git@master#egg=hy
 monaxhyd>=0.1.0
+toolz>=0.5.2

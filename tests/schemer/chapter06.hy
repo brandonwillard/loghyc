@@ -69,14 +69,12 @@
    [(≡ :cup x) #ss]
    (else #uu)))
 
-;; FIXME: This is disabled, because condⁱ does not behave properly yet
-;; - it does not interleave.
-#_(frame "6.24" [:tea false :cup]
-         (run 5 [r]
-              (condⁱ
-               [(teacupᵒ r) #ss]
-               [(≡ false r) #ss]
-               [#ss #uu])))
+(frame "6.24" [:tea false :cup]
+       (run 5 [r]
+            (condⁱ
+             [(teacupᵒ r) #ss]
+             [(≡ false r) #ss]
+             [#ss #uu])))
 
 (frame "6.25" [true true true true true]
        (run 5 [q]
@@ -120,11 +118,11 @@
                alwaysᵒ)
               (≡ true q)))
 
-#_(frame "6.36" [true true true true true]
-         (run 5 [q]
-              (all
-               (condᵉ
-                [(≡ true q) #ss]
-                (else (≡ false q)))
-               alwaysᵒ)
-              (≡ true q)))
+(frame "6.36" [true true true true true]
+       (run 5 [q]
+            (all
+             (condᵉ
+              [(≡ true q) #ss]
+              (else (≡ false q)))
+             alwaysᵒ)
+            (≡ true q)))

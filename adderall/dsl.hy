@@ -19,7 +19,8 @@
         [adderall.internal [unify lvar? seq? reify]]
         [adderall.lvar [LVar unbound]]
         [hy [HySymbol HyList]]
-        [hy.contrib.walk [prewalk]])
+        [hy.contrib.walk [prewalk]]
+        [toolz [interleave]])
 (require adderall.internal)
 (require monaxhyd.core)
 
@@ -103,12 +104,6 @@
                     (yield-from (g2 opt-s1)))))) goals)
     succeed))
 
-(defmacro-alias [eitherᵍ eitherg] [&rest goals]
-  (with-gensyms [s goal]
-    `(fn [~s]
-       (for [~goal [~@goals]]
-         (yield-from (~goal ~s))))))
-
 (defmonad logic-m
   [[m-result (fn [v] (list v))]
    [m-bind   (defn m-bind-sequence [mv f]
@@ -120,8 +115,16 @@
    [m-plus   (fn [mvs]
                (apply chain mvs))]])
 
-(defmacro/g! Zzz [g]
-  `(fn [~g!s] (~g ~g!s)))
+(defmonad logic-interleave-m
+  [[m-result (fn [v] (list v))]
+   [m-bind   (defn m-bind-sequence [mv f]
+               (when mv
+                 (let [[vs (list mv)]]
+                   (chain (f (first vs))
+                          (m-bind-sequence (rest vs) f)))))]
+   [m-zero   []]
+   [m-plus   (fn [mvs]
+               (interleave mvs))]])
 
 (eval-and-compile
  (defn __subst-else [conds]
@@ -139,12 +142,15 @@
                           ((apply all ~c) ~s))
                         [~@ncs])))))))
 
+
 (defmacro-alias [condⁱ condi] [&rest cs]
-  (let [[g (first cs)]
-        [r (rest cs)]]
-    (if r
-      `(eitherᵍ (Zzz (eitherᵍ ~@g)) (Zzz (condⁱ ~@r)))
-      `(Zzz (eitherᵍ ~@g)))))
+  (with-gensyms [s c]
+    (let [[ncs (__subst-else cs)]]
+      `(with-monad logic-interleave-m
+         (fn [~s]
+           (m-plus (map (fn [~c]
+                          ((apply all ~c) ~s))
+                        [~@ncs])))))))
 
 (defn-alias [consᵒ conso] [f r l]
   (cond
