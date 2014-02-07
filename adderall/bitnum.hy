@@ -97,3 +97,6 @@
 
 (defn-alias [+ᵒ +o] [n m k]
   (adderᵒ 0 n m k))
+
+(defn-alias [-ᵒ -o] [n m k]
+  (+ᵒ m k n))
