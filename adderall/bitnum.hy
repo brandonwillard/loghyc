@@ -100,3 +100,24 @@
 
 (defn-alias [-ᵒ -o] [n m k]
   (+ᵒ m k n))
+
+;; This is a terrible hack, because with python3, we don't do any
+;; punycoding, therefore -ᵒ ends up being defined as _ᵒ, and functions
+;; with leading underscores do not get automatically imported. (With
+;; python2, we get mungling, and the function will start with a hy_
+;; prefix, so we don't have that problem)
+(if-python2
+ nil
+ (def __all__ ["nandᵒ" "nando"
+               "xorᵒ" "xoro"
+               "notᵒ" "noto"
+               "andᵒ" "ando"
+               "half_adderᵒ" "half_addero"
+               "full_adderᵒ" "full_addero"
+               "build_num"
+               "posᵒ" "poso"
+               ">1ᵒ" ">1o"
+               "adderᵒ" "addero"
+               "gen_adderᵒ" "gen_addero"
+               "+ᵒ" "+o"
+               "_ᵒ" "_o"]))
