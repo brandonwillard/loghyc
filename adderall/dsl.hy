@@ -95,15 +95,6 @@
 
 (defreader ? [v] `(LVar (gensym '~v)))
 
-(defn all [&rest goals]
-  (if goals
-    (reduce (fn [g1 g2]
-              (fn [s]
-                (for [opt-s1 (g1 s)]
-                  (unless (nil? opt-s1)
-                    (yield-from (g2 opt-s1)))))) goals)
-    succeed))
-
 (defmonad logic-m
   [[m-result (fn [v] (list v))]
    [m-bind   (defn m-bind-sequence [mv f]
@@ -125,6 +116,15 @@
    [m-zero   []]
    [m-plus   (fn [mvs]
                (interleave mvs))]])
+
+(defn all [&rest goals]
+  (if goals
+    (reduce (fn [g1 g2]
+              (fn [s]
+                (for [opt-s1 (g1 s)]
+                  (unless (nil? opt-s1)
+                    (yield-from (g2 opt-s1)))))) goals)
+    succeed))
 
 (eval-and-compile
  (defn __subst-else [conds]
