@@ -93,3 +93,7 @@
          (≡ (cons c z) r) (posᵒ z)
          (full-adderᵒ d a b c e)
          (adderᵒ e x y z)))
+
+
+(defn-alias [+ᵒ +o] [n m k]
+  (adderᵒ 0 n m k))
