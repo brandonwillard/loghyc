@@ -126,6 +126,18 @@
                     (yield-from (g2 opt-s1)))))) goals)
     succeed))
 
+(defn-alias [allⁱ alli] [&rest goals]
+  (if goals
+    (with-monad logic-interleave-m
+      (reduce (defn m-chain-link [chain-expr step]
+                (fn [v]
+                  (if (empty? v)
+                    (step v)
+                    (m-bind (chain-expr v) step))))
+              goals
+              m-result))
+    succeed))
+
 (eval-and-compile
  (defn __subst-else [conds]
    (map (fn [c]
