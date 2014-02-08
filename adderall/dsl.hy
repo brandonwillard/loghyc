@@ -39,7 +39,7 @@
 (defmacro run [n vars &rest goals]
   (with-gensyms [s res]
     `(let [~@(--prep-fresh-vars-- vars)
-           [~res (fn [] (for [~s ((apply all [~@goals]) (,))]
+           [~res (fn [] (for [~s ((all ~@goals) (,))]
                          (when (nil? ~s)
                            (continue))
                          (yield (reify (if (= (len ~vars) 1)
