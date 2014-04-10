@@ -21,16 +21,23 @@
         [hy.cmdline [HyREPL]]
         [hy.completer [completion]])
 
+(defmacro with/-> [topic &rest body]
+  (setv new-body (map (fn [node]
+                        `(~(first node) ~topic ~@(rest node)))
+                      body))
+  `(do ~@new-body))
+
 (defn launch-repl []
   (setv sys.ps1 ";=> ")
   (setv sys.ps2 "    ")
 
   (with [[(completion)]]
         (setv hr (HyREPL))
-        (.runsource hr "(import [adderall.dsl [*]])")
-        (.runsource hr "(require adderall.dsl)")
-        (.runsource hr "(require adderall.debug)")
-        (.interact hr "adderall")))
+        (with/-> hr
+                 (.runsource "(import [adderall.dsl [*]])")
+                 (.runsource "(require adderall.dsl)")
+                 (.runsource "(require adderall.debug)")
+                 (.interact "adderall"))))
 
 (def parser (apply argparse.ArgumentParser []
                    {"prog" "adderall"
