@@ -5,7 +5,7 @@ python:
   - "3.2"
   - "3.3"
   - "pypy"
-install: "pip install -r requirements.txt --use-mirrors"
+install: pip install -r requirements.txt --allow-all-external
 script:
   - nosetests
   - python tests/bench.py
