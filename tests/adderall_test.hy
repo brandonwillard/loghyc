@@ -16,7 +16,6 @@
 
 (import [adderall.dsl [*]])
 (require adderall.dsl)
-(require adderall.lvar)
 
 (defn test-fail-and-succeed []
   (assert (= (run* [q] fail) []))

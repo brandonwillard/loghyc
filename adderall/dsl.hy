@@ -16,12 +16,10 @@
 
 (import [itertools [islice chain]]
         [functools [reduce partial]]
-        [adderall.internal [unify lvar? seq? reify]]
-        [adderall.lvar [LVar unbound]]
+        [adderall.internal [unify lvar? seq? reify LVar unbound]]
         [hy [HySymbol HyList]]
         [hy.contrib.walk [prewalk]]
         [toolz [interleave]])
-(require adderall.internal)
 (require monaxhyd.core)
 
 ;; Top level stuff
@@ -78,6 +76,8 @@
          (let [~@(project-bindings vars g!s)]
            ((all ~@goals) ~g!s))))
     `succeed))
+
+(defreader U [n] `(unbound ~n))
 
 ;; Goals
 

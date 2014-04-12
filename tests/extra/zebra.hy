@@ -17,7 +17,6 @@
 (import [adderall.dsl [*]]
         [adderall.extra.zebra [*]])
 (require adderall.dsl)
-(require adderall.lvar)
 (require adderall.extra.zebra)
 
 (defn test-zebrap []

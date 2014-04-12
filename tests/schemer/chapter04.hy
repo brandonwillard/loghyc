@@ -17,7 +17,6 @@
 (import [adderall.dsl [*]]
         [tests.schemer.common [*]])
 (require adderall.dsl)
-(require adderall.lvar)
 (require tests.schemer.common)
 
 (frame "4.10" [[:tofu :d :tofu :e]]

@@ -17,7 +17,6 @@
 (import [adderall.dsl [*]]
         [hy.models.symbol [HySymbol]])
 (require adderall.dsl)
-(require adderall.lvar)
 
 (defreader _ [&rest _])
 

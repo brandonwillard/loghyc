@@ -15,10 +15,9 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]]
-        [adderall.lvar [LVar]]
+        [adderall.internal [LVar]]
         [adderall.extra.misc [*]])
 (require adderall.dsl)
-(require adderall.lvar)
 
 (defn test-typeo []
   (assert (= (run* [q] (typeᵒ 2 3) (≡ q true))
