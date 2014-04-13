@@ -123,7 +123,8 @@
               (fn [s]
                 (for [opt-s1 (g1 s)]
                   (unless (nil? opt-s1)
-                    (yield-from (g2 opt-s1)))))) goals)
+                    (for [opt-s2 (g2 opt-s1)]
+                      (yield opt-s2)))))) goals)
     succeed))
 
 (defn-alias [allⁱ alli] [&rest goals]
