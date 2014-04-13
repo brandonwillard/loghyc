@@ -19,16 +19,16 @@ from setuptools import find_packages, setup
 
 setup(
     name="adderall",
-    version="0.0.0",
-    install_requires = ['hy>=0.9.12'],
-    packages=find_packages(exclude=['tests', 'tests.schemer']),
+    version="0.1.0",
+    install_requires = ['hy>=0.10', 'monaxhyd>=0.1.0', 'toolz>=0.5.2'],
+    packages=find_packages(exclude=['tests', 'tests.extra', 'tests.schemer']),
     package_data={
         'adderall': ['*.hy'],
     },
     author="Gergely Nagy",
     author_email="algernon@madhouse-project.org",
     long_description="""a miniKanren implementation in Hy.""",
-    license="GPL-3",
+    license="LGPL-3",
     url="https://github.com/algernon/adderall",
     platforms=['any'],
     classifiers=[
