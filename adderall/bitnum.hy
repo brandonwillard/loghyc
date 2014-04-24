@@ -16,7 +16,6 @@
 
 (import [adderall.dsl [*]])
 (require adderall.dsl)
-(require adderall.internal)
 
 (defn-alias [nandᵒ nando] [x y r]
   (condᵉ
