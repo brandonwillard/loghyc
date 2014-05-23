@@ -67,3 +67,11 @@
                         (memberᵒ ?x [?y 4 2])
                         (memberᵒ ?y [1 3 5])))
              [1 3 5 4 4 4 2 2 2])))
+
+(defn test-set-support []
+  (assert (= (run* [q]
+                   (memberᵒ q (set [1 2 3 1 2 3])))
+             [1 2 3]))
+  (assert (= (run* [q]
+                   (memberᵒ 3 (set [1 2 q q])))
+             [3])))

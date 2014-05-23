@@ -17,7 +17,8 @@
 (defn lvar? [x] (instance? LVar x))
 (defn tuple? [x] (instance? tuple x))
 (defn seq? [x] (or (tuple? x)
-                   (instance? list x)))
+                   (instance? list x)
+                   (instance? set x)))
 
 (defclass LVar [object]
   [[--init-- (fn [self name &optional unbound]
@@ -85,6 +86,16 @@
 (defn neseq? [c]
   (and (seq? c) (pos? (len c))))
 
+(defn setish-first [l]
+  (if (instance? set l)
+    (first (list l))
+    (first l)))
+
+(defn setish-rest [l]
+  (if (instance? set l)
+    ((type l) (rest (list l)))
+    (rest l)))
+
 (defn unify [u v s]
   (when s
     (setv u (substitute u s))
@@ -105,8 +116,8 @@
    [(or (and (cons? u) (or (cons? v) (neseq? v)))
         (and (or (cons? u) (neseq? u)) (cons? v)))
     (do
-     (setv s (unify (first u) (first v) s))
-     (setv s (unify (rest u) (rest v) s))
+     (setv s (unify (first u) (setish-first v) s))
+     (setv s (unify (rest u) (setish-rest v) s))
      s)]
    [(= u v) s]))
 
