@@ -16,6 +16,8 @@
 
 (import [adderall.dsl [*]])
 (require adderall.dsl)
+(require adderall.debug)
+(require tests.utils)
 
 (defn test-fail-and-succeed []
   (assert (= (run* [q] fail) []))
@@ -75,3 +77,28 @@
   (assert (= (run* [q]
                    (memberᵒ 3 (set [1 2 q q])))
              [3])))
+
+(defn test-lazyness []
+  (assert (= (first (wrap-stdout
+                     (run* :lazy [q]
+                           (log "hello")
+                           (≡ q true))))
+             ""))
+
+  (assert (= (first (wrap-stdout
+                     (list (run* :lazy [q]
+                                 (log "hello")
+                                 (≡ q true)))))
+             "hello\n"))
+
+  (assert (= (first (wrap-stdout
+                     (run* [q]
+                           (log "hello")
+                           (≡ q true))))
+             "hello\n"))
+
+  (assert (= (first (wrap-stdout
+                     (run* :non-lazy [q]
+                           (log "hello")
+                           (≡ q true))))
+             "hello\n")))

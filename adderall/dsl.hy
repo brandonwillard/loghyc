@@ -17,7 +17,7 @@
 (import [itertools [islice chain]]
         [functools [reduce partial]]
         [adderall.internal [unify lvar? seq? reify LVar unbound]]
-        [hy [HySymbol HyList]]
+        [hy [HySymbol HyList HyKeyword]]
         [hy.contrib.walk [prewalk]]
         [toolz [interleave]])
 (require monaxhyd.core)
@@ -34,7 +34,7 @@
      (.add lvars expr))
    expr))
 
-(defmacro run [n vars &rest goals]
+(defmacro lazy-run [n vars &rest goals]
   (with-gensyms [s res]
     `(let [~@(--prep-fresh-vars-- vars)
            [~res (fn [] (for [~s ((all ~@goals) (,))]
@@ -44,10 +44,18 @@
                                          (first ~vars)
                                          [~@vars]) ~s))))]]
        (if ~n
-         (list (islice (~res) 0 ~n))
-         (list (~res))))))
-(defmacro run* [var &rest goals]
-  `(run nil ~var ~@goals))
+         (islice (~res) 0 ~n)
+         (~res)))))
+
+(defmacro run [n vars-or-variant &rest args]
+  (if (= (type vars-or-variant) HyKeyword)
+    (if (= vars-or-variant :lazy)
+      `(lazy-run ~n ~@args)
+      `(list (lazy-run ~n ~@args)))
+    `(list (lazy-run ~n ~vars-or-variant ~@args))))
+
+(defmacro run* [vars-or-variant &rest args]
+  `(run nil ~vars-or-variant ~@args))
 
 (defmacro fresh [vars &rest goals]
   (if goals
