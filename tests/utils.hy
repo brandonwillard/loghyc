@@ -14,21 +14,12 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]])
-(require adderall.dsl)
-(require adderall.debug)
-(require tests.utils)
-
-(defn test-log []
-  (assert (= (wrap-stdout
-              (run* [q]
-                    (log "hello")
-                    (≡ q true)))
-             ["hello\n" [true]])))
-
-(defn test-trace-s []
-  (assert (= (wrap-stdout
-              (run* [q]
-                    (trace-s)
-                    (≡ q true)))
-             ["()\n" [true]])))
+(defmacro/g! wrap-stdout [&rest body]
+  `(do
+    (import [sys] [io [StringIO]])
+    (setv ~g!old-stdout sys.stdout)
+    (setv sys.stdout (StringIO))
+    (setv ~g!result (do ~@body))
+    (setv ~g!stdout (.getvalue sys.stdout))
+    (setv sys.stdout ~g!old-stdout)
+    [~g!stdout ~g!result]))
