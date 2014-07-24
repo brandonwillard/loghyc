@@ -20,6 +20,18 @@
                    (instance? list x)
                    (instance? set x)))
 
+(defn interleave [seqs]
+  (setv iters (map iter seqs))
+  (while iters
+    (setv newiters [])
+    (for [itr iters]
+      (try
+       (do
+        (yield (next itr))
+        (.append newiters itr))
+       (catch [StopIteration])))
+    (setv iters newiters)))
+
 (defclass LVar [object]
   [[--init-- (fn [self name &optional unbound]
                (setv self.name name)

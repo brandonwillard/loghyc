@@ -16,10 +16,9 @@
 
 (import [itertools [islice chain]]
         [functools [reduce partial]]
-        [adderall.internal [unify lvar? seq? reify LVar unbound]]
+        [adderall.internal [unify lvar? seq? reify LVar unbound interleave]]
         [hy [HySymbol HyList HyKeyword]]
-        [hy.contrib.walk [prewalk]]
-        [toolz [interleave]])
+        [hy.contrib.walk [prewalk]])
 (require monaxhyd.core)
 
 ;; Top level stuff
