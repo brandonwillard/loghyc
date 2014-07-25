@@ -1,5 +1,28 @@
 #+STARTUP: indent showall                       -*- org -*-
 
+* 0.1.2 - <2014-07-25 Fri>
+
+** Feature: set unification support
+
+It is now possible to place logic variables within sets, adderall
+learned how to traverse them. This means one can now do:
+
+(run* [q]
+  (memberᵒ 3 (set [1 2 q q])))
+;=> [3]
+
+** Feature: Support lazy results
+
+One can now pass :lazy as the first argument to the run and run*
+macros, and they will return a generator, and not force them into a
+list.
+
+** Miscellaneous: Drop the toolz dependency
+
+The library only used the interval function from toolz, which was an
+overkill. It now ships with an internal implementation of the
+function, and drops the toolz dependency.
+
 * 0.1.1 - <2014-04-13 Sun>
 
 ** Bugfix: Install all modules
