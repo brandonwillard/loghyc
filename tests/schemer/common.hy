@@ -22,7 +22,8 @@
 
 (defmacro frame [frame-num value expr]
   (let [[res (gensym)]
-        [name (+ 'test-rs- frame-num)]]
+        [cname (+ 'test-rs- frame-num)]
+        [name (.replace cname "." "_")]]
     `(defn ~(HySymbol name) []
        (let [[~res ~expr]]
          (assert (= ~value ~res))))))
