@@ -1,5 +1,13 @@
 #+STARTUP: indent showall                       -*- org -*-
 
+* 0.1.3 - <2014-12-05 Fri>
+
+** Bugfix: Support hy >= 0.10.1
+
+The library was updated to work with hy >= 0.10.1, which changed a few
+details of the language it was relying on. With the change, the
+library should work with all versions of hy past 0.10.
+
 * 0.1.2 - <2014-07-25 Fri>
 
 ** Feature: set unification support
