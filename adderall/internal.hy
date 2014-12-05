@@ -78,7 +78,7 @@
                         (get free-vars val))]
           [(seq? val) ((type val) (map reifying val))]
           [(cons? val) (cons (reifying (first val))
-                             (reifying (rest val)))]
+                             (reifying (slice val 1)))]
           [true val]))
   (reifying val))
 
@@ -105,8 +105,8 @@
 
 (defn setish-rest [l]
   (if (instance? set l)
-    ((type l) (rest (list l)))
-    (rest l)))
+    ((type l) (slice (list l) 1))
+    (slice l 1)))
 
 (defn unify [u v s]
   (when s
