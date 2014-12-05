@@ -129,7 +129,7 @@
         (and (or (cons? u) (neseq? u)) (cons? v)))
     (do
      (setv s (unify (first u) (setish-first v) s))
-     (setv s (unify (rest u) (setish-rest v) s))
+     (setv s (unify (slice u 1) (setish-rest v) s))
      s)]
    [(= u v) s]))
 
