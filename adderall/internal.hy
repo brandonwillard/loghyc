@@ -116,8 +116,18 @@
   (cond
    [(nil? s) s]
    [(is u v) s]
-   [(lvar? u) (if (lvar? v) (extend-unchecked u v s) (extend u v s))]
-   [(lvar? v) (extend v u s)]
+   [(lvar? u)
+    (if (lvar? v)
+      (extend-unchecked u v s)
+      (if (and (hasattr v "unify")
+               (callable v.unify))
+        (.unify v u v s)
+        (extend u v s)))]
+   [(lvar? v)
+    (if (and (hasattr u "unify")
+             (callable u.unify))
+      (.unify u v u s)
+      (extend v u s))]
    [(and (seq? u) (seq? v) (= (len u) (len v)))
     (do
      (for [[ui vi] (zip u v)]

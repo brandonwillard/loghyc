@@ -102,3 +102,16 @@
                            (log "hello")
                            (≡ q true))))
              "hello\n")))
+
+(defn test-custom-unification []
+  (defclass unifyClass [object] [])
+  (let [[l (unifyClass)]]
+    (setv l.unify (fn [u v s] (, u 1 s)))
+    (assert (= (run* [q]
+                     (≡ l q))
+               [1]))
+
+    (setv l.unify nil)
+    (assert (= (run* [q]
+                     (≡ l q))
+               [l]))))
