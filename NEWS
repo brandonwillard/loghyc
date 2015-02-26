@@ -1,5 +1,17 @@
 #+STARTUP: indent showall                       -*- org -*-
 
+* 0.1.4 - UNRELEASED
+
+** Feature: Extendable unification
+
+Objects can now have their own unification strategy by implementing a
+"unify" function, that takes three arguments: u, v and s; and returns
+a tuple or nil. Whenever a logic variable is being unified with an
+object, instead of unifying with the object itself, adderall will call
+this method of it, and let the object handle the unification itself.
+
+This allows one to extend adderall in ways not possible before.
+
 * 0.1.3 - <2014-12-05 Fri>
 
 ** Bugfix: Support hy >= 0.10.1
