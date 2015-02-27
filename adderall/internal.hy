@@ -116,6 +116,12 @@
   (cond
    [(nil? s) s]
    [(is u v) s]
+   [(and (hasattr u "unify")
+         (callable u.unify))
+    (.unify u v u s)]
+   [(and (hasattr v "unify")
+         (callable v.unify))
+    (.unify v u v s)]
    [(lvar? u)
     (if (lvar? v)
       (extend-unchecked u v s)
