@@ -15,7 +15,7 @@ concern.
 Example
 -------
 
-```clojure
+```hy
 (import [adderall.dsl [*]])
 (require adderall.dsl)
 
@@ -48,7 +48,7 @@ particular, the tests [adapted][t:trs] from
 Adderall also comes with a set of extra functions, which are there
 mostly to show the power of the system, or for fun:
 
-```clojure
+```hy
 (import [adderall.dsl [*]]
         [adderall.extra.zebra [*]])
 (require adderall.dsl)
