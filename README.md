@@ -5,9 +5,9 @@ Adderall
 [![Downloads](https://pypip.in/d/adderall/badge.png)](https://crate.io/packages/adderall)
 [![Version](https://pypip.in/v/adderall/badge.png)](https://crate.io/packages/adderall)
 
-This library contains a (work in progress) implementation of
-[miniKanren][mk] in [Hy][hylang]. It is a naive implementation, speed
-isn't the primary concern.
+This library contains an implementation of [miniKanren][mk] in
+[Hy][hylang]. It is a naive implementation, speed isn't the primary
+concern.
 
  [mk]: http://minikanren.org/
  [hylang]: http://hylang.org/
