@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 ## adderall - miniKanren in Hy
-## Copyright (C) 2014  Gergely Nagy <algernon@madhouse-project.org>
+## Copyright (C) 2014, 2015  Gergely Nagy <algernon@madhouse-project.org>
 ##
 ## This library is free software: you can redistribute it and/or
 ## modify it under the terms of the GNU Lesser General Public License
@@ -34,7 +34,7 @@ setup(
     url="https://github.com/algernon/adderall",
     platforms=['any'],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: DFSG approved",
         "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
