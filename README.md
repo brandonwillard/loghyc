@@ -59,9 +59,11 @@ mostly to show the power of the system, or for fun:
 ```
 
 For a practical use, see [Hydiomatic][hydiomatic], a static analyser
-and code transformer built upon Adderall.
+and code transformer built upon Adderall, or [wynck][wynck], a tool to
+reason about your window layout.
 
  [hydiomatic]: https://github.com/algernon/hydiomatic
+ [wynck]: https://github.com/algernon/wynck
 
 License
 -------
