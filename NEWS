@@ -1,6 +1,9 @@
 #+STARTUP: indent showall                       -*- org -*-
 
-* 0.1.4 - UNRELEASED
+* 1.0.0 - <2015-03-05 Thu>
+
+Having been used in production for about a year, it is time to admit
+defeat, and declare adderall stable.
 
 ** Feature: Extendable unification
 
