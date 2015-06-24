@@ -1,9 +1,9 @@
 Adderall
 ========
 
-[![Build Status](https://travis-ci.org/algernon/adderall.png?branch=master)](https://travis-ci.org/algernon/adderall)
-[![Downloads](https://pypip.in/d/adderall/badge.png)](https://crate.io/packages/adderall)
-[![Version](https://pypip.in/v/adderall/badge.png)](https://crate.io/packages/adderall)
+[![Build Status](https://img.shields.io/travis/algernon/adderall.svg?style=flat-square)](https://travis-ci.org/algernon/adderall)
+[![Downloads](https://img.shields.io/pypi/dm/adderall.svg?style=flat-square)](https://pypi.python.org/pypi/adderall)
+[![Version](https://img.shields.io/pypi/v/adderall.svg?style=flat-square)](https://pypi.python.org/pypi/adderall)
 
 This library contains an implementation of [miniKanren][mk] in
 [Hy][hylang]. It is a naive implementation, speed isn't the primary
