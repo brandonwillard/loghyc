@@ -1,5 +1,5 @@
 ;; adderall - miniKanren in Hy
-;; Copyright (C) 2014  Gergely Nagy <algernon@madhouse-project.org>
+;; Copyright (C) 2014, 2015  Gergely Nagy <algernon@madhouse-project.org>
 ;;
 ;; This library is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU Lesser General Public License
@@ -18,4 +18,4 @@
 (require adderall.dsl)
 
 (defn cheetah-benchmark []
-  (run* [q] (≡ q :cheetah)))
+  (run* [q] (≡ q 'cheetah)))

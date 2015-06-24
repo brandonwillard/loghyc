@@ -80,25 +80,19 @@
 
 (defn test-lazyness []
   (assert (= (first (wrap-stdout
-                     (run* :lazy [q]
-                           (log "hello")
-                           (≡ q true))))
+                     (lazy-run* [q]
+                                (log "hello")
+                                (≡ q true))))
              ""))
 
   (assert (= (first (wrap-stdout
-                     (list (run* :lazy [q]
-                                 (log "hello")
-                                 (≡ q true)))))
+                     (list (lazy-run* [q]
+                                      (log "hello")
+                                      (≡ q true)))))
              "hello\n"))
 
   (assert (= (first (wrap-stdout
                      (run* [q]
-                           (log "hello")
-                           (≡ q true))))
-             "hello\n"))
-
-  (assert (= (first (wrap-stdout
-                     (run* :non-lazy [q]
                            (log "hello")
                            (≡ q true))))
              "hello\n")))

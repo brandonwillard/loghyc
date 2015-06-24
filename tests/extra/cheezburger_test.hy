@@ -1,5 +1,5 @@
 ;; adderall - miniKanren in Hy
-;; Copyright (C) 2014  Gergely Nagy <algernon@madhouse-project.org>
+;; Copyright (C) 2014, 2015  Gergely Nagy <algernon@madhouse-project.org>
 ;;
 ;; This library is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU Lesser General Public License
@@ -21,7 +21,7 @@
 
 ;; By default, using cheezburger.kitteh, you can has anything.
 (defn test-cheezburger-kitteh []
-  (assert (= (run* [q] (kitteh.canhasᵒ :cheezburger) (≡ q true))
+  (assert (= (run* [q] (kitteh.canhasᵒ 'cheezburger) (≡ q true))
              [true]))
   (assert (= (run* [q] (kitteh.canhasᵒ 'a-million-dollars) (≡ q true))
              [true])))
@@ -29,7 +29,7 @@
 ;; When using cheezburger.grumpy-cat, you can has cheezburger. You
 ;; want to has anything else? No.
 (defn test-cheezburger-grumpy-cat []
-  (assert (= (run* [q] (grumpy-cat.canhasᵒ :cheezburger) (≡ q true))
+  (assert (= (run* [q] (grumpy-cat.canhasᵒ 'cheezburger) (≡ q true))
              [true]))
   (assert (= (run* [q] (grumpy-cat.canhasᵒ 'a-million-dollars) (≡ q true))
              [])))

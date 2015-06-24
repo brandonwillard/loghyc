@@ -1,5 +1,5 @@
 ;; adderall - miniKanren in Hy
-;; Copyright (C) 2014  Gergely Nagy <algernon@madhouse-project.org>
+;; Copyright (C) 2014, 2015  Gergely Nagy <algernon@madhouse-project.org>
 ;;
 ;; This library is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU Lesser General Public License
@@ -141,74 +141,74 @@
                     (≡ x q)
                     (≡ true x))))
 
-(frame "1.47" [:olive :oil]
+(frame "1.47" ['olive 'oil]
        (run* [x]
              (condᵉ
-              [(≡ :olive x) #ss]
-              [(≡ :oil x) #ss]
+              [(≡ 'olive x) #ss]
+              [(≡ 'oil x) #ss]
               (else #uu))))
 
-(frame "1.49" [:olive]
+(frame "1.49" ['olive]
        (run 1 [x]
             (condᵉ
-             [(≡ :olive x) #ss]
-             [(≡ :oil x) #ss]
+             [(≡ 'olive x) #ss]
+             [(≡ 'oil x) #ss]
              (else #uu))))
 
-(frame "1.50" [:olive #U0 :oil]
+(frame "1.50" ['olive #U0 'oil]
        (run* [x]
              (condᵉ
-              [(≡ :virgin x) #uu]
-              [(≡ :olive x) #ss]
+              [(≡ 'virgin x) #uu]
+              [(≡ 'olive x) #ss]
               [#ss #ss]
-              [(≡ :oil x) #ss]
+              [(≡ 'oil x) #ss]
               (else #uu))))
 
-(frame "1.52" [:extra :olive]
+(frame "1.52" ['extra 'olive]
        (run 2 [x]
             (condᵉ
-             [(≡ :extra x) #ss]
-             [(≡ :virgin x) #uu]
-             [(≡ :olive x) #ss]
-             [(≡ :oil x) #ss]
+             [(≡ 'extra x) #ss]
+             [(≡ 'virgin x) #uu]
+             [(≡ 'olive x) #ss]
+             [(≡ 'oil x) #ss]
              (else #uu))))
 
-(frame "1.53" [[:split :pea]]
+(frame "1.53" [['split 'pea]]
        (run* [r]
              (fresh [x y]
-                    (≡ :split x)
-                    (≡ :pea y)
+                    (≡ 'split x)
+                    (≡ 'pea y)
                     (≡ (list* x y ()) r))))
 
-(frame "1.54" [[:split :pea] [:navy :bean]]
+(frame "1.54" [['split 'pea] ['navy 'bean]]
        (run* [r]
              (fresh [x y]
                     (condᵉ
-                     [(≡ :split x) (≡ :pea y)]
-                     [(≡ :navy x) (≡ :bean y)]
+                     [(≡ 'split x) (≡ 'pea y)]
+                     [(≡ 'navy x) (≡ 'bean y)]
                      (else #uu))
                     (≡ (list* x y ()) r))))
 
-(frame "1.55" [[:split :pea :soup] [:navy :bean :soup]]
+(frame "1.55" [['split 'pea 'soup] ['navy 'bean 'soup]]
        (run* [r]
              (fresh [x y]
                     (condᵉ
-                     [(≡ :split x) (≡ :pea y)]
-                     [(≡ :navy x) (≡ :bean y)]
+                     [(≡ 'split x) (≡ 'pea y)]
+                     [(≡ 'navy x) (≡ 'bean y)]
                      (else #uu))
-                    (≡ (list* x y :soup ()) r))))
+                    (≡ (list* x y 'soup ()) r))))
 
 (defn teacupᵒ [x]
   (condᵉ
-   [(≡ :tea x) #ss]
-   [(≡ :cup x) #ss]
+   [(≡ 'tea x) #ss]
+   [(≡ 'cup x) #ss]
    (else #uu)))
 
-(frame "1.56" [:tea :cup]
+(frame "1.56" ['tea 'cup]
        (run* [x]
              (teacupᵒ x)))
 
-(frame "1.57" [[:tea true] [:cup true] [false true]]
+(frame "1.57" [['tea true] ['cup true] [false true]]
        (run* [r]
              (fresh [x y]
                     (condᵉ

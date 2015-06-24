@@ -51,7 +51,7 @@
                false))]])
 
 (defn unbound [n]
-  (LVar (.format "_.{0}" n) :unbound))
+  (LVar (.format "_.{0}" n) 'unbound))
 
 (defn substitute [val s]
   (while (lvar? val)

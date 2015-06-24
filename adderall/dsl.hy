@@ -1,5 +1,5 @@
 ;; adderall - miniKanren in Hy
-;; Copyright (C) 2014  Gergely Nagy <algernon@madhouse-project.org>
+;; Copyright (C) 2014, 2015  Gergely Nagy <algernon@madhouse-project.org>
 ;;
 ;; This library is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU Lesser General Public License
@@ -46,15 +46,14 @@
          (islice (~res) 0 ~n)
          (~res)))))
 
-(defmacro run [n vars-or-variant &rest args]
-  (if (= (type vars-or-variant) HyKeyword)
-    (if (= vars-or-variant :lazy)
-      `(lazy-run ~n ~@args)
-      `(list (lazy-run ~n ~@args)))
-    `(list (lazy-run ~n ~vars-or-variant ~@args))))
+(defmacro lazy-run* [vars &rest args]
+  `(lazy-run nil ~vars ~@args))
 
-(defmacro run* [vars-or-variant &rest args]
-  `(run nil ~vars-or-variant ~@args))
+(defmacro run [n vars &rest args]
+  `(list (lazy-run ~n ~vars ~@args)))
+
+(defmacro run* [vars &rest args]
+  `(run nil ~vars ~@args))
 
 (defmacro fresh [vars &rest goals]
   (if goals

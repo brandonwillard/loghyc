@@ -19,13 +19,13 @@ Example
 (import [adderall.dsl [*]])
 (require adderall.dsl)
 
-(run* [q] (condᵉ [(≡ q :tea)]
-                 [(≡ q :coffee) succeed]))
-;; => [:tea :coffee]
+(run* [q] (condᵉ [(≡ q 'tea)]
+                 [(≡ q 'coffee) succeed]))
+;; => ['tea 'coffee]
 
-(run* [q] (condᵉ [(≡ q :tea)]
-                 [(≡ q :coffee) fail]))
-;; => [:tea]
+(run* [q] (condᵉ [(≡ q 'tea)]
+                 [(≡ q 'coffee) fail]))
+;; => ['tea]
 
 (import [getpass [getuser]])
 

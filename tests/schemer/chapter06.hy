@@ -1,5 +1,5 @@
 ;; adderall - miniKanren in Hy
-;; Copyright (C) 2014  Gergely Nagy <algernon@madhouse-project.org>
+;; Copyright (C) 2014, 2015  Gergely Nagy <algernon@madhouse-project.org>
 ;;
 ;; This library is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU Lesser General Public License
@@ -65,11 +65,11 @@
 
 (defn teacupᵒ [x]
   (condᵉ
-   [(≡ :tea x) #ss]
-   [(≡ :cup x) #ss]
+   [(≡ 'tea x) #ss]
+   [(≡ 'cup x) #ss]
    (else #uu)))
 
-(frame "6.24" [:tea false :cup]
+(frame "6.24" ['tea false 'cup]
        (run 5 [r]
             (condⁱ
              [(teacupᵒ r) #ss]
