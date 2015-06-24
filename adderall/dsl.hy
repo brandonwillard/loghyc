@@ -61,11 +61,11 @@
         (all ~@goals))
     `succeed))
 
-(defmacro prep [&rest goals]
-  (let [[lvars (set [])]]
-    (prewalk (partial --prep-lvars-from-expr-- lvars) (HyList goals))
-    (setv lvars (HyList lvars))
-    `(fresh ~lvars ~@goals)))
+(defmacro/g! prep [&rest goals]
+  (let [[g!lvars (set [])]]
+    (prewalk (partial --prep-lvars-from-expr-- g!lvars) (HyList goals))
+    (setv g!lvars (HyList g!lvars))
+    `(fresh ~g!lvars ~@goals)))
 
 (eval-and-compile
  (defn project-binding [s]
