@@ -1,5 +1,18 @@
 #+STARTUP: indent showall                       -*- org -*-
 
+* 2.0.0 - UNRELEASED
+
+This release is a bugfix release that allows adderall to work with
+recent versions of Hy. However, that bugfix comes with an API
+breakage, and as such, the version number had to be bumped.
+
+** Bugfix: No more keyword arguments.
+
+The run and run* macros no longer accept an optional :lazy
+argument. This feature was removed because it broke compatibility with
+Hy >= 0.11's keyword argument syntax. Use lazy-run or lazy-run*
+instead.
+
 * 1.0.0 - <2015-03-05 Thu>
 
 Having been used in production for about a year, it is time to admit
