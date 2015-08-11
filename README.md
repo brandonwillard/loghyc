@@ -1,7 +1,7 @@
 Adderall
 ========
 
-[![Build Status](https://img.shields.io/travis/algernon/adderall.svg?style=flat-square)](https://travis-ci.org/algernon/adderall)
+[![Build Status](https://img.shields.io/travis/algernon/adderall/master.svg?style=flat-square)](https://travis-ci.org/algernon/adderall)
 [![Downloads](https://img.shields.io/pypi/dm/adderall.svg?style=flat-square)](https://pypi.python.org/pypi/adderall)
 [![Version](https://img.shields.io/pypi/v/adderall.svg?style=flat-square)](https://pypi.python.org/pypi/adderall)
 
