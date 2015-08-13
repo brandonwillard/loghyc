@@ -29,26 +29,26 @@
        (do
         (yield (next itr))
         (.append newiters itr))
-       (catch [StopIteration])))
+       (except [StopIteration])))
     (setv iters newiters)))
 
 (defclass LVar [object]
-  [[--init-- (fn [self name &optional unbound]
-               (setv self.name name)
-               (when unbound
-                 (setv self.unbound true))
-               nil)]
-   [--hash-- (fn [self]
-               (hash self.name))]
-   [--eq--   (fn [self other]
-               (and (= (type self) (type other))
-                    (= self.name other.name)))]
-   [--repr-- (fn [self]
-               (.format "<{0!r}>" self.name))]
-   [bound? (fn [self]
-             (if self.unbound
-               true
-               false))]])
+  (defn --init-- [self name &optional unbound]
+    (setv self.name name)
+    (when unbound
+      (setv self.unbound true))
+    nil)
+  (defn --hash-- [self]
+    (hash self.name))
+  (defn --eq-- [self other]
+    (and (= (type self) (type other))
+         (= self.name other.name)))
+  (defn --repr-- [self]
+    (.format "<{0!r}>" self.name))
+  (defn bound? [self]
+    (if self.unbound
+      true
+      false)))
 
 (defn unbound [n]
   (LVar (.format "_.{0}" n) 'unbound))

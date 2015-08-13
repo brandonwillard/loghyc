@@ -98,7 +98,7 @@
              "hello\n")))
 
 (defn test-custom-unification []
-  (defclass unifyClass [object] [])
+  (defclass unifyClass [object])
   (let [[l (unifyClass)]]
     (setv l.unify (fn [u v s] (, u 1 s)))
     (assert (= (run* [q]

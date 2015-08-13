@@ -20,6 +20,7 @@
         [hy [HySymbol HyList HyKeyword]]
         [hy.contrib.walk [prewalk]])
 (require monaxhyd.core)
+(require hy.contrib.alias)
 
 ;; Top level stuff
 

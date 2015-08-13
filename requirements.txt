@@ -1,2 +1,2 @@
-hy>=0.10
+-e git://github.com/hylang/hy.git@master#egg=hy
 monaxhyd>=0.1.0
