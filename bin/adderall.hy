@@ -31,7 +31,7 @@
   (setv sys.ps1 ";=> ")
   (setv sys.ps2 "    ")
 
-  (with [[(completion)]]
+  (with [(completion)]
         (setv hr (HyREPL))
         (with/-> hr
                  (.runsource "(import [adderall.dsl [*]])")
