@@ -1,5 +1,5 @@
 ;; adderall - miniKanren in Hy
-;; Copyright (C) 2014  Gergely Nagy <algernon@madhouse-project.org>
+;; Copyright (C) 2014, 2015  Gergely Nagy <algernon@madhouse-project.org>
 ;;
 ;; This library is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU Lesser General Public License
@@ -21,9 +21,9 @@
 (defreader _ [&rest _])
 
 (defmacro frame [frame-num value expr]
-  (let [[res (gensym)]
-        [cname (+ 'test-rs- frame-num)]
-        [name (.replace cname "." "_")]]
+  (let [res (gensym)
+        cname (+ 'test-rs- frame-num)
+        name (.replace cname "." "_")]
     `(defn ~(HySymbol name) []
-       (let [[~res ~expr]]
+       (let [~res ~expr]
          (assert (= ~value ~res))))))

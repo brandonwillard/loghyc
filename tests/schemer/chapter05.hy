@@ -285,7 +285,7 @@
              (flattenrevᵒ [['a 'b] 'c] x)))
 
 (defn reverse [l]
-  (let [[new-l (list l)]]
+  (let [new-l (list l)]
     (.reverse new-l)
     new-l))
 

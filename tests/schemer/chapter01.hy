@@ -54,7 +54,7 @@
 
 (frame "1.22" []
        (run* [x]
-             (let [[x false]]
+             (let [x false]
                (≡ true x))))
 
 (frame "1.23" [true]
@@ -81,7 +81,7 @@
 
 (frame "1.29" [#U0]
        (run* [x]
-             (let [[x false]]
+             (let [x false]
                (fresh [x]
                       (≡ true x)))))
 
@@ -98,14 +98,14 @@
 (frame "1.32" [[#U0 #U1 #U0]]
        (run* [r]
              (fresh [x]
-                    (let [[y x]]
+                    (let [y x]
                       (fresh [x]
                              (≡ (list* y x y ()) r))))))
 
 (frame "1.33" [[#U0 #U1 #U0]]
        (run* [r]
              (fresh [x]
-                    (let [[y x]]
+                    (let [y x]
                       (fresh [x]
                              (≡ (list* x y x ()) r))))))
 
@@ -121,7 +121,7 @@
 
 (frame "1.36" [true]
        (run* [q]
-             (let [[x q]]
+             (let [x q]
                (≡ true x))))
 
 (frame "1.37" [#U0]
@@ -239,17 +239,17 @@
 
 (frame "1.60" [false]
        (run* [q]
-             (let [[a (≡ true q)]
-                   [b (≡ false q)]]
+             (let [a (≡ true q)
+                   b (≡ false q)]
                b)))
 
 (frame "1.61" [false]
        (run* [q]
-             (let [[a (≡ true q)]
-                   [b (fresh [x]
-                             (≡ x q)
-                             (≡ false x))]
-                   [c (condᵉ
-                       [(≡ true q) #ss]
-                       [(≡ false q)])]]
+             (let [a (≡ true q)
+                   b (fresh [x]
+                            (≡ x q)
+                            (≡ false x))
+                   c (condᵉ
+                      [(≡ true q) #ss]
+                      [(≡ false q)])]
                b)))

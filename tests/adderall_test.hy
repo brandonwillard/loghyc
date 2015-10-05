@@ -99,7 +99,7 @@
 
 (defn test-custom-unification []
   (defclass unifyClass [object])
-  (let [[l (unifyClass)]]
+  (let [l (unifyClass)]
     (setv l.unify (fn [u v s] (, u 1 s)))
     (assert (= (run* [q]
                      (≡ l q))

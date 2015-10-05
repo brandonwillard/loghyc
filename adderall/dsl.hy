@@ -26,7 +26,10 @@
 
 (eval-and-compile
  (defn --prep-fresh-vars-- [vars]
-   (list-comp `[~x (LVar (gensym '~x))] [x vars]))
+   (setv fresh-vars [])
+   (for [x vars]
+     (.extend fresh-vars `[~x (LVar (gensym '~x))]))
+   fresh-vars)
 
  (defn --prep-lvars-from-expr-- [lvars expr]
    (when (and (instance? HySymbol expr)
@@ -37,12 +40,12 @@
 (defmacro lazy-run [n vars &rest goals]
   (with-gensyms [s res]
     `(let [~@(--prep-fresh-vars-- vars)
-           [~res (fn [] (for [~s ((all ~@goals) (,))]
+           ~res (fn [] (for [~s ((all ~@goals) (,))]
                          (when (nil? ~s)
                            (continue))
                          (yield (reify (if (= (len ~vars) 1)
                                          (first ~vars)
-                                         [~@vars]) ~s))))]]
+                                         [~@vars]) ~s))))]
        (if ~n
          (islice (~res) 0 ~n)
          (~res)))))
@@ -59,11 +62,11 @@
 (defmacro fresh [vars &rest goals]
   (if goals
     `(let [~@(--prep-fresh-vars-- vars)]
-        (all ~@goals))
+       (all ~@goals))
     `succeed))
 
 (defmacro/g! prep [&rest goals]
-  (let [[g!lvars (set [])]]
+  (let [g!lvars (set [])]
     (prewalk (partial --prep-lvars-from-expr-- g!lvars) (HyList goals))
     (setv g!lvars (HyList g!lvars))
     `(fresh ~g!lvars ~@goals)))
@@ -71,15 +74,24 @@
 (eval-and-compile
  (defn project-binding [s]
    (fn [var]
-     `[[~var (reify ~(HySymbol (+ "__" var)) ~s)]]))
+     `[~var (reify ~(HySymbol (+ "__" var)) ~s)]))
 
  (defn project-bindings [vars s]
-   (reduce chain (map (project-binding s) vars))))
+   (setv bindings [])
+   (for [var vars]
+     (.extend bindings ((project-binding s) var)))
+   bindings)
+
+ (defn --prep-project-vars-- [vars]
+   (setv project-vars [])
+   (for [x vars]
+     (.extend project-vars `[~(HySymbol (+ "__" x)) ~x]))
+   project-vars))
 
 (defmacro/g! project [vars &rest goals]
   (if goals
     `(fn [~g!s]
-       (let [~@(list-comp `[~(HySymbol (+ "__" x)) ~x] [x vars])]
+       (let [~@(--prep-project-vars-- vars)]
          (let [~@(project-bindings vars g!s)]
            ((all ~@goals) ~g!s))))
     `succeed))
@@ -103,26 +115,26 @@
 (defreader ? [v] `(LVar (gensym '~v)))
 
 (defmonad logic-m
-  [[m-result (fn [v] (list v))]
-   [m-bind   (defn m-bind-sequence [mv f]
-               (when mv
-                 (let [[vs (list mv)]]
-                   (chain (f (first vs))
-                          (m-bind-sequence (rest vs) f)))))]
-   [m-zero   []]
-   [m-plus   (fn [mvs]
-               (apply chain mvs))]])
+  [m-result (fn [v] (list v))
+   m-bind   (defn m-bind-sequence [mv f]
+              (when mv
+                (let [vs (list mv)]
+                  (chain (f (first vs))
+                         (m-bind-sequence (rest vs) f)))))
+   m-zero   []
+   m-plus   (fn [mvs]
+              (apply chain mvs))])
 
 (defmonad logic-interleave-m
-  [[m-result (fn [v] (list v))]
-   [m-bind   (defn m-bind-sequence [mv f]
-               (when mv
-                 (let [[vs (list mv)]]
-                   (chain (f (first vs))
-                          (m-bind-sequence (rest vs) f)))))]
-   [m-zero   []]
-   [m-plus   (fn [mvs]
-               (interleave mvs))]])
+  [m-result (fn [v] (list v))
+   m-bind   (defn m-bind-sequence [mv f]
+              (when mv
+                (let [vs (list mv)]
+                  (chain (f (first vs))
+                         (m-bind-sequence (rest vs) f)))))
+   m-zero   []
+   m-plus   (fn [mvs]
+              (interleave mvs))])
 
 (defn all [&rest goals]
   (if goals
@@ -155,7 +167,7 @@
 
 (defmacro-alias [condᵉ conde] [&rest cs]
   (with-gensyms [s c]
-    (let [[ncs (__subst-else cs)]]
+    (let [ncs (__subst-else cs)]
       `(with-monad logic-m
          (fn [~s]
            (m-plus (map (fn [~c]
@@ -165,7 +177,7 @@
 
 (defmacro-alias [condⁱ condi] [&rest cs]
   (with-gensyms [s c]
-    (let [[ncs (__subst-else cs)]]
+    (let [ncs (__subst-else cs)]
       `(with-monad logic-interleave-m
          (fn [~s]
            (m-plus (map (fn [~c]

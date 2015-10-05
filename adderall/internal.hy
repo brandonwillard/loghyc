@@ -36,8 +36,7 @@
   (defn --init-- [self name &optional unbound]
     (setv self.name name)
     (when unbound
-      (setv self.unbound true))
-    nil)
+      (setv self.unbound true)))
   (defn --hash-- [self]
     (hash self.name))
   (defn --eq-- [self other]
