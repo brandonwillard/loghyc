@@ -1,5 +1,5 @@
 ;; adderall - miniKanren in Hy
-;; Copyright (C) 2014, 2015  Gergely Nagy <algernon@madhouse-project.org>
+;; Copyright (C) 2014, 2015, 2016  Gergely Nagy <algernon@madhouse-project.org>
 ;;
 ;; This library is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU Lesser General Public License
@@ -55,6 +55,9 @@
 
 (defmacro run [n vars &rest args]
   `(list (lazy-run ~n ~vars ~@args)))
+
+(defmacro run1 [vars &rest args]
+  `(first (run 1 ~vars ~@args)))
 
 (defmacro run* [vars &rest args]
   `(run nil ~vars ~@args))

@@ -109,3 +109,7 @@
     (assert (= (run* [q]
                      (≡ l q))
                [l]))))
+
+(defn test-run1 []
+  (assert (= (run1 [q] (≡ q 1)) 1))
+  (assert (= (run 1 [q] (≡ q 1)) [1])))
