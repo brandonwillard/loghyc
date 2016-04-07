@@ -111,6 +111,6 @@
                [l]))))
 
 (defn test-run1 []
-  (assert (= (run1 [q] (≡ q 1)) 1))
-  (assert (= (run1 [q] (≡ q 1) (≡ q 2)) nil))
+  (assert (= (run¹ [q] (≡ q 1)) 1))
+  (assert (= (run¹ [q] (≡ q 1) (≡ q 2)) nil))
   (assert (= (run 1 [q] (≡ q 1)) [1])))

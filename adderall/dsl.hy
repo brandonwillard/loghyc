@@ -56,7 +56,7 @@
 (defmacro run [n vars &rest args]
   `(list (lazy-run ~n ~vars ~@args)))
 
-(defmacro run1 [vars &rest args]
+(defmacro-alias [run1 run¹] [vars &rest args]
   `(first (run 1 ~vars ~@args)))
 
 (defmacro run* [vars &rest args]
