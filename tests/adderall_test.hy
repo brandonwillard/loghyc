@@ -24,8 +24,8 @@
   (assert (= (run* [q] succeed) [#U0])))
 
 (defn test-#s-and-#u []
-  (assert (= (run* [q] #uu) []))
-  (assert (= (run* [q] #ss) [#U0])))
+  (assert (= (run* [q] fail) []))
+  (assert (= (run* [q] succeed) [#U0])))
 
 (defn test-fresh []
   (assert (= (run* [q] (fresh [x])) [#U0])))
@@ -105,12 +105,12 @@
                      (≡ l q))
                [1]))
 
-    (setv l.unify nil)
+    (setv l.unify None)
     (assert (= (run* [q]
                      (≡ l q))
                [l]))))
 
 (defn test-run1 []
   (assert (= (run¹ [q] (≡ q 1)) 1))
-  (assert (= (run¹ [q] (≡ q 1) (≡ q 2)) nil))
+  (assert (= (run¹ [q] (≡ q 1) (≡ q 2)) None))
   (assert (= (run 1 [q] (≡ q 1)) [1])))

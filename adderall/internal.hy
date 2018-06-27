@@ -113,7 +113,7 @@
     (setv v (substitute v s)))
 
   (cond
-   [(nil? s) s]
+   [(none? s) s]
    [(is u v) s]
    [(and (hasattr u "unify")
          (callable u.unify))
@@ -137,7 +137,7 @@
     (do
      (for [[ui vi] (zip u v)]
        (setv s (unify ui vi s))
-       (when (nil? s)
+       (when (none? s)
          (break)))
      s)]
    [(or (and (cons? u) (or (cons? v) (neseq? v)))

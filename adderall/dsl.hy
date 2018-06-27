@@ -19,7 +19,7 @@
         [hy [HySymbol HyList HyKeyword]]
         [hy.contrib.walk [prewalk]])
 (require [hy.contrib.walk [let]])
-(require monaxhyd.core)
+(require [monaxhyd.core [defmonad monad]])
 
 (import [adderall.internal [unify lvar? seq? reify LVar unbound interleave]])
 
@@ -62,7 +62,7 @@
   (with-gensyms [s res]
     `(let [~@(--prep-fresh-vars-- vars)
            ~res (fn [] (for [~s ((all ~@goals) (,))]
-                         (when (nil? ~s)
+                         (when (none? ~s)
                            (continue))
                          (yield (reify (if (= (len ~vars) 1)
                                          (first ~vars)
@@ -72,7 +72,7 @@
          (~res)))))
 
 (defmacro lazy-run* [vars &rest args]
-  `(lazy-run nil ~vars ~@args))
+  `(lazy-run None ~vars ~@args))
 
 (defmacro run [n vars &rest args]
   `(list (lazy-run ~n ~vars ~@args)))
@@ -81,7 +81,7 @@
   `(first (run 1 ~vars ~@args)))
 
 (defmacro run* [vars &rest args]
-  `(run nil ~vars ~@args))
+  `(run None ~vars ~@args))
 
 (defmacro fresh [vars &rest goals]
   (if goals
@@ -130,11 +130,11 @@
 
 (defn succeed [s]
   (yield s))
-(deftag s [_] `succeed)
+(setv s# succeed)
 
 (defn fail [s]
   (iter ()))
-(deftag u [_] `fail)
+(setv u# succeed)
 
 (deftag ? [v] `(LVar (gensym '~v)))
 
@@ -165,7 +165,7 @@
     (reduce (fn [g1 g2]
               (fn [s]
                 (for [opt-s1 (g1 s)]
-                  (unless (nil? opt-s1)
+                  (unless (none? opt-s1)
                     (for [opt-s2 (g2 opt-s1)]
                       (yield opt-s2)))))) goals)
     succeed))
@@ -186,7 +186,7 @@
  (defn __subst-else [conds]
    (map (fn [c]
           (if (= (first c) 'else)
-            (HyList `(#s . ~(rest c)))
+            (HyList `(succeed . ~(rest c)))
             c)) conds)))
 
 (defmacro-alias [condᵉ conde] [&rest cs]
@@ -197,7 +197,6 @@
            (m-plus (map (fn [~c]
                           ((apply all ~c) ~s))
                         [~@ncs])))))))
-
 
 (defmacro-alias [condⁱ condi] [&rest cs]
   (with-gensyms [s c]
@@ -210,7 +209,7 @@
 
 (defn-alias [consᵒ conso] [f r l]
   (cond
-   [(or (nil? r) (= r [])) (≡ [f] l)]
+   [(or (none? r) (= r [])) (≡ [f] l)]
    [(or (lvar? r) (seq? r)) (≡ (cons f r) l)]
    [true (≡ (cons f r) l)]))
 
@@ -241,7 +240,7 @@
 
 (defn-alias [lolᵒ lolo] [l]
   (condᵉ
-   [(emptyᵒ l) #s]
+   [(emptyᵒ l) succeed]
    [(fresh [a]
            (firstᵒ l a)
            (listᵒ a))
@@ -258,7 +257,7 @@
 
 (defn-alias [listofᵒ listofo] [predᵒ l]
   (condᵉ
-   [(emptyᵒ l) #s]
+   [(emptyᵒ l) succeed]
    [(fresh [a]
            (firstᵒ l a)
            (predᵒ a))
@@ -268,7 +267,7 @@
 
 (defn-alias [memberᵒ membero] [x l]
   (condᵉ
-   [(firstᵒ l x) #s]
+   [(firstᵒ l x) succeed]
    (else (fresh [d]
                 (restᵒ l d)
                 (memberᵒ x d)))))
@@ -285,7 +284,7 @@
 
 (defn-alias [memberrevᵒ memberrevo] [x l]
   (condᵉ
-   [#s (fresh [d]
+   [succeed (fresh [d]
                (restᵒ l d)
                (memberrevᵒ x d))]
    (else (firstᵒ l x))))
@@ -316,7 +315,7 @@
 
 (defn-alias [unwrapᵒ unwrapo] [x out]
   (condᵉ
-   [#s (≡ x out)]
+   [succeed (≡ x out)]
    [(pairᵒ x)
     (fresh [a]
            (firstᵒ x a)
@@ -335,7 +334,7 @@
 
 (defn-alias [flattenrevᵒ flattenrevo] [s out]
   (condᵉ
-   [#s (consᵒ s [] out)]
+   [succeed (consᵒ s [] out)]
    [(emptyᵒ s) (≡ [] out)]
    [(pairᵒ s)
     (fresh [a d res-a res-d]
@@ -346,16 +345,16 @@
 
 (defn-alias [anyᵒ anyo] [g]
   (condᵉ
-   [g #s]
+   [g succeed]
    (else (anyᵒ g))))
 
-(def neverᵒ (anyᵒ #u))
+(def neverᵒ (anyᵒ fail))
 (def nevero neverᵒ)
 
-(def alwaysᵒ (anyᵒ #s))
+(def alwaysᵒ (anyᵒ succeed))
 (def alwayso alwaysᵒ)
 
 (defn-alias [salᵒ salo] [g]
   (condᵉ
-   [#s #s]
+   [succeed succeed]
    (else g)))

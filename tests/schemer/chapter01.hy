@@ -21,7 +21,7 @@
 
 (frame "1.10" []
        (run* [q]
-             #uu))
+             fail))
 
 (frame "1.11" [true]
        (run* [q]
@@ -29,27 +29,27 @@
 
 (frame "1.12" []
        (run* [q]
-             #uu
+             fail
              (≡ true q)))
 
 (frame "1.13" [true]
        (run* [q]
-             #ss
+             succeed
              (≡ true q)))
 
 (frame "1.16" ['corn]
        (run* [r]
-             #ss
+             succeed
              (≡ 'corn r)))
 
 (frame "1.17" []
        (run* [r]
-             #uu
+             fail
              (≡ 'corn r)))
 
 (frame "1.18" [false]
        (run* [q]
-             #ss
+             succeed
              (≡ false q)))
 
 (frame "1.22" []
@@ -77,7 +77,7 @@
 
 (frame "1.28" [#U0]
        (run* [x]
-             #ss))
+             succeed))
 
 (frame "1.29" [#U0]
        (run* [x]
@@ -144,34 +144,34 @@
 (frame "1.47" ['olive 'oil]
        (run* [x]
              (condᵉ
-              [(≡ 'olive x) #ss]
-              [(≡ 'oil x) #ss]
-              (else #uu))))
+              [(≡ 'olive x) succeed]
+              [(≡ 'oil x) succeed]
+              (else fail))))
 
 (frame "1.49" ['olive]
        (run 1 [x]
             (condᵉ
-             [(≡ 'olive x) #ss]
-             [(≡ 'oil x) #ss]
-             (else #uu))))
+             [(≡ 'olive x) succeed]
+             [(≡ 'oil x) succeed]
+             (else fail))))
 
 (frame "1.50" ['olive #U0 'oil]
        (run* [x]
              (condᵉ
-              [(≡ 'virgin x) #uu]
-              [(≡ 'olive x) #ss]
-              [#ss #ss]
-              [(≡ 'oil x) #ss]
-              (else #uu))))
+              [(≡ 'virgin x) fail]
+              [(≡ 'olive x) succeed]
+              [succeed succeed]
+              [(≡ 'oil x) succeed]
+              (else fail))))
 
 (frame "1.52" ['extra 'olive]
        (run 2 [x]
             (condᵉ
-             [(≡ 'extra x) #ss]
-             [(≡ 'virgin x) #uu]
-             [(≡ 'olive x) #ss]
-             [(≡ 'oil x) #ss]
-             (else #uu))))
+             [(≡ 'extra x) succeed]
+             [(≡ 'virgin x) fail]
+             [(≡ 'olive x) succeed]
+             [(≡ 'oil x) succeed]
+             (else fail))))
 
 (frame "1.53" [['split 'pea]]
        (run* [r]
@@ -186,7 +186,7 @@
                     (condᵉ
                      [(≡ 'split x) (≡ 'pea y)]
                      [(≡ 'navy x) (≡ 'bean y)]
-                     (else #uu))
+                     (else fail))
                     (≡ (list* x y ()) r))))
 
 (frame "1.55" [['split 'pea 'soup] ['navy 'bean 'soup]]
@@ -195,14 +195,14 @@
                     (condᵉ
                      [(≡ 'split x) (≡ 'pea y)]
                      [(≡ 'navy x) (≡ 'bean y)]
-                     (else #uu))
+                     (else fail))
                     (≡ (list* x y 'soup ()) r))))
 
 (defn teacupᵒ [x]
   (condᵉ
-   [(≡ 'tea x) #ss]
-   [(≡ 'cup x) #ss]
-   (else #uu)))
+   [(≡ 'tea x) succeed]
+   [(≡ 'cup x) succeed]
+   (else fail)))
 
 (frame "1.56" ['tea 'cup]
        (run* [x]
@@ -212,9 +212,9 @@
        (run* [r]
              (fresh [x y]
                     (condᵉ
-                     [(teacupᵒ x) (≡ true y) #ss]
+                     [(teacupᵒ x) (≡ true y) succeed]
                      [(≡ false x) (≡ true y)]
-                     (else #uu))
+                     (else fail))
                     (≡ (list* x y ()) r))))
 
 (frame "1.58" [[#U0 #U1]
@@ -224,7 +224,7 @@
                     (condᵉ
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
-                     (else #uu))
+                     (else fail))
                     (≡ (list* y z ()) r))))
 
 (frame "1.59" [[false #U0] [#U0 false]]
@@ -233,7 +233,7 @@
                     (condᵉ
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
-                     (else #uu))
+                     (else fail))
                     (≡ false x)
                     (≡ (list* y z ()) r))))
 
@@ -250,6 +250,6 @@
                             (≡ x q)
                             (≡ false x))
                    c (condᵉ
-                      [(≡ true q) #ss]
+                      [(≡ true q) succeed]
                       [(≡ false q)])]
                b)))

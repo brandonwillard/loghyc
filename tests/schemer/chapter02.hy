@@ -21,7 +21,7 @@
 
 (frame "2.6" ['a]
        (run* [r]
-             (firstᵒ (list* 'a 'c 'o 'r 'n nil) r)))
+             (firstᵒ (list* 'a 'c 'o 'r 'n None) r)))
 
 (frame "2.7" [true]
        (run* [q]
