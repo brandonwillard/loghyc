@@ -106,7 +106,7 @@
 ;; python2, we get mungling, and the function will start with a hy_
 ;; prefix, so we don't have that problem)
 (if-python2
- nil
+ None
  (def __all__ ["nandᵒ" "nando"
                "xorᵒ" "xoro"
                "notᵒ" "noto"

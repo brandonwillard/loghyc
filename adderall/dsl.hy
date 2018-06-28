@@ -14,13 +14,15 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [itertools [islice chain]]
-        [functools [reduce partial]]
-        [adderall.internal [unify lvar? seq? reify LVar unbound interleave]]
+(import [functools [reduce partial]]
         [hy [HySymbol HyList HyKeyword]]
         [hy.contrib.walk [prewalk]])
-(require monaxhyd.core)
-(require hy.contrib.alias)
+(import [adderall.internal [unify lvar? seq? reify
+                            LVar unbound interleave cons]])
+
+(require [hy.contrib.walk [let]])
+(require [monaxhyd.core [defmonad monad with-monad]])
+(require [adderall.internal [defn-alias defmacro-alias]])
 
 ;; Top level stuff
 
@@ -41,7 +43,7 @@
   (with-gensyms [s res]
     `(let [~@(--prep-fresh-vars-- vars)
            ~res (fn [] (for [~s ((all ~@goals) (,))]
-                         (when (nil? ~s)
+                         (when (none? ~s)
                            (continue))
                          (yield (reify (if (= (len ~vars) 1)
                                          (first ~vars)
@@ -51,7 +53,7 @@
          (~res)))))
 
 (defmacro lazy-run* [vars &rest args]
-  `(lazy-run nil ~vars ~@args))
+  `(lazy-run None ~vars ~@args))
 
 (defmacro run [n vars &rest args]
   `(list (lazy-run ~n ~vars ~@args)))
@@ -60,7 +62,7 @@
   `(first (run 1 ~vars ~@args)))
 
 (defmacro run* [vars &rest args]
-  `(run nil ~vars ~@args))
+  `(run None ~vars ~@args))
 
 (defmacro fresh [vars &rest goals]
   (if goals
@@ -99,7 +101,7 @@
            ((all ~@goals) ~g!s))))
     `succeed))
 
-(defreader U [n] `(unbound ~n))
+(deftag U [n] `(unbound ~n))
 
 ;; Goals
 
@@ -109,13 +111,13 @@
 
 (defn succeed [s]
   (yield s))
-(defreader s [_] `succeed)
+(setv s# succeed)
 
 (defn fail [s]
   (iter ()))
-(defreader u [_] `fail)
+(setv u# fail)
 
-(defreader ? [v] `(LVar (gensym '~v)))
+(deftag ? [v] `(LVar (gensym '~v)))
 
 (defmonad logic-m
   [m-result (fn [v] (list v))
@@ -123,7 +125,7 @@
               (when mv
                 (let [vs (list mv)]
                   (chain (f (first vs))
-                         (m-bind-sequence (rest vs) f)))))
+                         (m-bind-sequence (list (rest vs)) f)))))
    m-zero   []
    m-plus   (fn [mvs]
               (apply chain mvs))])
@@ -134,7 +136,7 @@
               (when mv
                 (let [vs (list mv)]
                   (chain (f (first vs))
-                         (m-bind-sequence (rest vs) f)))))
+                         (m-bind-sequence (list (rest vs)) f)))))
    m-zero   []
    m-plus   (fn [mvs]
               (interleave mvs))])
@@ -144,7 +146,7 @@
     (reduce (fn [g1 g2]
               (fn [s]
                 (for [opt-s1 (g1 s)]
-                  (unless (nil? opt-s1)
+                  (unless (none? opt-s1)
                     (for [opt-s2 (g2 opt-s1)]
                       (yield opt-s2)))))) goals)
     succeed))
@@ -165,7 +167,9 @@
  (defn __subst-else [conds]
    (map (fn [c]
           (if (= (first c) 'else)
-            (HyList `(#ss . ~(rest c)))
+              ;; FIXME: We lose some efficiency by completely evaluating the
+              ;; iterator object via `list`.
+              (HyList `(cons succeed ~(list (rest c))))
             c)) conds)))
 
 (defmacro-alias [condᵉ conde] [&rest cs]
@@ -176,7 +180,6 @@
            (m-plus (map (fn [~c]
                           ((apply all ~c) ~s))
                         [~@ncs])))))))
-
 
 (defmacro-alias [condⁱ condi] [&rest cs]
   (with-gensyms [s c]
@@ -189,9 +192,9 @@
 
 (defn-alias [consᵒ conso] [f r l]
   (cond
-   [(or (nil? r) (= r [])) (≡ [f] l)]
+   [(or (none? r) (= r [])) (≡ [f] l)]
    [(or (lvar? r) (seq? r)) (≡ (cons f r) l)]
-   [true (≡ (cons f r) l)]))
+   [True (≡ (cons f r) l)]))
 
 (defn-alias [firstᵒ firsto] [l a]
   (fresh [d]
@@ -220,7 +223,7 @@
 
 (defn-alias [lolᵒ lolo] [l]
   (condᵉ
-   [(emptyᵒ l) #ss]
+   [(emptyᵒ l) succeed]
    [(fresh [a]
            (firstᵒ l a)
            (listᵒ a))
@@ -237,7 +240,7 @@
 
 (defn-alias [listofᵒ listofo] [predᵒ l]
   (condᵉ
-   [(emptyᵒ l) #ss]
+   [(emptyᵒ l) succeed]
    [(fresh [a]
            (firstᵒ l a)
            (predᵒ a))
@@ -247,7 +250,7 @@
 
 (defn-alias [memberᵒ membero] [x l]
   (condᵉ
-   [(firstᵒ l x) #ss]
+   [(firstᵒ l x) succeed]
    (else (fresh [d]
                 (restᵒ l d)
                 (memberᵒ x d)))))
@@ -264,7 +267,7 @@
 
 (defn-alias [memberrevᵒ memberrevo] [x l]
   (condᵉ
-   [#ss (fresh [d]
+   [succeed (fresh [d]
                (restᵒ l d)
                (memberrevᵒ x d))]
    (else (firstᵒ l x))))
@@ -295,7 +298,7 @@
 
 (defn-alias [unwrapᵒ unwrapo] [x out]
   (condᵉ
-   [#ss (≡ x out)]
+   [succeed (≡ x out)]
    [(pairᵒ x)
     (fresh [a]
            (firstᵒ x a)
@@ -314,7 +317,7 @@
 
 (defn-alias [flattenrevᵒ flattenrevo] [s out]
   (condᵉ
-   [#ss (consᵒ s [] out)]
+   [succeed (consᵒ s [] out)]
    [(emptyᵒ s) (≡ [] out)]
    [(pairᵒ s)
     (fresh [a d res-a res-d]
@@ -325,16 +328,16 @@
 
 (defn-alias [anyᵒ anyo] [g]
   (condᵉ
-   [g #ss]
+   [g succeed]
    (else (anyᵒ g))))
 
-(def neverᵒ (anyᵒ #uu))
-(def nevero neverᵒ)
+(setv neverᵒ (anyᵒ fail))
+(setv nevero neverᵒ)
 
-(def alwaysᵒ (anyᵒ #ss))
-(def alwayso alwaysᵒ)
+(setv alwaysᵒ (anyᵒ succeed))
+(setv alwayso alwaysᵒ)
 
 (defn-alias [salᵒ salo] [g]
   (condᵉ
-   [#ss #ss]
+   [succeed succeed]
    (else g)))
