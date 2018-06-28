@@ -14,34 +14,15 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [itertools [islice chain]]
-        [functools [reduce partial]]
+(import [functools [reduce partial]]
         [hy [HySymbol HyList HyKeyword]]
         [hy.contrib.walk [prewalk]])
+(import [adderall.internal [unify lvar? seq? reify
+                            LVar unbound interleave cons]])
+
 (require [hy.contrib.walk [let]])
-(require [monaxhyd.core [defmonad monad]])
-
-(import [adderall.internal [unify lvar? seq? reify LVar unbound interleave]])
-
-;; (require hy.contrib.alias)
-;; `hy.contrib.alias` was removed, so we simply add the provided functions.
-(defmacro defmacro-alias [names lambda-list &rest body]
-  "define one macro with several names"
-  (setv ret `(do))
-  (for* [name names]
-    (.append ret
-             `(defmacro ~name ~lambda-list ~@body)))
-  ret)
-
-(defmacro defn-alias [names lambda-list &rest body]
-  "define one function with several names"
-  (let [main (first names)
-        aliases (rest names)]
-       (setv ret `(do (defn ~main ~lambda-list ~@body)))
-       (for* [name aliases]
-         (.append ret
-                  `(setv ~name ~main)))
-       ret))
+(require [monaxhyd.core [defmonad monad with-monad]])
+(require [adderall.internal [defn-alias defmacro-alias]])
 
 ;; Top level stuff
 
@@ -134,7 +115,7 @@
 
 (defn fail [s]
   (iter ()))
-(setv u# succeed)
+(setv u# fail)
 
 (deftag ? [v] `(LVar (gensym '~v)))
 
@@ -144,7 +125,7 @@
               (when mv
                 (let [vs (list mv)]
                   (chain (f (first vs))
-                         (m-bind-sequence (rest vs) f)))))
+                         (m-bind-sequence (list (rest vs)) f)))))
    m-zero   []
    m-plus   (fn [mvs]
               (apply chain mvs))])
@@ -155,7 +136,7 @@
               (when mv
                 (let [vs (list mv)]
                   (chain (f (first vs))
-                         (m-bind-sequence (rest vs) f)))))
+                         (m-bind-sequence (list (rest vs)) f)))))
    m-zero   []
    m-plus   (fn [mvs]
               (interleave mvs))])
@@ -186,7 +167,9 @@
  (defn __subst-else [conds]
    (map (fn [c]
           (if (= (first c) 'else)
-            (HyList `(succeed . ~(rest c)))
+              ;; FIXME: We lose some efficiency by completely evaluating the
+              ;; iterator object via `list`.
+              (HyList `(cons succeed ~(list (rest c))))
             c)) conds)))
 
 (defmacro-alias [condᵉ conde] [&rest cs]
@@ -211,7 +194,7 @@
   (cond
    [(or (none? r) (= r [])) (≡ [f] l)]
    [(or (lvar? r) (seq? r)) (≡ (cons f r) l)]
-   [true (≡ (cons f r) l)]))
+   [True (≡ (cons f r) l)]))
 
 (defn-alias [firstᵒ firsto] [l a]
   (fresh [d]
@@ -348,11 +331,11 @@
    [g succeed]
    (else (anyᵒ g))))
 
-(def neverᵒ (anyᵒ fail))
-(def nevero neverᵒ)
+(setv neverᵒ (anyᵒ fail))
+(setv nevero neverᵒ)
 
-(def alwaysᵒ (anyᵒ succeed))
-(def alwayso alwaysᵒ)
+(setv alwaysᵒ (anyᵒ succeed))
+(setv alwayso alwaysᵒ)
 
 (defn-alias [salᵒ salo] [g]
   (condᵉ

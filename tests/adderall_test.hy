@@ -15,24 +15,27 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]])
-(require adderall.dsl)
+
+(require [adderall.dsl [*]])
 (require adderall.debug)
 (require tests.utils)
+(require [hy.contrib.walk [let]])
+
 
 (defn test-fail-and-succeed []
   (assert (= (run* [q] fail) []))
-  (assert (= (run* [q] succeed) [#U0])))
+  (assert (= (run* [q] succeed) [#U 0])))
 
 (defn test-#s-and-#u []
   (assert (= (run* [q] fail) []))
-  (assert (= (run* [q] succeed) [#U0])))
+  (assert (= (run* [q] succeed) [#U 0])))
 
 (defn test-fresh []
-  (assert (= (run* [q] (fresh [x])) [#U0])))
+  (assert (= (run* [q] (fresh [x])) [#U 0])))
 
 (defn test-consᵒ []
   (assert (= (run* [q] (consᵒ 1 [2 3] [1 2 3]))
-             [#U0]))
+             [#U 0]))
   (assert (= (run* [q] (consᵒ q [2 3] [1 2 3]))
              [1]))
   (assert (= (run* [q] (consᵒ 1 q [1 2 3]))
