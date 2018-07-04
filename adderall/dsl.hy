@@ -39,18 +39,19 @@
      (.add lvars expr))
    expr))
 
-(defmacro lazy-run [n vars &rest goals]
-  (with-gensyms [s res]
-    `(let [~@(--prep-fresh-vars-- vars)
-           ~res (fn [] (for [~s ((all ~@goals) (,))]
-                         (when (none? ~s)
-                           (continue))
-                         (yield (reify (if (= (len ~vars) 1)
-                                         (first ~vars)
-                                         [~@vars]) ~s))))]
-       (if ~n
-         (islice (~res) 0 ~n)
-         (~res)))))
+(defmacro/g! lazy-run [n vars &rest goals]
+  `(do
+     (require [hy.contrib.walk [let :as ~g!let]])
+     (~g!let [~@(--prep-fresh-vars-- vars)
+              ~g!res (fn [] (for [~g!s ((all ~@goals) (,))]
+                              (when (none? ~g!s)
+                                (continue))
+                              (yield (reify (if (= (len ~vars) 1)
+                                                (first ~vars)
+                                                [~@vars]) ~g!s))))]
+      (if ~n
+          (islice (~g!res) 0 ~n)
+          (~g!res)))))
 
 (defmacro lazy-run* [vars &rest args]
   `(lazy-run None ~vars ~@args))
@@ -64,10 +65,12 @@
 (defmacro run* [vars &rest args]
   `(run None ~vars ~@args))
 
-(defmacro fresh [vars &rest goals]
+(defmacro/g! fresh [vars &rest goals]
   (if goals
-    `(let [~@(--prep-fresh-vars-- vars)]
-       (all ~@goals))
+      `(do
+         (require [hy.contrib.walk [let :as ~g!let]])
+         (~g!let [~@(--prep-fresh-vars-- vars)]
+          (all ~@goals)))
     `succeed))
 
 (defmacro/g! prep [&rest goals]
@@ -96,9 +99,11 @@
 (defmacro/g! project [vars &rest goals]
   (if goals
     `(fn [~g!s]
-       (let [~@(--prep-project-vars-- vars)]
-         (let [~@(project-bindings vars g!s)]
-           ((all ~@goals) ~g!s))))
+       (do
+         (require [hy.contrib.walk [let :as ~g!let]])
+         (~g!let [~@(--prep-project-vars-- vars)]
+          (~g!let [~@(project-bindings vars g!s)]
+           ((all ~@goals) ~g!s)))))
     `succeed))
 
 (deftag U [n] `(unbound ~n))
