@@ -41,7 +41,8 @@
   (assert (= (run* [q] (consᵒ 1 q [1 2 3]))
              [[2 3]]))
   (assert (= (run* [q] (consᵒ 1 [2 3] q))
-             [[1 2 3]]))
+             [(cons 1 [2 3])]
+             #_[[1 2 3]]))
   (assert (= (run* [q] (consᵒ 1 [q 3] [1 2 3]))
              [2]))
   (assert (= (run* [q] (consᵒ 1 [2 q] [1 2 3]))

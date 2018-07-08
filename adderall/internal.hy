@@ -14,9 +14,7 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-;; (require hy.contrib.alias)
-;; `hy.contrib.alias` was removed, so we simply add the provided functions.
-
+(import [collections [UserList]])
 (require [hy.contrib.walk [let]])
 
 
@@ -38,18 +36,35 @@
                   `(setv ~name ~main)))
        ret))
 
-(defn cons [a b]
-  (+ (, a) (if (instance? (tuple [list tuple]) b)
-               (tuple b)
-               (, b))))
+(defclass cons [UserList]
+  (defn --init-- [self car-part cdr-part]
+    (setv self.car-part car-part)
+    (setv self.cdr-part cdr-part)
+    (setv self.data (flatten (, car-part cdr-part))))
+  (defn --hash-- [self]
+    (hash (, self.car-part self.cdr-part)))
+  (defn --eq-- [self other]
+    (and (= (type self) (type other))
+         (= self.car-part other.car-part)
+         (= self.cdr-part other.cdr-part)))
+  (defn --repr-- [self]
+    (.format "({} . {})" self.car-part self.cdr-part)))
 
-;; FIXME: We need a better/clear convention for what we consider a cons.
+(defn car [z]
+  (if (cons? z)
+      (. z car-part)
+      #_(z (fn [p q] p))
+    (first z)))
+(defn cdr [z]
+  (if (cons? z)
+      (. z cdr-part)
+      #_(z (fn [p q] q))
+    (list (rest z))))
+
 (defn cons? [a]
-  (if (and (instance? tuple a)
-           (> (len a) 0))
+  (if (instance? cons a)
       True
-   False))
-
+    False))
 (defn lvar? [x] (instance? LVar x))
 (defn tuple? [x] (instance? tuple x))
 (defn seq? [x] (or (tuple? x)
@@ -111,10 +126,9 @@
                           (setv (get free_vars val)
                                 (unbound (len free-vars))))
                         (get free-vars val))]
-          ;; FIXME: Now that there are no cons, how do we properly disinguish?
-          [(cons? val) (cons (reifying (first val))
-                             (reifying (list (rest val))))]
           [(seq? val) ((type val) (map reifying val))]
+          [(cons? val) (cons (reifying (car val))
+                             (reifying (cdr val)))]
           [True val]))
   (reifying val))
 
@@ -130,7 +144,6 @@
   (or (is var val)
       (and (tuple? val)
            (any (lfor item val (occurs var item s))))))
-           ;; (any (list-comp (occurs var item s) [item val])))))
 
 (defn neseq? [c]
   (and (seq? c) (pos? (len c))))
@@ -138,12 +151,12 @@
 (defn setish-first [l]
   (if (instance? set l)
     (first (list l))
-    (first l)))
+   (car l)))
 
 (defn setish-rest [l]
   (if (instance? set l)
-      ((type l) (list (rest (list l))))
-   (list (rest l))))
+      ((type l) (rest (list l)))
+   (cdr l)))
 
 (defn unify [u v s]
   (when s
@@ -181,9 +194,9 @@
    [(or (and (cons? u) (or (cons? v) (neseq? v)))
         (and (or (cons? u) (neseq? u)) (cons? v)))
     (do
-     (setv s (unify (first u) (setish-first v) s))
-     (setv s (unify (list (rest u)) (setish-rest v) s))
+     (setv s (unify (car u) (setish-first v) s))
+     (setv s (unify (cdr u) (setish-rest v) s))
      s)]
    [(= u v) s]))
 
-(defn __all__ [])
+;; (setv __all__ [])

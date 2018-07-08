@@ -172,8 +172,6 @@
  (defn __subst-else [conds]
    (map (fn [c]
           (if (= (first c) 'else)
-              ;; FIXME: We lose some efficiency by completely evaluating the
-              ;; iterator object via `list`.
               (HyList `(cons succeed ~(list (rest c))))
             c)) conds)))
 
