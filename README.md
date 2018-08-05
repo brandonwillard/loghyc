@@ -29,11 +29,11 @@ Example
 
 (import [getpass [getuser]])
 
-(defreader h [_] "#hy")
-(defn lovesᵒ [u v] (≡ v #hy))
+(deftag h [_] "#hy")
+(defn lovesᵒ [u v] (≡ v #h y))
 (run* [who what] (lovesᵒ who what)
                  (≡ who (getuser))
-                 (≡ what #hy))
+                 (≡ what #h y))
 ;; => [['algernon' '#hy']]
 ```
 
