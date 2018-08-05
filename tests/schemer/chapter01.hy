@@ -14,28 +14,31 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]]
-        [tests.schemer.common [*]])
-(require adderall.dsl)
-(require tests.schemer.common)
+(import [adderall.dsl [*]])
+(import [tests.schemer.common [*]])
+
+(require [hy.contrib.walk [let]])
+(require [adderall.dsl [*]])
+(require [tests.schemer.common [*]])
+
 
 (frame "1.10" []
        (run* [q]
              fail))
 
-(frame "1.11" [true]
+(frame "1.11" [True]
        (run* [q]
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "1.12" []
        (run* [q]
              fail
-             (≡ true q)))
+             (≡ True q)))
 
-(frame "1.13" [true]
+(frame "1.13" [True]
        (run* [q]
              succeed
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "1.16" ['corn]
        (run* [r]
@@ -47,99 +50,99 @@
              fail
              (≡ 'corn r)))
 
-(frame "1.18" [false]
+(frame "1.18" [False]
        (run* [q]
              succeed
-             (≡ false q)))
+             (≡ False q)))
 
 (frame "1.22" []
        (run* [x]
-             (let [x false]
-               (≡ true x))))
+             (let [x False]
+               (≡ True x))))
 
-(frame "1.23" [true]
+(frame "1.23" [True]
        (run* [q]
              (fresh [x]
-                    (≡ true x)
-                    (≡ true q))))
+                    (≡ True x)
+                    (≡ True q))))
 
-(frame "1.26" [true]
+(frame "1.26" [True]
        (run* [q]
              (fresh [x]
-                    (≡ x true)
-                    (≡ true q))))
+                    (≡ x True)
+                    (≡ True q))))
 
-(frame "1.27" [true]
+(frame "1.27" [True]
        (run* [q]
              (fresh [x]
-                    (≡ x true)
-                    (≡ q true))))
+                    (≡ x True)
+                    (≡ q True))))
 
-(frame "1.28" [#U0]
+(frame "1.28" [#U 0]
        (run* [x]
              succeed))
 
-(frame "1.29" [#U0]
+(frame "1.29" [#U 0]
        (run* [x]
-             (let [x false]
+             (let [x False]
                (fresh [x]
-                      (≡ true x)))))
+                      (≡ True x)))))
 
-(frame "1.30" [[#U0 #U1]]
+(frame "1.30" [[#U 0 #U 1]]
        (run* [r]
              (fresh [x y]
-                    (≡ (list* x y ()) r))))
+                    (≡ [x y (,)] r))))
 
-(frame "1.31" [[#U0 #U1]]
+(frame "1.31" [[#U 0 #U 1]]
        (run* [s]
              (fresh [t u]
-                    (≡ (list* t u ()) s))))
+                    (≡ [t u (,)] s))))
 
-(frame "1.32" [[#U0 #U1 #U0]]
+(frame "1.32" [[#U 0 #U 1 #U 0]]
        (run* [r]
              (fresh [x]
                     (let [y x]
                       (fresh [x]
-                             (≡ (list* y x y ()) r))))))
+                             (≡ [y x y (,)] r))))))
 
-(frame "1.33" [[#U0 #U1 #U0]]
+(frame "1.33" [[#U 0 #U 1 #U 0]]
        (run* [r]
              (fresh [x]
                     (let [y x]
                       (fresh [x]
-                             (≡ (list* x y x ()) r))))))
+                             (≡ [x y x (,)] r))))))
 
 (frame "1.34" []
        (run* [q]
-             (≡ false q)
-             (≡ true q)))
+             (≡ False q)
+             (≡ True q)))
 
-(frame "1.35" [false]
+(frame "1.35" [False]
        (run* [q]
-             (≡ false q)
-             (≡ false q)))
+             (≡ False q)
+             (≡ False q)))
 
-(frame "1.36" [true]
+(frame "1.36" [True]
        (run* [q]
              (let [x q]
-               (≡ true x))))
+               (≡ True x))))
 
-(frame "1.37" [#U0]
+(frame "1.37" [#U 0]
        (run* [r]
              (fresh [x]
                     (≡ x r))))
 
-(frame "1.38" [true]
+(frame "1.38" [True]
        (run* [q]
              (fresh [x]
-                    (≡ true x)
+                    (≡ True x)
                     (≡ x q))))
 
-(frame "1.39" [true]
+(frame "1.39" [True]
        (run* [q]
              (fresh [x]
                     (≡ x q)
-                    (≡ true x))))
+                    (≡ True x))))
 
 (frame "1.47" ['olive 'oil]
        (run* [x]
@@ -155,7 +158,7 @@
              [(≡ 'oil x) succeed]
              (else fail))))
 
-(frame "1.50" ['olive #U0 'oil]
+(frame "1.50" ['olive #U 0 'oil]
        (run* [x]
              (condᵉ
               [(≡ 'virgin x) fail]
@@ -178,7 +181,7 @@
              (fresh [x y]
                     (≡ 'split x)
                     (≡ 'pea y)
-                    (≡ (list* x y ()) r))))
+                    (≡ [x y (,)] r))))
 
 (frame "1.54" [['split 'pea] ['navy 'bean]]
        (run* [r]
@@ -187,7 +190,7 @@
                      [(≡ 'split x) (≡ 'pea y)]
                      [(≡ 'navy x) (≡ 'bean y)]
                      (else fail))
-                    (≡ (list* x y ()) r))))
+                    (≡ [x y (,)] r))))
 
 (frame "1.55" [['split 'pea 'soup] ['navy 'bean 'soup]]
        (run* [r]
@@ -196,7 +199,7 @@
                      [(≡ 'split x) (≡ 'pea y)]
                      [(≡ 'navy x) (≡ 'bean y)]
                      (else fail))
-                    (≡ (list* x y 'soup ()) r))))
+                    (≡ [x y 'soup (,)] r))))
 
 (defn teacupᵒ [x]
   (condᵉ
@@ -208,48 +211,48 @@
        (run* [x]
              (teacupᵒ x)))
 
-(frame "1.57" [['tea true] ['cup true] [false true]]
+(frame "1.57" [['tea True] ['cup True] [False True]]
        (run* [r]
              (fresh [x y]
                     (condᵉ
-                     [(teacupᵒ x) (≡ true y) succeed]
-                     [(≡ false x) (≡ true y)]
+                     [(teacupᵒ x) (≡ True y) succeed]
+                     [(≡ False x) (≡ True y)]
                      (else fail))
-                    (≡ (list* x y ()) r))))
+                    (≡ [x y (,)] r))))
 
-(frame "1.58" [[#U0 #U1]
-               [#U0 #U1]]
+(frame "1.58" [[#U 0 #U 1]
+               [#U 0 #U 1]]
        (run* [r]
              (fresh [x y z]
                     (condᵉ
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
                      (else fail))
-                    (≡ (list* y z ()) r))))
+                    (≡ [y z (,)] r))))
 
-(frame "1.59" [[false #U0] [#U0 false]]
+(frame "1.59" [[False #U 0] [#U 0 False]]
        (run* [r]
              (fresh [x y z]
                     (condᵉ
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
                      (else fail))
-                    (≡ false x)
-                    (≡ (list* y z ()) r))))
+                    (≡ False x)
+                    (≡ [y z (,)] r))))
 
-(frame "1.60" [false]
+(frame "1.60" [False]
        (run* [q]
-             (let [a (≡ true q)
-                   b (≡ false q)]
+             (let [a (≡ True q)
+                   b (≡ False q)]
                b)))
 
-(frame "1.61" [false]
+(frame "1.61" [False]
        (run* [q]
-             (let [a (≡ true q)
+             (let [a (≡ True q)
                    b (fresh [x]
                             (≡ x q)
-                            (≡ false x))
+                            (≡ False x))
                    c (condᵉ
-                      [(≡ true q) succeed]
-                      [(≡ false q)])]
+                      [(≡ True q) succeed]
+                      [(≡ False q)])]
                b)))

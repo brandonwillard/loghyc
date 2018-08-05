@@ -15,7 +15,10 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]])
-(require adderall.dsl)
+
+(require [adderall.dsl [*]])
+(require [adderall.internal [defn-alias]])
+
 
 (defn-alias [typeᵒ typeo] [u v]
   (condᵉ

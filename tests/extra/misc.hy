@@ -17,19 +17,21 @@
 (import [adderall.dsl [*]]
         [adderall.internal [LVar]]
         [adderall.extra.misc [*]])
-(require adderall.dsl)
+
+(require [adderall.dsl [*]])
+
 
 (defn test-typeo []
-  (assert (= (run* [q] (typeᵒ 2 3) (≡ q true))
-             [true]))
-  (assert (= (run* [q] (typeᵒ 2 "foo") (≡ q true))
+  (assert (= (run* [q] (typeᵒ 2 3) (≡ q True))
+             [True]))
+  (assert (= (run* [q] (typeᵒ 2 "foo") (≡ q True))
              []))
   (assert (= (run* [q] (typeᵒ q 2))
              [(type 2)]))
   (assert (= (run* [q] (typeᵒ 2 q))
              [(type 2)]))
   (assert (= (run* [q] (fresh [x] (typeᵒ q x)))
-             [#U0]))
+             [#U 0]))
   (assert (= (run* [q] (fresh [x] (≡ x 2) (typeᵒ x q)))
              [(type 2)]))
   (assert (= (run* [q] (fresh [x] (≡ x 2) (typeᵒ q x)))

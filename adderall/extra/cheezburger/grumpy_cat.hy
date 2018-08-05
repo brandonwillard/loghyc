@@ -20,4 +20,4 @@
 
 (defn canhasᵒ [w]
   (≡ w 'cheezburger))
-(def canhaso canhasᵒ)
+(setv canhaso canhasᵒ)

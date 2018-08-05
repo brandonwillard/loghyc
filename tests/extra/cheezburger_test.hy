@@ -17,19 +17,19 @@
 (import [adderall.dsl [*]]
         [adderall.extra.cheezburger.kitteh :as kitteh]
         [adderall.extra.cheezburger.grumpy-cat :as grumpy-cat])
-(require adderall.dsl)
+(require [adderall.dsl [*]])
 
 ;; By default, using cheezburger.kitteh, you can has anything.
 (defn test-cheezburger-kitteh []
-  (assert (= (run* [q] (kitteh.canhasᵒ 'cheezburger) (≡ q true))
-             [true]))
-  (assert (= (run* [q] (kitteh.canhasᵒ 'a-million-dollars) (≡ q true))
-             [true])))
+  (assert (= (run* [q] (kitteh.canhasᵒ 'cheezburger) (≡ q True))
+             [True]))
+  (assert (= (run* [q] (kitteh.canhasᵒ 'a-million-dollars) (≡ q True))
+             [True])))
 
 ;; When using cheezburger.grumpy-cat, you can has cheezburger. You
 ;; want to has anything else? No.
 (defn test-cheezburger-grumpy-cat []
-  (assert (= (run* [q] (grumpy-cat.canhasᵒ 'cheezburger) (≡ q true))
-             [true]))
-  (assert (= (run* [q] (grumpy-cat.canhasᵒ 'a-million-dollars) (≡ q true))
+  (assert (= (run* [q] (grumpy-cat.canhasᵒ 'cheezburger) (≡ q True))
+             [True]))
+  (assert (= (run* [q] (grumpy-cat.canhasᵒ 'a-million-dollars) (≡ q True))
              [])))

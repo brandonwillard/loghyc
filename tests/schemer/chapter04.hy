@@ -15,9 +15,12 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]]
+        [adderall.internal [*]]
         [tests.schemer.common [*]])
-(require adderall.dsl)
-(require tests.schemer.common)
+
+(require [adderall.dsl [*]])
+(require [tests.schemer.common [*]])
+
 
 (frame "4.10" [['tofu 'd 'tofu 'e]]
        (run 1 [out]
@@ -34,15 +37,15 @@
                    ['a 'b 'tofu 'd 'tofu 'e]
                    ['tofu 'd 'tofu 'e])))
 
-(frame "4.13" [true]
+(frame "4.13" [True]
        (run* [q]
              (memᵒ 'tofu ['tofu 'e] ['tofu 'e])
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "4.14" []
        (run* [q]
              (memᵒ 'tofu ['tofu 'e] ['tofu])
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "4.15" ['tofu]
        (run* [x]
@@ -57,63 +60,63 @@
              (fresh [x]
                     (memᵒ 'tofu ['a 'b x 'd 'tofu 'e] out))))
 
-(frame "4.18" [#U0
-               #U0
-               (list* 'tofu #U0)
-               (list* #U0 'tofu #U1)
-               (list* #U0 #U1 'tofu #U2)
-               (list* #U0 #U1 #U2 'tofu #U3)
-               (list* #U0 #U1 #U2 #U3 'tofu #U4)
-               (list* #U0 #U1 #U2 #U3 #U4 'tofu #U5)
-               (list* #U0 #U1 #U2 #U3 #U4 #U5 'tofu #U6)
-               (list* #U0 #U1 #U2 #U3 #U4 #U5 #U6 'tofu #U7)
-               (list* #U0 #U1 #U2 #U3 #U4 #U5 #U6 #U7 'tofu #U8)
-               (list* #U0 #U1 #U2 #U3 #U4 #U5 #U6 #U7 #U8 'tofu #U9)]
+(frame "4.18" [#U 0
+               #U 0
+               ['tofu #U 0]
+               [#U 0 'tofu #U 1]
+               [#U 0 #U 1 'tofu #U 2]
+               [#U 0 #U 1 #U 2 'tofu #U 3]
+               [#U 0 #U 1 #U 2 #U 3 'tofu #U 4]
+               [#U 0 #U 1 #U 2 #U 3 #U 4 'tofu #U 5]
+               [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5 'tofu #U 6]
+               [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6 'tofu #U 7]
+               [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6 #U 7 'tofu #U 8]
+               [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6 #U 7 #U 8 'tofu #U 9]]
        (run 12 [z]
             (fresh [u]
-                   (memᵒ 'tofu (list* 'a 'b 'tofu 'd 'tofu 'e z) u))))
+                   (memᵒ 'tofu ['a 'b 'tofu 'd 'tofu 'e z] u))))
 
 (frame "4.30" [['a 'b 'd 'peas 'e]]
        (run 1 [out]
             (fresh [y]
                    (rememberᵒ 'peas ['a 'b y 'd 'peas 'e] out))))
 
-(frame "4.31" [['b 'a 'd  #U0 'e]
-               ['a 'b 'd  #U0 'e]
-               ['a 'b 'd  #U0 'e]
-               ['a 'b 'd  #U0 'e]
-               ['a 'b #U0 'd  'e]
-               ['a 'b 'e  'd  #U0]
-               ['a 'b #U0 'd  #U1 'e]]
+(frame "4.31" [['b 'a 'd  #U 0 'e]
+               ['a 'b 'd  #U 0 'e]
+               ['a 'b 'd  #U 0 'e]
+               ['a 'b 'd  #U 0 'e]
+               ['a 'b #U 0 'd  'e]
+               ['a 'b 'e  'd  #U 0]
+               ['a 'b #U 0 'd  #U 1 'e]]
        (run* [out]
              (fresh [y z]
                     (rememberᵒ y ['a 'b y 'd z 'e] out))))
 
 (frame "4.49" [['d  'd]
                ['d  'd]
-               [#U0 #U0]
+               [#U 0 #U 0]
                ['e  'e]]
        (run* [r]
              (fresh [y z]
                     (rememberᵒ y [y 'd z 'e] [y 'd 'e])
                     (≡ [y z] r))))
 
-(frame "4.57" [#U0
-               #U0
-               #U0
-               #U0
-               #U0
+(frame "4.57" [#U 0
+               #U 0
+               #U 0
+               #U 0
+               #U 0
                []
-               (cons #U0 #U1)
-               [#U0]
-               (list* #U0 #U1 #U2)
-               [#U0 #U1]
-               (list* #U0 #U1 #U2 #U3)
-               [#U0 #U1 #U2]
-               (list* #U0 #U1 #U2 #U3 #U4)]
+               (cons #U 0 #U 1)
+               [#U 0]
+               [#U 0 #U 1 #U 2]
+               [#U 0 #U 1]
+               [#U 0 #U 1 #U 2 #U 3]
+               [#U 0 #U 1 #U 2]
+               [#U 0 #U 1 #U 2 #U 3 #U 4]]
        (run 13 [w]
             (fresh [y z out]
-                   (rememberᵒ y (list* 'a 'b y 'd z w) out))))
+                   (rememberᵒ y ['a 'b y 'd z w] out))))
 
 (defn surpriseᵒ [s]
   (rememberᵒ s ['a 'b 'c] ['a 'b 'c]))
@@ -123,7 +126,7 @@
              (≡ 'd r)
              (surpriseᵒ r)))
 
-(frame "4.70" [#U0]
+(frame "4.70" [#U 0]
        (run* [r]
              (surpriseᵒ r)))
 

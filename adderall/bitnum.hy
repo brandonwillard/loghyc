@@ -14,8 +14,12 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]])
-(require adderall.dsl)
+(import [adderall.dsl [*]]
+        [adderall.internal [*]])
+
+(require [adderall.dsl [*]])
+(require [adderall.internal [defn-alias]])
+
 
 (defn-alias [nandᵒ nando] [x y r]
   (condᵉ
@@ -65,7 +69,7 @@
 
 (defn-alias [>1ᵒ >1o] [n]
   (fresh [a ad dd]
-         (≡ (list* a ad dd) n)))
+         (≡ [a ad dd] n)))
 
 (defn-alias [adderᵒ addero] [d n m r]
   (condⁱ
@@ -105,18 +109,18 @@
 ;; with leading underscores do not get automatically imported. (With
 ;; python2, we get mungling, and the function will start with a hy_
 ;; prefix, so we don't have that problem)
-(if-python2
+#_(if-python2
  None
- (def __all__ ["nandᵒ" "nando"
-               "xorᵒ" "xoro"
-               "notᵒ" "noto"
-               "andᵒ" "ando"
-               "half_adderᵒ" "half_addero"
-               "full_adderᵒ" "full_addero"
-               "build_num"
-               "posᵒ" "poso"
-               ">1ᵒ" ">1o"
-               "adderᵒ" "addero"
-               "gen_adderᵒ" "gen_addero"
-               "+ᵒ" "+o"
-               "_ᵒ" "_o"]))
+ (setv EXPORTS ["nandᵒ" "nando"
+                "xorᵒ" "xoro"
+                "notᵒ" "noto"
+                "andᵒ" "ando"
+                "half_adderᵒ" "half_addero"
+                "full_adderᵒ" "full_addero"
+                "build_num"
+                "posᵒ" "poso"
+                ">1ᵒ" ">1o"
+                "adderᵒ" "addero"
+                "gen_adderᵒ" "gen_addero"
+                "+ᵒ" "+o"
+                "-ᵒ" "-o"]))

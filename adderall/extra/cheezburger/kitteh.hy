@@ -20,4 +20,4 @@
 
 (defn canhasᵒ [w]
   succeed)
-(def canhaso canhasᵒ)
+(setv canhaso canhasᵒ)

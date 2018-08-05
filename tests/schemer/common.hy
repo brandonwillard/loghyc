@@ -14,16 +14,15 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]]
-        [hy.models.symbol [HySymbol]])
-(require adderall.dsl)
+(import [hy.models [HySymbol]])
 
-(defreader _ [&rest _])
 
-(defmacro frame [frame-num value expr]
-  (let [res (gensym)
-        cname (+ 'test-rs- frame-num)
-        name (.replace cname "." "_")]
+(defmacro/g! frame [frame-num value expr]
+  (require [hy.contrib.walk [let :as g!let]])
+  (g!let [res (gensym)
+          cname (+ 'test-rs- frame-num)
+          name (.replace cname "." "_")]
     `(defn ~(HySymbol name) []
-       (let [~res ~expr]
+       (require [hy.contrib.walk [let :as g!let]])
+       (g!let [~res ~expr]
          (assert (= ~value ~res))))))

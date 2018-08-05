@@ -15,18 +15,21 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]]
+        [adderall.internal [*]]
         [tests.schemer.common [*]])
-(require adderall.dsl)
-(require tests.schemer.common)
+
+(require [adderall.dsl [*]])
+(require [tests.schemer.common [*]])
+
 
 (frame "2.6" ['a]
        (run* [r]
-             (firstᵒ (list* 'a 'c 'o 'r 'n None) r)))
+             (firstᵒ ['a 'c 'o 'r 'n None] r)))
 
-(frame "2.7" [true]
+(frame "2.7" [True]
        (run* [q]
              (firstᵒ ['a 'c 'o 'r 'n] 'a)
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "2.8" ['pear]
        (run* [r]
@@ -54,10 +57,10 @@
                     (firstᵒ [['a] ['b] ['c]] y)
                     (≡ (cons x y) r))))
 
-(frame "2.19" [true]
+(frame "2.19" [True]
        (run* [q]
              (restᵒ ['a 'c 'o 'r 'n] ['c 'o 'r 'n])
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "2.20" ['o]
        (run* [x]
@@ -114,12 +117,12 @@
 (frame "2.32" []
        (run* [q]
              (emptyᵒ ['grape 'raisin 'pear])
-             (≡ true q)))
+             (≡ True q)))
 
-(frame "2.33" [true]
+(frame "2.33" [True]
        (run* [q]
              (emptyᵒ [])
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "2.34" [[]]
        (run* [x]
@@ -128,37 +131,37 @@
 (frame "2.38" []
        (run* [q]
              (eqᵒ 'pear 'plum)
-             (≡ true q)))
+             (≡ True q)))
 
-(frame "2.39" [true]
+(frame "2.39" [True]
        (run* [q]
              (eqᵒ 'plum 'plum)
-             (≡ true q)))
+             (≡ True q)))
 
-(frame "2.52" [(list* #U0 #U1 'salad)]
+(frame "2.52" [[#U 0 #U 1 'salad]]
        (run* [r]
              (fresh [x y]
-                    (≡ r (list* x y 'salad)))))
+                    (≡ r [x y 'salad]))))
 
-(frame "2.54" [true]
+(frame "2.54" [True]
        (run* [q]
              (pairᵒ (cons q q))
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "2.55" []
        (run* [q]
              (pairᵒ [])
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "2.56" []
        (run* [q]
              (pairᵒ 'pair)
-             (≡ true q)))
+             (≡ True q)))
 
-(frame "2.57" [(list* #U0 #U1)]
+(frame "2.57" [[#U 0 #U 1]]
        (run* [x]
              (pairᵒ x)))
 
-(frame "2.58" [#U0]
+(frame "2.58" [#U 0]
        (run* [r]
              (pairᵒ (cons r 'pear))))

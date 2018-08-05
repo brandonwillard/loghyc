@@ -15,7 +15,7 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [functools [reduce partial]]
-        [hy [HySymbol HyList HyKeyword]]
+        [hy [HySymbol HyExpression HyList HyKeyword]]
         [hy.contrib.walk [prewalk]])
 (import [adderall.internal [unify lvar? seq? reify
                             LVar unbound interleave cons]])
@@ -119,29 +119,27 @@
 (setv s# succeed)
 
 (defn fail [s]
-  (iter ()))
+  (iter (,)))
 (setv u# fail)
 
 (deftag ? [v] `(LVar (gensym '~v)))
 
+(defn m-bind-sequence [mv f]
+  (when mv
+    (let [vs (list mv)]
+         (chain (f (first vs))
+                (m-bind-sequence (list (rest vs)) f)))))
+
 (defmonad logic-m
   [m-result (fn [v] (list v))
-   m-bind   (defn m-bind-sequence [mv f]
-              (when mv
-                (let [vs (list mv)]
-                  (chain (f (first vs))
-                         (m-bind-sequence (list (rest vs)) f)))))
+   m-bind   m-bind-sequence
    m-zero   []
    m-plus   (fn [mvs]
-              (apply chain mvs))])
+              (chain #* mvs))])
 
 (defmonad logic-interleave-m
   [m-result (fn [v] (list v))
-   m-bind   (defn m-bind-sequence [mv f]
-              (when mv
-                (let [vs (list mv)]
-                  (chain (f (first vs))
-                         (m-bind-sequence (list (rest vs)) f)))))
+   m-bind   m-bind-sequence
    m-zero   []
    m-plus   (fn [mvs]
               (interleave mvs))])
@@ -159,7 +157,7 @@
 (defn-alias [allⁱ alli] [&rest goals]
   (if goals
     (with-monad logic-interleave-m
-      (reduce (defn m-chain-link [chain-expr step]
+      (reduce (fn [chain-expr step]
                 (fn [v]
                   (if (empty? v)
                     (step v)
@@ -172,26 +170,30 @@
  (defn __subst-else [conds]
    (map (fn [c]
           (if (= (first c) 'else)
-              (HyList `(cons succeed ~(list (rest c))))
+              (HyExpression `(cons succeed ~(list (rest c))))
             c)) conds)))
 
 (defmacro-alias [condᵉ conde] [&rest cs]
-  (with-gensyms [s c]
+  (with-gensyms [s c with-monad]
     (let [ncs (__subst-else cs)]
-      `(with-monad logic-m
-         (fn [~s]
-           (m-plus (map (fn [~c]
-                          ((apply all ~c) ~s))
-                        [~@ncs])))))))
+         `(do
+            (require [monaxhyd.core [with-monad :as ~with-monad]])
+            (~with-monad logic-m
+              (fn [~s]
+                (m-plus (map (fn [~c]
+                               ((all #* ~c) ~s))
+                             [~@ncs]))))))))
 
 (defmacro-alias [condⁱ condi] [&rest cs]
-  (with-gensyms [s c]
+  (with-gensyms [s c with-monad]
     (let [ncs (__subst-else cs)]
-      `(with-monad logic-interleave-m
-         (fn [~s]
-           (m-plus (map (fn [~c]
-                          ((apply all ~c) ~s))
-                        [~@ncs])))))))
+         `(do
+            (require [monaxhyd.core [with-monad :as ~with-monad]])
+            (~with-monad logic-interleave-m
+             (fn [~s]
+               (m-plus (map (fn [~c]
+                              ((all #* ~c) ~s))
+                            [~@ncs]))))))))
 
 (defn-alias [consᵒ conso] [f r l]
   (cond

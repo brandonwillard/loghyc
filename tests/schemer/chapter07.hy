@@ -16,9 +16,13 @@
 
 (import [adderall.dsl [*]]
         [adderall.bitnum [*]]
-        [tests.schemer.common [*]])
-(require adderall.dsl)
-(require tests.schemer.common)
+        [adderall.internal [*]])
+(import [adderall.bitnum [-ᵒ -o]])
+(import [tests.schemer.common [*]])
+
+(require [adderall.dsl [*]])
+(require [tests.schemer.common [*]])
+
 
 (frame "7.6" [[0 0] [1 1]]
        (run* [s]
@@ -85,80 +89,80 @@
                     (full-adderᵒ b x y r c)
                     (≡ [b x y r c] s))))
 
-(frame "7.80" [true]
+(frame "7.80" [True]
        (run* [q]
              (posᵒ [0 1 1])
-             (≡ true q)))
+             (≡ True q)))
 
-(frame "7.81" [true]
+(frame "7.81" [True]
        (run* [q]
              (posᵒ [1])
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "7.82" []
        (run* [q]
              (posᵒ [])
-             (≡ true q)))
+             (≡ True q)))
 
-(frame "7.83" [(cons #U0 #U1)]
+(frame "7.83" [(cons #U 0 #U 1)]
        (run* [r]
              (posᵒ r)))
 
-(frame "7.86" [true]
+(frame "7.86" [True]
        (run* [q]
              (>1ᵒ [0 1 1])
-             (≡ q true)))
+             (≡ q True)))
 
-(frame "7.87" [true]
+(frame "7.87" [True]
        (run* [q]
              (>1ᵒ [0 1])
-             (≡ q true)))
+             (≡ q True)))
 
 (frame "7.88" []
        (run* [q]
              (>1ᵒ [1])
-             (≡ q true)))
+             (≡ q True)))
 
 (frame "7.89" []
        (run* [q]
              (>1ᵒ [])
-             (≡ q true)))
+             (≡ q True)))
 
-(frame "7.90" [(list* #U0 #U1 #U2)]
+(frame "7.90" [[#U 0 #U 1 #U 2]]
        (run* [r]
              (>1ᵒ r)))
 
-(frame "7.97" [[#U0 [] #U0]
-               [() (cons #U0 #U1) (cons #U0 #U1)]
+(frame "7.97" [[#U 0 [] #U 0]
+               [(,) (cons #U 0 #U 1) (cons #U 0 #U 1)]
                [[1] [1] [0 1]]]
        (run 3 [s]
             (fresh [x y r]
                    (adderᵒ 0 x y r)
                    (≡ [x y r] s))))
 
-;; This is diabled, because the order of solutions is different,
+;; This is disabled, because the order of solutions is different,
 ;; likely because adderall.bitnum's adderᵒ does not use allⁱ (yet).
-#_(frame "7.101" [[#U0 () #U0]
-                  [[] (cons #U0 #U1) (cons #U0 #U1)]
+#_(frame "7.101" [[#U 0 (,) #U 0]
+                  [[] (cons #U 0 #U 1) (cons #U 0 #U 1)]
                   [[1] [1] [0 1]]
-                  [[1] (list* 0 #U0 #U1) (list* 1 #U0 #U1)]
-                  [(list* 0 #U0 #U1) [1] (list* 1 #U0 #U1)]
+                  [[1] [0 #U 0 #U 1] [1 #U 0 #U 1]]
+                  [[0 #U 0 #U 1] [1] [1 #U 0 #U 1]]
                   [[0 1] [0 1] [0 0 1]]
                   [[1] [1 1] [0 0 1]]
-                  [[1] (list* 1 0 #U0 #U1) (list* 0 1 #U0 #U1)]
+                  [[1] [1 0 #U 0 #U 1] [0 1 #U 0 #U 1]]
                   [[1 1] [1] [0 0 1]]
                   [[1] [1 1 1] [0 0 0 1]]
                   [[1 1] [0 1] [1 0 1]]
-                  [[1] (list* 1 1 0 #U0 #U1) (list* 0 0 1 #U0 #U1)]
-                  [(list* 1 0 #U0 #U1) [1] (list* 0 1 #U0 #U1)]
+                  [[1] [1 1 0 #U 0 #U 1] [0 0 1 #U 0 #U 1]]
+                  [[1 0 #U 0 #U 1] [1] [0 1 #U 0 #U 1]]
                   [[1] [1 1 1 1] [0 0 0 0 1]]
-                  [[0 1] (list* 0 0 #U0 #U1) (list* 0 1 #U0 #U1)]
-                  [[1] (list* 1 1 1 0 #U0 #U1) (list* 0 0 0 1 #U0 #U1)]
+                  [[0 1] [0 0 #U 0 #U 1] [0 1 #U 0 #U 1]]
+                  [[1] [1 1 1 0 #U 0 #U 1] [0 0 0 1 #U 0 #U 1]]
                   [[1 1 1] [1] [0 0 0 1]]
                   [[1] [1 1 1 1 1] [0 0 0 0 0 1]]
                   [[0 1] [1 1] [1 0 1]]
-                  [[1] (list* 1 1 1 1 0 #U0 #U1) (list* 0 0 0 0 1 #U0 #U1)]
-                  [(list* 1 1 0 #U0 #U1) [1] (list* 0 0 1 #U1 #U1)]
+                  [[1] [1 1 1 1 0 #U 0 #U 1] [0 0 0 0 1 #U 0 #U 1]]
+                  [[1 1 0 #U 0 #U 1] [1] [0 0 1 #U 1 #U 1]]
                   [[1] [1 1 1 1 1 1] [0 0 0 0 0 0 1]]]
          (run 22 [s]
               (fresh [x y r]

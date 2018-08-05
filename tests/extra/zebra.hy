@@ -16,15 +16,17 @@
 
 (import [adderall.dsl [*]]
         [adderall.extra.zebra [*]])
-(require adderall.dsl)
-(require adderall.extra.zebra)
+
+(require [adderall.dsl [*]])
+(require [adderall.extra.zebra [*]])
+
 
 (defn test-zebrap []
   (assert (= (run* [q] (zebra-tableᵖ q))
-             [[['norwegian  'kools         #U0         'fox        'yellow]
+             [[['norwegian  'kools         #U 0         'fox        'yellow]
                ['ukrainian  'chesterfields 'tea        'horse      'blue]
                ['englishman 'oldgods       'milk       'snails     'red]
                ['spaniard   'lucky-strikes 'oj         'dog        'ivory]
-               ['japanese   'parliaments   'coffee     #U1         'green]]]))
+               ['japanese   'parliaments   'coffee     #U 1         'green]]]))
   (assert (= (run* [water horse] (zebraᵖ water horse))
              [['norwegian 'japanese]])))

@@ -15,6 +15,7 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [collections [UserList]])
+
 (require [hy.contrib.walk [let]])
 
 
@@ -104,6 +105,9 @@
   (LVar (.format "_.{0}" n) 'unbound))
 
 (defn substitute [val s]
+  "Substitute mapped values found in the given alist.
+
+`s` must be an alist represented by a tuple."
   (while (lvar? val)
     (for [[svar sval] (substitutions s)]
       (when (is val svar)
@@ -113,11 +117,22 @@
   val)
 
 (defn substitutions [s]
+  "Generator for alist (in the form of a tuple) key-value pairs."
   (while (!= s (,))
     (setv (, var val s) s)
     (yield (, var val))))
 
 (defn reify [val s]
+  "Replace LVars with their unified values.
+
+E.g.
+  (setv unify-form ['a (LVar 'b)])
+  (setv unify-res (unify ['a 'b] unify-form (tuple)))
+  (reify unify-form unify-res)
+
+Returns `val` with LVars substituted by their associated values in the
+unification results, `s`.
+"
   (setv free-vars {})
   (defn reifying [val]
     (setv val (substitute val s))
@@ -159,6 +174,11 @@
    (cdr l)))
 
 (defn unify [u v s]
+  "Unify two forms, given a tuple of existing substitutions.
+
+E.g.
+  (unify ['a 'b 'c] ['a (LVar 'b) (LVar 'c)] (tuple))
+"
   (when s
     (setv u (substitute u s))
     (setv v (substitute v s)))
@@ -199,4 +219,4 @@
      s)]
    [(= u v) s]))
 
-;; (setv __all__ [])
+(setv EXPORTS [])

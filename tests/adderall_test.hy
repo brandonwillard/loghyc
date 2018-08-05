@@ -14,11 +14,12 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]])
+(import [adderall.dsl [*]]
+        [adderall.internal [*]])
 
 (require [adderall.dsl [*]])
-(require adderall.debug)
-(require tests.utils)
+(require [adderall.debug [*]])
+(require [tests.utils [*]])
 (require [hy.contrib.walk [let]])
 
 
@@ -61,8 +62,7 @@
                               (≡ x 2)
                               (≡ q (type x))))
              [LVar]))
-  (assert (= (run* [q] (fresh [x]
-                              (≡ x 2)
+  (assert (= (run* [q] (fresh [x] (≡ x 2)
                               (project [x]
                                        (≡ q (type x)))))
              [(type 2)])))
@@ -86,19 +86,19 @@
   (assert (= (first (wrap-stdout
                      (lazy-run* [q]
                                 (log "hello")
-                                (≡ q true))))
+                                (≡ q True))))
              ""))
 
   (assert (= (first (wrap-stdout
                      (list (lazy-run* [q]
                                       (log "hello")
-                                      (≡ q true)))))
+                                      (≡ q True)))))
              "hello\n"))
 
   (assert (= (first (wrap-stdout
                      (run* [q]
                            (log "hello")
-                           (≡ q true))))
+                           (≡ q True))))
              "hello\n")))
 
 (defn test-custom-unification []
