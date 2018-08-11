@@ -91,26 +91,30 @@
 (frame "1.30" [[#U 0 #U 1]]
        (run* [r]
              (fresh [x y]
-                    (≡ [x y (,)] r))))
+                    ;; Original is `(cons x (cons y '()))`, but `cons` is different here.
+                    (≡ [x y] r))))
 
 (frame "1.31" [[#U 0 #U 1]]
        (run* [s]
              (fresh [t u]
-                    (≡ [t u (,)] s))))
+                    ;; Original is `(cons t (cons u '()))`, but `cons` is different here.
+                    (≡ [t u] s))))
 
 (frame "1.32" [[#U 0 #U 1 #U 0]]
        (run* [r]
              (fresh [x]
                     (let [y x]
                       (fresh [x]
-                             (≡ [y x y (,)] r))))))
+                             ;; Original is `(cons y (cons x (cons x '())))`, but `cons` is different here.
+                             (≡ [y x y] r))))))
 
 (frame "1.33" [[#U 0 #U 1 #U 0]]
        (run* [r]
              (fresh [x]
                     (let [y x]
                       (fresh [x]
-                             (≡ [x y x (,)] r))))))
+                             ;; Original is `(cons x (cons y (cons y '())))`, but `cons` is different here.
+                             (≡ [x y x] r))))))
 
 (frame "1.34" []
        (run* [q]
@@ -181,7 +185,8 @@
              (fresh [x y]
                     (≡ 'split x)
                     (≡ 'pea y)
-                    (≡ [x y (,)] r))))
+                    ;; Original is `(cons x (cons y '()))`, but `cons` is different here.
+                    (≡ [x y] r))))
 
 (frame "1.54" [['split 'pea] ['navy 'bean]]
        (run* [r]
@@ -190,7 +195,8 @@
                      [(≡ 'split x) (≡ 'pea y)]
                      [(≡ 'navy x) (≡ 'bean y)]
                      (else fail))
-                    (≡ [x y (,)] r))))
+                    ;; Original is `(cons x (cons y '()))`, but `cons` is different here.
+                    (≡ [x y] r))))
 
 (frame "1.55" [['split 'pea 'soup] ['navy 'bean 'soup]]
        (run* [r]
@@ -199,7 +205,8 @@
                      [(≡ 'split x) (≡ 'pea y)]
                      [(≡ 'navy x) (≡ 'bean y)]
                      (else fail))
-                    (≡ [x y 'soup (,)] r))))
+                    ;; Original is `(cons x (cons y (cons 'soup '())))`, but `cons` is different here.
+                    (≡ [x y 'soup] r))))
 
 (defn teacupᵒ [x]
   (condᵉ
@@ -218,7 +225,8 @@
                      [(teacupᵒ x) (≡ True y) succeed]
                      [(≡ False x) (≡ True y)]
                      (else fail))
-                    (≡ [x y (,)] r))))
+                    ;; Original is `(cons x (cons y '()))`, but `cons` is different here.
+                    (≡ [x y] r))))
 
 (frame "1.58" [[#U 0 #U 1]
                [#U 0 #U 1]]
@@ -228,7 +236,8 @@
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
                      (else fail))
-                    (≡ [y z (,)] r))))
+                    ;; Original is `(cons y (cons z '()))`, but `cons` is different here.
+                    (≡ [y z] r))))
 
 (frame "1.59" [[False #U 0] [#U 0 False]]
        (run* [r]
@@ -238,7 +247,8 @@
                      [(fresh [x] (≡ y x)) (≡ z x)]
                      (else fail))
                     (≡ False x)
-                    (≡ [y z (,)] r))))
+                    ;; Original is `(cons y (cons z '()))`, but `cons` is different here.
+                    (≡ [y z] r))))
 
 (frame "1.60" [False]
        (run* [q]

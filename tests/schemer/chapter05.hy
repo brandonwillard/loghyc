@@ -36,7 +36,7 @@
                              ['tastes 'yummy]
                              x))))
 
-(frame "5.12" [['cake 'with 'ice 'cream #U 0]]
+(frame "5.12" [(cons 'cake 'with 'ice 'cream #U 0)]
        (run* [x]
              (fresh [y]
                     (appendᵒ ['cake 'with 'ice 'cream]
@@ -46,14 +46,14 @@
 (frame "5.13" [['cake 'with 'ice 'd 't]]
        (run 1 [x]
             (fresh [y]
-                   (appendᵒ ['cake 'with 'ice y]
+                   (appendᵒ (cons 'cake 'with 'ice y)
                             ['d 't]
                             x))))
 
 (frame "5.14" [[]]
        (run 1 [y]
             (fresh [x]
-                   (appendᵒ ['cake 'with 'ice y]
+                   (appendᵒ (cons 'cake 'with 'ice y)
                             ['d 't]
                             x))))
 
@@ -65,7 +65,7 @@
                ['cake 'with 'ice #U 0 #U 1 #U 2 #U 3 'd 't]]
        (run 5 [x]
             (fresh [y]
-                   (appendᵒ ['cake 'with 'ice y]
+                   (appendᵒ (cons 'cake 'with 'ice y)
                             ['d 't]
                             x))))
 
@@ -76,7 +76,7 @@
                [#U 0 #U 1 #U 2 #U 3]]
        (run 5 [y]
             (fresh [x]
-                   (appendᵒ ['cake 'with 'ice y]
+                   (appendᵒ (cons 'cake 'with 'ice y)
                             ['d 't]
                             x))))
 
@@ -87,8 +87,8 @@
                ['cake 'with 'ice #U 0 #U 1 #U 2 #U 3 'd 't #U 0 #U 1 #U 2 #U 3]]
        (run 5 [x]
             (fresh [y]
-                   (appendᵒ ['cake 'with 'ice y]
-                            ['d 't y]
+                   (appendᵒ (cons 'cake 'with 'ice y)
+                            (cons 'd 't y)
                             x))))
 
 (frame "5.21" [['cake 'with 'ice 'cream 'd 't #U 0]]
@@ -157,25 +157,23 @@
                    (appendᵒ x y z))))
 
 (frame "5.36" [#U 0
-               [#U 0 #U 1]
-               [#U 0 #U 1 #U 2]
-               [#U 0 #U 1 #U 2 #U 3]
-               [#U 0 #U 1 #U 2 #U 3 #U 4]
-               [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5]
-               [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6]]
+               (cons #U 0 #U 1)
+               (cons #U 0 #U 1 #U 2)
+               (cons #U 0 #U 1 #U 2 #U 3)
+               (cons #U 0 #U 1 #U 2 #U 3 #U 4)
+               (cons #U 0 #U 1 #U 2 #U 3 #U 4 #U 5)
+               (cons #U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6)]
        (run 7 [z]
             (fresh [x y]
                    (appendᵒ x y z))))
 
 (frame "5.37" [[[] #U 0 #U 0]
-               [[#U 0] #U 1 [#U 0 #U 1]]
-               [[#U 0 #U 1] #U 2 [#U 0 #U 1 #U 2]]
-               [[#U 0 #U 1 #U 2] #U 3 [#U 0 #U 1 #U 2 #U 3]]
-               [[#U 0 #U 1 #U 2 #U 3] #U 4 [#U 0 #U 1 #U 2 #U 3 #U 4]]
-               [[#U 0 #U 1 #U 2 #U 3 #U 4] #U 5
-                [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5]]
-               [[#U 0 #U 1 #U 2 #U 3 #U 4 #U 5] #U 6
-                [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6]]]
+               [[#U 0] #U 1 (cons #U 0 #U 1)]
+               [[#U 0 #U 1] #U 2 (cons #U 0 #U 1 #U 2)]
+               [[#U 0 #U 1 #U 2] #U 3 (cons #U 0 #U 1 #U 2 #U 3)]
+               [[#U 0 #U 1 #U 2 #U 3] #U 4 (cons #U 0 #U 1 #U 2 #U 3 #U 4)]
+               [[#U 0 #U 1 #U 2 #U 3 #U 4] #U 5 (cons #U 0 #U 1 #U 2 #U 3 #U 4 #U 5)]
+               [[#U 0 #U 1 #U 2 #U 3 #U 4 #U 5] #U 6 (cons #U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6)]]
        (run 7 [r]
             (fresh [x y z]
                    (appendᵒ x y z)
@@ -310,7 +308,7 @@
         (run* [x]
               (flattenrevᵒ [['a 'b] 'c] x))))
 
-(frame "5.77" [['a 'b 'c]
+(frame "5.77" [(cons 'a 'b 'c)
                ['a 'b 'c]]
        (run 2 [x]
             (flattenrevᵒ x ['a 'b 'c])))

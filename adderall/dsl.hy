@@ -43,12 +43,14 @@
   `(do
      (require [hy.contrib.walk [let :as ~g!let]])
      (~g!let [~@(--prep-fresh-vars-- vars)
-              ~g!res (fn [] (for [~g!s ((all ~@goals) (,))]
-                              (when (none? ~g!s)
-                                (continue))
-                              (yield (reify (if (= (len ~vars) 1)
-                                                (first ~vars)
-                                                [~@vars]) ~g!s))))]
+              ~g!res (fn []
+                       (for [~g!s ((all ~@goals) (,))]
+                         (when (none? ~g!s)
+                           (continue))
+                         (yield (reify (if (= (len ~vars) 1)
+                                           (first ~vars)
+                                           [~@vars])
+                                       ~g!s))))]
       (if ~n
           (islice (~g!res) 0 ~n)
           (~g!res)))))
@@ -196,14 +198,21 @@
                             [~@ncs]))))))))
 
 (defn-alias [consᵒ conso] [f r l]
-  (cond
-   [(or (none? r) (= r [])) (≡ [f] l)]
-   [(or (lvar? r) (seq? r)) (≡ (cons f r) l)]
-   [True (≡ (cons f r) l)]))
+  (≡ (cons f r) l)
+  ;; XXX: This is a rather limiting assumption relative to `cons` semantics.
+  ;; Returning a list-pair like this says:
+  ;; (conso f r l) == (== [f r] l) == (== (cons f '(r)) l)
+  ;;
+  ;; So, for `r` an LVar, we're implicitly forcing an interpretation of
+  ;; `r` as a list, and, with otherwise consistent use of `cons`, it would
+  ;; never unify with a plain symbol.
+  ;;
+  ;; Instead, we could use `conde` to consider both cases, no?
+  #_(≡ [f r] l))
 
 (defn-alias [firstᵒ firsto] [l a]
   (fresh [d]
-         (consᵒ a d l)))
+         (≡ (cons a d) l)))
 
 (defn-alias [restᵒ resto] [l d]
   (fresh [a]
@@ -222,9 +231,11 @@
 (defn-alias [listᵒ listo] [l]
   (condᵉ
    [(emptyᵒ l) succeed]
-   [(pairᵒ l) (fresh [d]
-                     (restᵒ l d)
-                     (listᵒ d))]))
+   [(pairᵒ l)
+    (fresh [d]
+           (restᵒ l d)
+           (listᵒ d))]
+   (else fail)))
 
 (defn-alias [lolᵒ lolo] [l]
   (condᵉ
@@ -234,7 +245,8 @@
            (listᵒ a))
     (fresh [d]
            (restᵒ l d)
-           (lolᵒ d))]))
+           (lolᵒ d))]
+   (else fail)))
 
 (defn-alias [twinsᵒ twinso] [s]
   (fresh [x]

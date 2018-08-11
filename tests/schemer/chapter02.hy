@@ -15,12 +15,21 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]]
-        [adderall.internal [*]]
-        [tests.schemer.common [*]])
+        [adderall.internal [*]])
+(import [tests.schemer.common [*]])
 
+(require [hy.contrib.walk [let]])
 (require [adderall.dsl [*]])
 (require [tests.schemer.common [*]])
 
+
+(frame "2.3" [[#U 0 #U 1]]
+       (run* [r]
+             (fresh [v w]
+                    (== (let [x v
+                              y w]
+                             `(~x ~y))
+                        r))))
 
 (frame "2.6" ['a]
        (run* [r]
@@ -53,7 +62,7 @@
 (frame "2.18" [[['raisin 'pear] 'a]]
        (run* [r]
              (fresh [x y]
-                    (restᵒ ['grapre 'raisin 'pear] x)
+                    (restᵒ ['grape 'raisin 'pear] x)
                     (firstᵒ [['a] ['b] ['c]] y)
                     (≡ (cons x y) r))))
 
@@ -145,7 +154,9 @@
 
 (frame "2.54" [True]
        (run* [q]
-             (pairᵒ (cons q q))
+             (pairᵒ
+               `(~q ~q)
+               #_(cons q q))
              (≡ True q)))
 
 (frame "2.55" []
@@ -158,10 +169,11 @@
              (pairᵒ 'pair)
              (≡ True q)))
 
-(frame "2.57" [[#U 0 #U 1]]
+(frame "2.57" [(cons #U 0 #U 1)]
        (run* [x]
              (pairᵒ x)))
 
 (frame "2.58" [#U 0]
        (run* [r]
-             (pairᵒ (cons r 'pear))))
+             (pairᵒ `(~r pear)
+               #_(cons r 'pear))))

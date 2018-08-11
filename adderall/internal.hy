@@ -14,7 +14,7 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [collections [UserList]])
+(import [collections.abc [Iterable]])
 
 (require [hy.contrib.walk [let]])
 
@@ -37,40 +37,75 @@
                   `(setv ~name ~main)))
        ret))
 
-(defclass cons [UserList]
-  (defn --init-- [self car-part cdr-part]
-    (setv self.car-part car-part)
-    (setv self.cdr-part cdr-part)
-    (setv self.data (flatten (, car-part cdr-part))))
+(defclass ConsPair [Iterable]
+  (defn --init-- [self car cdr]
+    (setv self.car car)
+    (setv self.cdr cdr))
   (defn --hash-- [self]
-    (hash (, self.car-part self.cdr-part)))
+    (hash [self.car, self.cdr]))
   (defn --eq-- [self other]
     (and (= (type self) (type other))
-         (= self.car-part other.car-part)
-         (= self.cdr-part other.cdr-part)))
+         (= self.car other.car)
+         (= self.cdr other.cdr)))
+  (defn --iter-- [self]
+    (yield self.car)
+    (if (iterable? self.cdr)
+        (for [x self.cdr] (yield x))
+        (raise StopIteration)))
   (defn --repr-- [self]
-    (.format "({} . {})" self.car-part self.cdr-part)))
+    (.format "({} . {})" self.car self.cdr)))
+
+(defn -none-to-empty [x]
+  (cond [(none? x)
+         (list)]
+        [(and (coll? x)
+              (not (cons? x)))
+         (list x)]
+        [True x]))
+
+(defn cons [&rest parts]
+  "Construct a cons list.
+
+A list is returned when the cdr is a list or None; otherwise, a ConsPair is
+returned.
+
+The PARTS argument can be a car, cdr pair, or a list of cons arguments to be nested, i.e.
+
+    (cons car-1 car-2 car-3 cdr) == (cons car-1 (cons car-2 (cons car-3 cdr)))
+"
+  (if (> (len parts) 2)
+      (reduce (fn [x y] (cons y x))
+              (reversed parts))
+      ;; Handle basic car, cdr case.
+      (let [car-part (-none-to-empty (first parts))
+            cdr-part (-none-to-empty (if (and (coll? parts)
+                                              (> (len parts) 1))
+                                         (last parts)
+                                         None))]
+           (cond [(list? cdr-part)
+                  ;; (if (list? car-part) car-part [car-part])
+                  (+ [car-part] cdr-part)]
+                 [True (ConsPair car-part cdr-part)]))))
 
 (defn car [z]
-  (if (cons? z)
-      (. z car-part)
-      #_(z (fn [p q] p))
-    (first z)))
+  (or (getattr z "car" None) (-none-to-empty (first z))))
 (defn cdr [z]
-  (if (cons? z)
-      (. z cdr-part)
-      #_(z (fn [p q] q))
-    (list (rest z))))
+  (or (getattr z "cdr" None) (list (rest z))))
 
-(defn cons? [a]
-  (if (instance? cons a)
-      True
-    False))
+(defn neseq? [c]
+  (and (seq? c) (not (empty? c))))
 (defn lvar? [x] (instance? LVar x))
 (defn tuple? [x] (instance? tuple x))
-(defn seq? [x] (or (tuple? x)
+(defn list? [x] (instance? list x))
+(defn seq? [x] (or (and (not (cons? x))
+                        (tuple? x))
                    (instance? list x)
                    (instance? set x)))
+(defn cons? [a]
+  (if (or (and (list? a) (not (empty? a)))
+          (instance? ConsPair a))
+      True
+      False))
 
 (defn interleave [seqs]
   (setv iters (map iter seqs))
@@ -160,19 +195,6 @@ unification results, `s`.
       (and (tuple? val)
            (any (lfor item val (occurs var item s))))))
 
-(defn neseq? [c]
-  (and (seq? c) (pos? (len c))))
-
-(defn setish-first [l]
-  (if (instance? set l)
-    (first (list l))
-   (car l)))
-
-(defn setish-rest [l]
-  (if (instance? set l)
-      ((type l) (rest (list l)))
-   (cdr l)))
-
 (defn unify [u v s]
   "Unify two forms, given a tuple of existing substitutions.
 
@@ -182,7 +204,6 @@ E.g.
   (when s
     (setv u (substitute u s))
     (setv v (substitute v s)))
-
   (cond
    [(none? s) s]
    [(is u v) s]
@@ -214,8 +235,8 @@ E.g.
    [(or (and (cons? u) (or (cons? v) (neseq? v)))
         (and (or (cons? u) (neseq? u)) (cons? v)))
     (do
-     (setv s (unify (car u) (setish-first v) s))
-     (setv s (unify (cdr u) (setish-rest v) s))
+      (setv s (unify (car u) (car v) s))
+      (setv s (unify (cdr u) (cdr v) s))
      s)]
    [(= u v) s]))
 

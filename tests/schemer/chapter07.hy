@@ -128,12 +128,12 @@
              (>1ᵒ [])
              (≡ q True)))
 
-(frame "7.90" [[#U 0 #U 1 #U 2]]
+(frame "7.90" [(cons #U 0 #U 1 #U 2)]
        (run* [r]
              (>1ᵒ r)))
 
 (frame "7.97" [[#U 0 [] #U 0]
-               [(,) (cons #U 0 #U 1) (cons #U 0 #U 1)]
+               [[] (cons #U 0 #U 1) (cons #U 0 #U 1)]
                [[1] [1] [0 1]]]
        (run 3 [s]
             (fresh [x y r]

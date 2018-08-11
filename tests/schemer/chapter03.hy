@@ -15,8 +15,8 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]]
-        [adderall.internal [*]]
-        [tests.schemer.common [*]])
+        [adderall.internal [*]])
+(import [tests.schemer.common [*]])
 
 (require [adderall.dsl [*]])
 (require [tests.schemer.common [*]])
@@ -28,7 +28,9 @@
 
 (frame "3.10" [[]]
        (run 1 [x]
-            (listᵒ ['a 'b 'c x])))
+            (listᵒ
+              #_`(a b c ~x)
+              (cons ['a 'b 'c] x))))
 
 (frame "3.14" [[]
                [#U 0]
@@ -36,7 +38,10 @@
                [#U 0 #U 1 #U 2]
                [#U 0 #U 1 #U 2 #U 3]]
        (run 5 [x]
-            (listᵒ ['a 'b 'c x])))
+            (listᵒ
+              (cons ['a 'b 'c] x)
+              #_['a 'b 'c x]
+              #_`(a b c ~x))))
 
 (frame "3.20" [[]]
        (run 1 [l]
@@ -64,7 +69,7 @@
                [[] [] []]
                [[] [] [] []]]
        (run 5 [x]
-            (lolᵒ [['a 'b] ['c 'd] x])))
+            (lolᵒ (cons ['a 'b] ['c 'd] x))))
 
 
 (frame "3.32" [True]
@@ -95,7 +100,8 @@
                ['e [#U 0 #U 0] [[#U 1 #U 1] [#U 2 #U 2] [#U 3 #U 3] [#U 4 #U 4]]]]
        (run 5 [r]
             (fresh [w x y z]
-                   (lotᵒ [['g 'g] ['e w] [x y] z])
+                   (lotᵒ
+                     (cons ['g 'g] ['e w] [x y] z))
                    (≡ [w [x y] z] r))))
 
 (frame "3.47" [[['g 'g] ['e 'e] [#U 0 #U 0]]
@@ -103,7 +109,9 @@
                [['g 'g] ['e 'e] [#U 0 #U 0] [#U 1 #U 1] [#U 2 #U 2]]]
        (run 3 [out]
             (fresh [w x y z]
-                   (≡ [['g 'g] ['e w] [x y] z] out)
+                   (≡
+                    (cons ['g 'g] ['e w] [x y] z)
+                    out)
                    (lotᵒ out))))
 
 (frame "3.49" [[['g 'g] ['e 'e] [#U 0 #U 0]]
@@ -111,7 +119,9 @@
                [['g 'g] ['e 'e] [#U 0 #U 0] [#U 1 #U 1] [#U 2 #U 2]]]
        (run 3 [out]
             (fresh [w x y z]
-                   (≡ [['g 'g] ['e w] [x y] z] out)
+                   (≡
+                    (cons ['g 'g] ['e w] [x y] z)
+                    out)
                    (listofᵒ twinsᵒ out))))
 
 (frame "3.57" [True]
@@ -161,11 +171,11 @@
        (run 1 [l]
             (memberᵒ 'tofu l)))
 
-(frame "3.76" [['tofu #U 0]
-               [#U 0 'tofu #U 1]
-               [#U 0 #U 1 'tofu #U 2]
-               [#U 0 #U 1 #U 2 'tofu #U 3]
-               [#U 0 #U 1 #U 2 #U 3 'tofu #U 4]]
+(frame "3.76" [(cons 'tofu #U 0)
+               (cons #U 0 'tofu #U 1)
+               (cons #U 0 #U 1 'tofu #U 2)
+               (cons #U 0 #U 1 #U 2 'tofu #U 3)
+               (cons #U 0 #U 1 #U 2 #U 3 'tofu #U 4)]
        (run 5 [l]
             (memberᵒ 'tofu l)))
 
@@ -174,18 +184,17 @@
              (pmemberᵒ 'tofu ['a 'b 'tofu 'd 'tofu])
              (≡ True q)))
 
-(frame "3.94" [['tofu #U 0 #U 1]
+(frame "3.94" [(cons 'tofu #U 0 #U 1)
                ['tofu]
-               [#U 0 'tofu #U 1 #U 2]
+               (cons #U 0 'tofu #U 1 #U 2)
                [#U 0 'tofu]
-               [#U 0 #U 1 'tofu #U 2 #U 3]
+               (cons #U 0 #U 1 'tofu #U 2 #U 3)
                [#U 0 #U 1 'tofu]
-               [#U 0 #U 1 #U 2 'tofu #U 3 #U 4]
+               (cons #U 0 #U 1 #U 2 'tofu #U 3 #U 4)
                [#U 0 #U 1 #U 2 'tofu]
-               [#U 0 #U 1 #U 2 #U 3 'tofu #U 4 #U 5]
-               [#U 0 #U 1 #U 2
-                #U 3 'tofu]
-               [#U 0 #U 1 #U 2 #U 3 #U 4 'tofu #U 5 #U 6]
+               (cons #U 0 #U 1 #U 2 #U 3 'tofu #U 4 #U 5)
+               [#U 0 #U 1 #U 2 #U 3 'tofu]
+               (cons #U 0 #U 1 #U 2 #U 3 #U 4 'tofu #U 5 #U 6)
                [#U 0 #U 1 #U 2 #U 3 #U 4 'tofu]]
        (run 12 [l]
             (pmemberᵒ 'tofu l)))

@@ -31,7 +31,7 @@
 (defn-alias [rightᵒ righto] [x y l]
   (condᵉ
      [(fresh [r]
-             (≡ [x y r] l))]
+             (≡ (cons x y r) l))]
      [(fresh [r]
              (restᵒ l r)
              (rightᵒ x y r))]))

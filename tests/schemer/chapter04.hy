@@ -62,19 +62,19 @@
 
 (frame "4.18" [#U 0
                #U 0
-               ['tofu #U 0]
-               [#U 0 'tofu #U 1]
-               [#U 0 #U 1 'tofu #U 2]
-               [#U 0 #U 1 #U 2 'tofu #U 3]
-               [#U 0 #U 1 #U 2 #U 3 'tofu #U 4]
-               [#U 0 #U 1 #U 2 #U 3 #U 4 'tofu #U 5]
-               [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5 'tofu #U 6]
-               [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6 'tofu #U 7]
-               [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6 #U 7 'tofu #U 8]
-               [#U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6 #U 7 #U 8 'tofu #U 9]]
+               (cons 'tofu #U 0)
+               (cons #U 0 'tofu #U 1)
+               (cons #U 0 #U 1 'tofu #U 2)
+               (cons #U 0 #U 1 #U 2 'tofu #U 3)
+               (cons #U 0 #U 1 #U 2 #U 3 'tofu #U 4)
+               (cons #U 0 #U 1 #U 2 #U 3 #U 4 'tofu #U 5)
+               (cons #U 0 #U 1 #U 2 #U 3 #U 4 #U 5 'tofu #U 6)
+               (cons #U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6 'tofu #U 7)
+               (cons #U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6 #U 7 'tofu #U 8)
+               (cons #U 0 #U 1 #U 2 #U 3 #U 4 #U 5 #U 6 #U 7 #U 8 'tofu #U 9)]
        (run 12 [z]
             (fresh [u]
-                   (memᵒ 'tofu ['a 'b 'tofu 'd 'tofu 'e z] u))))
+                   (memᵒ 'tofu (cons 'a 'b 'tofu 'd 'tofu 'e z) u))))
 
 (frame "4.30" [['a 'b 'd 'peas 'e]]
        (run 1 [out]
@@ -109,14 +109,14 @@
                []
                (cons #U 0 #U 1)
                [#U 0]
-               [#U 0 #U 1 #U 2]
+               (cons #U 0 #U 1 #U 2)
                [#U 0 #U 1]
-               [#U 0 #U 1 #U 2 #U 3]
+               (cons #U 0 #U 1 #U 2 #U 3)
                [#U 0 #U 1 #U 2]
-               [#U 0 #U 1 #U 2 #U 3 #U 4]]
+               (cons #U 0 #U 1 #U 2 #U 3 #U 4)]
        (run 13 [w]
             (fresh [y z out]
-                   (rememberᵒ y ['a 'b y 'd z w] out))))
+                   (rememberᵒ y (cons 'a 'b y 'd z w) out))))
 
 (defn surpriseᵒ [s]
   (rememberᵒ s ['a 'b 'c] ['a 'b 'c]))
