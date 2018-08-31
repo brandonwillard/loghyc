@@ -14,31 +14,115 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]])
-(require adderall.dsl)
-(require adderall.debug)
-(require tests.utils)
+(import [adderall.dsl [*]]
+        [adderall.internal [*]])
+
+(require [adderall.dsl [*]])
+(require [adderall.debug [*]])
+(require [tests.utils [*]])
+(require [hy.contrib.walk [let]])
+
+
+(defn test-cons []
+  (assert (= (cons 'a None)
+             (cons 'a [])
+             (cons 'a (,))
+             (cons 'a '())
+             ['a]
+             '(a)))
+  (assert (= (cons None 'a)
+             (cons [] 'a)
+             (cons (,) 'a)
+             (cons '() 'a)))
+  (assert (not (= (cons 'a None)
+                  (, 'a))))
+  (assert (= (cons 'a None)
+             (list (, 'a))))
+
+  (assert (= (cons 'a '(b c))
+             (cons 'a ['b 'c])
+             (cons 'a (, 'b 'c))
+             '(a b c)
+             ['a 'b 'c]))
+  (assert (not (= (cons 'a (, 'b 'c))
+                  (, 'a))))
+  (assert (= (cons 'a None)
+             (list (, 'a))))
+
+  (assert (= (cons '(a b) 'c)
+             (cons ['a 'b] 'c)
+             (cons (, 'a 'b) 'c)))
+
+  (assert (= (cons '(a b) '(c d))
+             (cons '(a b) ['c 'd])
+             (cons '(a b) (, 'c 'd))
+             [['a 'b] 'c 'd]
+             '((a b) c d)))
+  (assert (not (= (cons 'a (, 'b 'c))
+                  (, 'a 'b 'c))))
+  (assert (= (cons 'a (, 'b 'c))
+             (list (, 'a 'b 'c))))
+  (assert (= (cons '(a b) 'c)
+             (cons ['a 'b] 'c)
+             (cons (, 'a 'b) 'c)))
+  (assert (= (cons '(a b) '(c))
+             (cons ['a 'b] ['c])
+             (cons (, 'a 'b) (, 'c))
+             [['a 'b] 'c]
+             '((a b) c)))
+  (assert (= (car (cons 'a 'b))
+             'a))
+  (assert (= (car (cons '(a b) 'a))
+             (car (cons ['a 'b] 'a))
+             (car (cons (, 'a 'b) 'a))
+             ['a 'b]
+             '(a b)))
+  (assert (not (= (car (cons (, 'a 'b) 'a))
+                  (, 'a 'b))))
+  (assert (= (cdr (cons 'a 'b))
+             'b))
+  (assert (= (cdr (cons 'a None))
+             (cdr (cons '(a) None))
+             (cdr (cons 'a '()))
+             (cdr (cons 'a (,)))
+             (cdr (cons 'a []))
+             []))
+  (assert (= (cdr (cons 'a '(b)))
+             (cdr (cons '(a) '(b)))
+             (cdr (cons 'a ['b]))
+             (cdr (cons 'a (, 'b)))
+             ['b]
+             '(b)))
+  (assert (not (= (cdr (cons 'a (, 'b)))
+                  (, 'b)))))
 
 (defn test-fail-and-succeed []
   (assert (= (run* [q] fail) []))
-  (assert (= (run* [q] succeed) [#U0])))
+  (assert (= (run* [q] succeed) [#U 0])))
 
 (defn test-#s-and-#u []
-  (assert (= (run* [q] #uu) []))
-  (assert (= (run* [q] #ss) [#U0])))
+  (assert (= (run* [q] fail) []))
+  (assert (= (run* [q] succeed) [#U 0])))
 
 (defn test-fresh []
-  (assert (= (run* [q] (fresh [x])) [#U0])))
+  (assert (= (run* [q] (fresh [x])) [#U 0])))
 
 (defn test-consᵒ []
   (assert (= (run* [q] (consᵒ 1 [2 3] [1 2 3]))
-             [#U0]))
+             [#U 0]))
   (assert (= (run* [q] (consᵒ q [2 3] [1 2 3]))
              [1]))
+  (assert (= (run* [q] (consᵒ q 2 (cons 1 2)))
+             [1]))
+  (assert (= (run* [q] (consᵒ q 2 '(1 2)))
+             []))
   (assert (= (run* [q] (consᵒ 1 q [1 2 3]))
              [[2 3]]))
   (assert (= (run* [q] (consᵒ 1 [2 3] q))
+             [(cons 1 [2 3])]
              [[1 2 3]]))
+  (assert (= (run* [q] (consᵒ q '(b) '(a b)))
+             ['a]))
   (assert (= (run* [q] (consᵒ 1 [q 3] [1 2 3]))
              [2]))
   (assert (= (run* [q] (consᵒ 1 [2 q] [1 2 3]))
@@ -57,8 +141,7 @@
                               (≡ x 2)
                               (≡ q (type x))))
              [LVar]))
-  (assert (= (run* [q] (fresh [x]
-                              (≡ x 2)
+  (assert (= (run* [q] (fresh [x] (≡ x 2)
                               (project [x]
                                        (≡ q (type x)))))
              [(type 2)])))
@@ -82,19 +165,19 @@
   (assert (= (first (wrap-stdout
                      (lazy-run* [q]
                                 (log "hello")
-                                (≡ q true))))
+                                (≡ q True))))
              ""))
 
   (assert (= (first (wrap-stdout
                      (list (lazy-run* [q]
                                       (log "hello")
-                                      (≡ q true)))))
+                                      (≡ q True)))))
              "hello\n"))
 
   (assert (= (first (wrap-stdout
                      (run* [q]
                            (log "hello")
-                           (≡ q true))))
+                           (≡ q True))))
              "hello\n")))
 
 (defn test-custom-unification []
@@ -105,12 +188,12 @@
                      (≡ l q))
                [1]))
 
-    (setv l.unify nil)
+    (setv l.unify None)
     (assert (= (run* [q]
                      (≡ l q))
                [l]))))
 
 (defn test-run1 []
   (assert (= (run¹ [q] (≡ q 1)) 1))
-  (assert (= (run¹ [q] (≡ q 1) (≡ q 2)) nil))
+  (assert (= (run¹ [q] (≡ q 1) (≡ q 2)) None))
   (assert (= (run 1 [q] (≡ q 1)) [1])))

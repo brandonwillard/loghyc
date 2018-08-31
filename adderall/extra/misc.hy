@@ -15,15 +15,18 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]])
-(require adderall.dsl)
+
+(require [adderall.dsl [*]])
+(require [adderall.internal [defn-alias]])
+
 
 (defn-alias [typeᵒ typeo] [u v]
   (condᵉ
    [(project [u] (if (= (type u) LVar)
-                   #uu
+                   fail
                    (≡ v (type u))))]
    [(project [v] (if (= (type v) LVar)
-                   #uu
+                   fail
                    (≡ u (type v))))]
    (else (project [u v]
                   (≡ (type u) (type v))))))

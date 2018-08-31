@@ -15,7 +15,7 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]])
-(require adderall.dsl)
+(require [adderall.dsl [*]])
 
 (defn cheetah-benchmark []
   (run* [q] (≡ q 'cheetah)))

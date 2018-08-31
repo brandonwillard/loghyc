@@ -16,113 +16,113 @@
 
 (import [adderall.dsl [*]]
         [tests.schemer.common [*]])
-(require adderall.dsl)
-(require tests.schemer.common)
+(require [adderall.dsl [*]])
+(require [tests.schemer.common [*]])
 
 (frame "6.6" []
        (run 1 [q]
-            #uu
+            u#
             neverᵒ))
 
-(frame "6.7" [true]
+(frame "6.7" [True]
        (run 1 [q]
             alwaysᵒ
-            (≡ true q)))
+            (≡ True q)))
 
-(frame "6.10" [true true true true true]
+(frame "6.10" [True True True True True]
        (run 5 [q]
             alwaysᵒ
-            (≡ true q)))
+            (≡ True q)))
 
-(frame "6.11" [true true true true true]
+(frame "6.11" [True True True True True]
        (run 5 [q]
-            (≡ true q)
+            (≡ True q)
             alwaysᵒ))
 
-(frame "6.13" [true]
+(frame "6.13" [True]
        (run 1 [q]
             (salᵒ alwaysᵒ)
-            (≡ true q)))
+            (≡ True q)))
 
-(frame "6.14" [true]
+(frame "6.14" [True]
        (run 1 [q]
             (salᵒ neverᵒ)
-            (≡ true q)))
+            (≡ True q)))
 
-(frame "6.19" [true]
+(frame "6.19" [True]
        (run 1 [q]
             (condⁱ
-             [(≡ false q) alwaysᵒ]
-             [(≡ true q)])
-            (≡ true q)))
+             [(≡ False q) alwaysᵒ]
+             [(≡ True q)])
+            (≡ True q)))
 
-(frame "6.21" [true true true true true]
+(frame "6.21" [True True True True True]
        (run 5 [q]
             (condⁱ
-             [(≡ false q) alwaysᵒ]
-             [(anyᵒ (≡ true q))])
-            (≡ true q)))
+             [(≡ False q) alwaysᵒ]
+             [(anyᵒ (≡ True q))])
+            (≡ True q)))
 
 (defn teacupᵒ [x]
   (condᵉ
-   [(≡ 'tea x) #ss]
-   [(≡ 'cup x) #ss]
-   (else #uu)))
+   [(≡ 'tea x) s#]
+   [(≡ 'cup x) s#]
+   (else u#)))
 
-(frame "6.24" ['tea false 'cup]
+(frame "6.24" ['tea False 'cup]
        (run 5 [r]
             (condⁱ
-             [(teacupᵒ r) #ss]
-             [(≡ false r) #ss]
-             [#ss #uu])))
+             [(teacupᵒ r) s#]
+             [(≡ False r) s#]
+             [s# u#])))
 
-(frame "6.25" [true true true true true]
+(frame "6.25" [True True True True True]
        (run 5 [q]
             (condⁱ
-             [(≡ false q) alwaysᵒ]
-             [(≡ true q) alwaysᵒ]
-             [#ss #uu])
-            (≡ true q)))
+             [(≡ False q) alwaysᵒ]
+             [(≡ True q) alwaysᵒ]
+             [s# u#])
+            (≡ True q)))
 
-(frame "6.28" [true true true true true]
+(frame "6.28" [True True True True True]
        (run 5 [q]
             (condᵉ
-             [alwaysᵒ #ss]
+             [alwaysᵒ s#]
              (else neverᵒ))
-            (≡ true q)))
+            (≡ True q)))
 
-(frame "6.32" [true]
+(frame "6.32" [True]
        (run 1 [q]
             (allⁱ
              (condᵉ
-              [(≡ false q) #ss]
-              (else (≡ true q)))
+              [(≡ False q) s#]
+              (else (≡ True q)))
              alwaysᵒ)
-            (≡ true q)))
+            (≡ True q)))
 
-(frame "6.33" [true true true true true]
+(frame "6.33" [True True True True True]
        (run 5 [q]
             (allⁱ
              (condᵉ
-              [(≡ false q) #ss]
-              (else (≡ true q)))
+              [(≡ False q) s#]
+              (else (≡ True q)))
              alwaysᵒ)
-            (≡ true q)))
+            (≡ True q)))
 
-(frame "6.34" [true true true true true]
+(frame "6.34" [True True True True True]
        (run 5 [q]
             (allⁱ
              (condᵉ
-              [(≡ true q) #ss]
-              (else (≡ false q)))
+              [(≡ True q) s#]
+              (else (≡ False q)))
              alwaysᵒ)
-            (≡ true q)))
+            (≡ True q)))
 
-(frame "6.36" [true true true true true]
+(frame "6.36" [True True True True True]
        (run 5 [q]
             (all
              (condᵉ
-              [(≡ true q) #ss]
-              (else (≡ false q)))
+              [(≡ True q) s#]
+              (else (≡ False q)))
              alwaysᵒ)
-            (≡ true q)))
+            (≡ True q)))

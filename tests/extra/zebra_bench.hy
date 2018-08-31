@@ -16,8 +16,9 @@
 
 (import [adderall.dsl [*]]
         [adderall.extra.zebra [*]])
-(require adderall.dsl)
-(require adderall.extra.zebra)
+
+(require [adderall.dsl [*]])
+(require [adderall.extra.zebra [*]])
 
 (defn zebra-benchmark []
   (run* [water horse] (zebraᵖ water horse)))

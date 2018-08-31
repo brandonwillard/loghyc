@@ -21,14 +21,17 @@
 ;;
 
 (import [adderall.dsl [*]])
-(require adderall.dsl)
+(import [adderall.internal [*]])
+
+(require [adderall.dsl [*]])
+(require [adderall.internal [*]])
 
 ;; Goals
 
 (defn-alias [rightᵒ righto] [x y l]
   (condᵉ
      [(fresh [r]
-             (≡ (list* x y r) l))]
+             (≡ (cons x y r) l))]
      [(fresh [r]
              (restᵒ l r)
              (rightᵒ x y r))]))
@@ -40,30 +43,30 @@
 
 (defmacro-alias [zebra-tableᵖ zebra-tablep] [hs]
   `(all
-    (≡ [#?_ #?_ [#?_ #?_ 'milk #?_ #?_] #?_ #?_] ~hs)
-    (firstᵒ ~hs ['norwegian #?_ #?_ #?_ #?_])
-    (nextᵒ ['norwegian #?_ #?_ #?_ #?_]
-           [#?_        #?_ #?_ #?_ 'blue] ~hs)
-    (rightᵒ [#?_ #?_ #?_ #?_ 'ivory]
-            [#?_ #?_ #?_ #?_ 'green]
+    (≡ [#? _ #? _ [#? _ #? _ 'milk #? _ #? _] #? _ #? _] ~hs)
+    (firstᵒ ~hs ['norwegian #? _ #? _ #? _ #? _])
+    (nextᵒ ['norwegian #? _ #? _ #? _ #? _]
+           [#? _        #? _ #? _ #? _ 'blue] ~hs)
+    (rightᵒ [#? _ #? _ #? _ #? _ 'ivory]
+            [#? _ #? _ #? _ #? _ 'green]
             ~hs)
-    (memberᵒ ['englishman #?_            #?_     #?_     'red] ~hs)
-    (memberᵒ [#?_         'kools         #?_     #?_     'yellow] ~hs)
-    (memberᵒ ['spaniard   #?_            #?_     'dog    #?_] ~hs)
-    (memberᵒ [#?_         #?_            'coffee #?_     'green] ~hs)
-    (memberᵒ ['ukrainian  #?_            'tea    #?_     #?_] ~hs)
-    (memberᵒ [#?_         'lucky-strikes 'oj     #?_     #?_] ~hs)
-    (memberᵒ ['japanese   'parliaments   #?_     #?_     #?_] ~hs)
-    (memberᵒ [#?_         'oldgods       #?_     'snails #?_] ~hs)
-    (nextᵒ [#?_ #?_    #?_ 'horse #?_]
-           [#?_ 'kools #?_ #?_    #?_]
+    (memberᵒ ['englishman #? _            #? _     #? _     'red] ~hs)
+    (memberᵒ [#? _         'kools         #? _     #? _     'yellow] ~hs)
+    (memberᵒ ['spaniard   #? _            #? _     'dog    #? _] ~hs)
+    (memberᵒ [#? _         #? _            'coffee #? _     'green] ~hs)
+    (memberᵒ ['ukrainian  #? _            'tea    #? _     #? _] ~hs)
+    (memberᵒ [#? _         'lucky-strikes 'oj     #? _     #? _] ~hs)
+    (memberᵒ ['japanese   'parliaments   #? _     #? _     #? _] ~hs)
+    (memberᵒ [#? _         'oldgods       #? _     'snails #? _] ~hs)
+    (nextᵒ [#? _ #? _    #? _ 'horse #? _]
+           [#? _ 'kools #? _ #? _    #? _]
            ~hs)
-    (nextᵒ [#?_ #?_            #?_ 'fox #?_]
-           [#?_ 'chesterfields #?_ #?_  #?_]
+    (nextᵒ [#? _ #? _            #? _ 'fox #? _]
+           [#? _ 'chesterfields #? _ #? _  #? _]
            ~hs)))
 
 (defmacro-alias [zebraᵖ zebrap] [w h]
   `(fresh [hs]
           (zebra-tableᵖ hs)
-          (memberᵒ [~w #?_ 'water #?_    #?_] hs)
-          (memberᵒ [~h #?_ #?_    'zebra #?_] hs)))
+          (memberᵒ [~w #? _ 'water #? _    #? _] hs)
+          (memberᵒ [~h #? _ #? _    'zebra #? _] hs)))

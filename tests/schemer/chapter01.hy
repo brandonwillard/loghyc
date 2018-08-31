@@ -14,171 +14,179 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]]
-        [tests.schemer.common [*]])
-(require adderall.dsl)
-(require tests.schemer.common)
+(import [adderall.dsl [*]])
+(import [tests.schemer.common [*]])
+
+(require [hy.contrib.walk [let]])
+(require [adderall.dsl [*]])
+(require [tests.schemer.common [*]])
+
 
 (frame "1.10" []
        (run* [q]
-             #uu))
+             fail))
 
-(frame "1.11" [true]
+(frame "1.11" [True]
        (run* [q]
-             (≡ true q)))
+             (≡ True q)))
 
 (frame "1.12" []
        (run* [q]
-             #uu
-             (≡ true q)))
+             fail
+             (≡ True q)))
 
-(frame "1.13" [true]
+(frame "1.13" [True]
        (run* [q]
-             #ss
-             (≡ true q)))
+             succeed
+             (≡ True q)))
 
 (frame "1.16" ['corn]
        (run* [r]
-             #ss
+             succeed
              (≡ 'corn r)))
 
 (frame "1.17" []
        (run* [r]
-             #uu
+             fail
              (≡ 'corn r)))
 
-(frame "1.18" [false]
+(frame "1.18" [False]
        (run* [q]
-             #ss
-             (≡ false q)))
+             succeed
+             (≡ False q)))
 
 (frame "1.22" []
        (run* [x]
-             (let [x false]
-               (≡ true x))))
+             (let [x False]
+               (≡ True x))))
 
-(frame "1.23" [true]
+(frame "1.23" [True]
        (run* [q]
              (fresh [x]
-                    (≡ true x)
-                    (≡ true q))))
+                    (≡ True x)
+                    (≡ True q))))
 
-(frame "1.26" [true]
+(frame "1.26" [True]
        (run* [q]
              (fresh [x]
-                    (≡ x true)
-                    (≡ true q))))
+                    (≡ x True)
+                    (≡ True q))))
 
-(frame "1.27" [true]
+(frame "1.27" [True]
        (run* [q]
              (fresh [x]
-                    (≡ x true)
-                    (≡ q true))))
+                    (≡ x True)
+                    (≡ q True))))
 
-(frame "1.28" [#U0]
+(frame "1.28" [#U 0]
        (run* [x]
-             #ss))
+             succeed))
 
-(frame "1.29" [#U0]
+(frame "1.29" [#U 0]
        (run* [x]
-             (let [x false]
+             (let [x False]
                (fresh [x]
-                      (≡ true x)))))
+                      (≡ True x)))))
 
-(frame "1.30" [[#U0 #U1]]
+(frame "1.30" [[#U 0 #U 1]]
        (run* [r]
              (fresh [x y]
-                    (≡ (list* x y ()) r))))
+                    ;; Original is `(cons x (cons y '()))`, but `cons` is different here.
+                    (≡ [x y] r))))
 
-(frame "1.31" [[#U0 #U1]]
+(frame "1.31" [[#U 0 #U 1]]
        (run* [s]
              (fresh [t u]
-                    (≡ (list* t u ()) s))))
+                    ;; Original is `(cons t (cons u '()))`, but `cons` is different here.
+                    (≡ [t u] s))))
 
-(frame "1.32" [[#U0 #U1 #U0]]
+(frame "1.32" [[#U 0 #U 1 #U 0]]
        (run* [r]
              (fresh [x]
                     (let [y x]
                       (fresh [x]
-                             (≡ (list* y x y ()) r))))))
+                             ;; Original is `(cons y (cons x (cons x '())))`, but `cons` is different here.
+                             (≡ [y x y] r))))))
 
-(frame "1.33" [[#U0 #U1 #U0]]
+(frame "1.33" [[#U 0 #U 1 #U 0]]
        (run* [r]
              (fresh [x]
                     (let [y x]
                       (fresh [x]
-                             (≡ (list* x y x ()) r))))))
+                             ;; Original is `(cons x (cons y (cons y '())))`, but `cons` is different here.
+                             (≡ [x y x] r))))))
 
 (frame "1.34" []
        (run* [q]
-             (≡ false q)
-             (≡ true q)))
+             (≡ False q)
+             (≡ True q)))
 
-(frame "1.35" [false]
+(frame "1.35" [False]
        (run* [q]
-             (≡ false q)
-             (≡ false q)))
+             (≡ False q)
+             (≡ False q)))
 
-(frame "1.36" [true]
+(frame "1.36" [True]
        (run* [q]
              (let [x q]
-               (≡ true x))))
+               (≡ True x))))
 
-(frame "1.37" [#U0]
+(frame "1.37" [#U 0]
        (run* [r]
              (fresh [x]
                     (≡ x r))))
 
-(frame "1.38" [true]
+(frame "1.38" [True]
        (run* [q]
              (fresh [x]
-                    (≡ true x)
+                    (≡ True x)
                     (≡ x q))))
 
-(frame "1.39" [true]
+(frame "1.39" [True]
        (run* [q]
              (fresh [x]
                     (≡ x q)
-                    (≡ true x))))
+                    (≡ True x))))
 
 (frame "1.47" ['olive 'oil]
        (run* [x]
              (condᵉ
-              [(≡ 'olive x) #ss]
-              [(≡ 'oil x) #ss]
-              (else #uu))))
+              [(≡ 'olive x) succeed]
+              [(≡ 'oil x) succeed]
+              (else fail))))
 
 (frame "1.49" ['olive]
        (run 1 [x]
             (condᵉ
-             [(≡ 'olive x) #ss]
-             [(≡ 'oil x) #ss]
-             (else #uu))))
+             [(≡ 'olive x) succeed]
+             [(≡ 'oil x) succeed]
+             (else fail))))
 
-(frame "1.50" ['olive #U0 'oil]
+(frame "1.50" ['olive #U 0 'oil]
        (run* [x]
              (condᵉ
-              [(≡ 'virgin x) #uu]
-              [(≡ 'olive x) #ss]
-              [#ss #ss]
-              [(≡ 'oil x) #ss]
-              (else #uu))))
+              [(≡ 'virgin x) fail]
+              [(≡ 'olive x) succeed]
+              [succeed succeed]
+              [(≡ 'oil x) succeed]
+              (else fail))))
 
 (frame "1.52" ['extra 'olive]
        (run 2 [x]
             (condᵉ
-             [(≡ 'extra x) #ss]
-             [(≡ 'virgin x) #uu]
-             [(≡ 'olive x) #ss]
-             [(≡ 'oil x) #ss]
-             (else #uu))))
+             [(≡ 'extra x) succeed]
+             [(≡ 'virgin x) fail]
+             [(≡ 'olive x) succeed]
+             [(≡ 'oil x) succeed]
+             (else fail))))
 
 (frame "1.53" [['split 'pea]]
        (run* [r]
              (fresh [x y]
                     (≡ 'split x)
                     (≡ 'pea y)
-                    (≡ (list* x y ()) r))))
+                    ;; Original is `(cons x (cons y '()))`, but `cons` is different here.
+                    (≡ [x y] r))))
 
 (frame "1.54" [['split 'pea] ['navy 'bean]]
        (run* [r]
@@ -186,8 +194,9 @@
                     (condᵉ
                      [(≡ 'split x) (≡ 'pea y)]
                      [(≡ 'navy x) (≡ 'bean y)]
-                     (else #uu))
-                    (≡ (list* x y ()) r))))
+                     (else fail))
+                    ;; Original is `(cons x (cons y '()))`, but `cons` is different here.
+                    (≡ [x y] r))))
 
 (frame "1.55" [['split 'pea 'soup] ['navy 'bean 'soup]]
        (run* [r]
@@ -195,61 +204,65 @@
                     (condᵉ
                      [(≡ 'split x) (≡ 'pea y)]
                      [(≡ 'navy x) (≡ 'bean y)]
-                     (else #uu))
-                    (≡ (list* x y 'soup ()) r))))
+                     (else fail))
+                    ;; Original is `(cons x (cons y (cons 'soup '())))`, but `cons` is different here.
+                    (≡ [x y 'soup] r))))
 
 (defn teacupᵒ [x]
   (condᵉ
-   [(≡ 'tea x) #ss]
-   [(≡ 'cup x) #ss]
-   (else #uu)))
+   [(≡ 'tea x) succeed]
+   [(≡ 'cup x) succeed]
+   (else fail)))
 
 (frame "1.56" ['tea 'cup]
        (run* [x]
              (teacupᵒ x)))
 
-(frame "1.57" [['tea true] ['cup true] [false true]]
+(frame "1.57" [['tea True] ['cup True] [False True]]
        (run* [r]
              (fresh [x y]
                     (condᵉ
-                     [(teacupᵒ x) (≡ true y) #ss]
-                     [(≡ false x) (≡ true y)]
-                     (else #uu))
-                    (≡ (list* x y ()) r))))
+                     [(teacupᵒ x) (≡ True y) succeed]
+                     [(≡ False x) (≡ True y)]
+                     (else fail))
+                    ;; Original is `(cons x (cons y '()))`, but `cons` is different here.
+                    (≡ [x y] r))))
 
-(frame "1.58" [[#U0 #U1]
-               [#U0 #U1]]
+(frame "1.58" [[#U 0 #U 1]
+               [#U 0 #U 1]]
        (run* [r]
              (fresh [x y z]
                     (condᵉ
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
-                     (else #uu))
-                    (≡ (list* y z ()) r))))
+                     (else fail))
+                    ;; Original is `(cons y (cons z '()))`, but `cons` is different here.
+                    (≡ [y z] r))))
 
-(frame "1.59" [[false #U0] [#U0 false]]
+(frame "1.59" [[False #U 0] [#U 0 False]]
        (run* [r]
              (fresh [x y z]
                     (condᵉ
                      [(≡ y x) (fresh [x] (≡ z x))]
                      [(fresh [x] (≡ y x)) (≡ z x)]
-                     (else #uu))
-                    (≡ false x)
-                    (≡ (list* y z ()) r))))
+                     (else fail))
+                    (≡ False x)
+                    ;; Original is `(cons y (cons z '()))`, but `cons` is different here.
+                    (≡ [y z] r))))
 
-(frame "1.60" [false]
+(frame "1.60" [False]
        (run* [q]
-             (let [a (≡ true q)
-                   b (≡ false q)]
+             (let [a (≡ True q)
+                   b (≡ False q)]
                b)))
 
-(frame "1.61" [false]
+(frame "1.61" [False]
        (run* [q]
-             (let [a (≡ true q)
+             (let [a (≡ True q)
                    b (fresh [x]
                             (≡ x q)
-                            (≡ false x))
+                            (≡ False x))
                    c (condᵉ
-                      [(≡ true q) #ss]
-                      [(≡ false q)])]
+                      [(≡ True q) succeed]
+                      [(≡ False q)])]
                b)))

@@ -14,12 +14,14 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+
 (defmacro/g! wrap-stdout [&rest body]
   `(do
-    (import [sys] [io [StringIO]])
-    (setv ~g!old-stdout sys.stdout)
-    (setv sys.stdout (StringIO))
-    (setv ~g!result (do ~@body))
-    (setv ~g!stdout (.getvalue sys.stdout))
-    (setv sys.stdout ~g!old-stdout)
-    [~g!stdout ~g!result]))
+     (import sys)
+     (import [io [StringIO]])
+     (setv ~g!old-stdout sys.stdout)
+     (setv sys.stdout (StringIO))
+     (setv ~g!result (do ~@body))
+     (setv ~g!stdout (.getvalue sys.stdout))
+     (setv sys.stdout ~g!old-stdout)
+     [~g!stdout ~g!result]))

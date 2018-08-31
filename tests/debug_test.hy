@@ -15,20 +15,22 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [adderall.dsl [*]])
-(require adderall.dsl)
-(require adderall.debug)
-(require tests.utils)
+
+(require [adderall.dsl [*]])
+(require [adderall.debug [log trace-s]])
+(require [tests.utils [wrap-stdout]])
+
 
 (defn test-log []
   (assert (= (wrap-stdout
               (run* [q]
                     (log "hello")
-                    (≡ q true)))
-             ["hello\n" [true]])))
+                    (≡ q True)))
+             ["hello\n" [True]])))
 
 (defn test-trace-s []
   (assert (= (wrap-stdout
               (run* [q]
                     (trace-s)
-                    (≡ q true)))
-             ["()\n" [true]])))
+                    (≡ q True)))
+             ["()\n" [True]])))
