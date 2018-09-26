@@ -15,22 +15,29 @@
 ## You should have received a copy of the GNU Lesser General Public
 ## License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import timeit
 import hy
 import sys
+import timeit
+from nose.tools import nottest
 
-SETUP_FORMAT="""import hy
+
+SETUP_FORMAT = """import hy
 from {0} import {1}"""
 
-def benchmark(module, function, times = 10):
-    print ("{0}/{1} * {2}:".format(module, function, times)),
+
+@nottest
+def benchmark(module, function, times=10):
+    print("{0}/{1} * {2}:".format(module, function, times)),
     sys.__stdout__.flush()
     result = timeit.timeit("{0}()".format(function),
-                           setup = SETUP_FORMAT.format(module, function),
-                           number = times)
-    print ("{0:.5f}s ({1:.5f}s average)".format(result, result / times))
+                           setup=SETUP_FORMAT.format(module, function),
+                           number=times)
+    print("{0:.5f}s ({1:.5f}s average)".format(result, result / times))
 
 
-if __name__ == '__main__':
+def test_zebra_benchmark():
     benchmark("tests.extra.zebra_bench", "zebra_benchmark")
+
+
+def test_cheetah_benchmark():
     benchmark("tests.extra.cheetah_bench", "cheetah_benchmark", 100)
