@@ -35,6 +35,7 @@ setup(
     license="LGPL-3",
     url="https://github.com/algernon/adderall",
     platforms=['any'],
+    python_requires='>=3.4',
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
