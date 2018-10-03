@@ -100,7 +100,7 @@
   (assert (= (run* [q] fail) []))
   (assert (= (run* [q] succeed) [#U 0])))
 
-(defn test-#s-and-#u []
+(defn test-s#-and-u# []
   (assert (= (run* [q] fail) []))
   (assert (= (run* [q] succeed) [#U 0])))
 
