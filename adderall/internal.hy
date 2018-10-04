@@ -49,17 +49,17 @@
          (= self.cdr other.cdr)))
   (defn --iter-- [self]
     (yield self.car)
-    (if (iterable? self.cdr)
+    (if (list? self.cdr)
         (for [x self.cdr] (yield x))
         (raise StopIteration)))
   (defn --repr-- [self]
     (.format "({} . {})" self.car self.cdr)))
 
-(defn -none-to-empty [x]
-  (cond [(none? x)
-         (list)]
+(defn -none-to-empty-or-list [x]
+  (cond [(none? x) (list)]
         [(and (coll? x)
-              (not (cons? x)))
+              (not (cons? x))
+              (not (list? x)))
          (list x)]
         [True x]))
 
@@ -77,20 +77,28 @@ The PARTS argument can be a car, cdr pair, or a list of cons arguments to be nes
       (reduce (fn [x y] (cons y x))
               (reversed parts))
       ;; Handle basic car, cdr case.
-      (let [car-part (-none-to-empty (first parts))
-            cdr-part (-none-to-empty (if (and (coll? parts)
-                                              (> (len parts) 1))
-                                         (last parts)
-                                         None))]
+      (let [car-part (-none-to-empty-or-list
+                       (first parts))
+            cdr-part (-none-to-empty-or-list
+                       (if (and (coll? parts)
+                                (> (len parts) 1))
+                           (last parts)
+                           None))]
            (cond [(list? cdr-part)
-                  ;; (if (list? car-part) car-part [car-part])
-                  (+ [car-part] cdr-part)]
+                  ;; Try to preserve the exact type of list
+                  ;; (e.g. in case it's actually a HyList).
+                  (+ ((type cdr-part) [car-part])
+                     cdr-part)]
                  [True (ConsPair car-part cdr-part)]))))
 
 (defn car [z]
-  (or (getattr z "car" None) (-none-to-empty (first z))))
+  (or (getattr z "car" None)
+      (-none-to-empty-or-list (first z))))
 (defn cdr [z]
-  (or (getattr z "cdr" None) (list (rest z))))
+  (or (getattr z "cdr" None)
+      ;; Try to preserve the exact type of list
+      ;; (e.g. in case it's actually a HyList).
+      ((type z) (list (rest z)))))
 
 (defn neseq? [c]
   (and (seq? c) (not (empty? c))))

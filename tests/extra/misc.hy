@@ -14,7 +14,8 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]]
+(import [nose.tools [assert-equal assert-not-equal]]
+        [adderall.dsl [*]]
         [adderall.internal [LVar]]
         [adderall.extra.misc [*]])
 
@@ -22,17 +23,17 @@
 
 
 (defn test-typeo []
-  (assert (= (run* [q] (typeᵒ 2 3) (≡ q True))
-             [True]))
-  (assert (= (run* [q] (typeᵒ 2 "foo") (≡ q True))
-             []))
-  (assert (= (run* [q] (typeᵒ q 2))
-             [(type 2)]))
-  (assert (= (run* [q] (typeᵒ 2 q))
-             [(type 2)]))
-  (assert (= (run* [q] (fresh [x] (typeᵒ q x)))
-             [#U 0]))
-  (assert (= (run* [q] (fresh [x] (≡ x 2) (typeᵒ x q)))
-             [(type 2)]))
-  (assert (= (run* [q] (fresh [x] (≡ x 2) (typeᵒ q x)))
-             [(type 2)])))
+  (assert-equal (run* [q] (typeᵒ 2 3) (≡ q True))
+                [True])
+  (assert-equal (run* [q] (typeᵒ 2 "foo") (≡ q True))
+                [])
+  (assert-equal (run* [q] (typeᵒ q 2))
+                [(type 2)])
+  (assert-equal (run* [q] (typeᵒ 2 q))
+                [(type 2)])
+  (assert-equal (run* [q] (fresh [x] (typeᵒ q x)))
+                [#U 0])
+  (assert-equal (run* [q] (fresh [x] (≡ x 2) (typeᵒ x q)))
+                [(type 2)])
+  (assert-equal (run* [q] (fresh [x] (≡ x 2) (typeᵒ q x)))
+                [(type 2)]))

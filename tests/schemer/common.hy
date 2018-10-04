@@ -14,7 +14,8 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [hy.models [HySymbol]])
+(import [nose.tools [assert-equal]]
+        [hy.models [HySymbol]])
 
 
 (defmacro/g! frame [frame-num value expr]
@@ -25,4 +26,4 @@
     `(defn ~(HySymbol name) []
        (require [hy.contrib.walk [let :as g!let]])
        (g!let [~res ~expr]
-         (assert (= ~value ~res))))))
+         (assert-equal ~value ~res)))))
