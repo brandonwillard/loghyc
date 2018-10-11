@@ -507,7 +507,7 @@ See `≡`/`==`."
   (≡ u v))
 
 (defn-alias [pairᵒ pairo] [l]
-  "A goal that assigns the property of being a pair (i.e.  made from a `cons`
+  "A goal that assigns the property of being a pair (i.e. made from a `cons`
 between two elements).
 
 Examples

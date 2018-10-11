@@ -14,7 +14,8 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]])
+(import [nose.tools [assert-equal assert-not-equal]]
+        [adderall.dsl [*]])
 
 (require [adderall.dsl [*]])
 (require [adderall.debug [log trace-s]])
@@ -22,15 +23,15 @@
 
 
 (defn test-log []
-  (assert (= (wrap-stdout
-              (run* [q]
-                    (log "hello")
-                    (≡ q True)))
-             ["hello\n" [True]])))
+  (assert-equal (wrap-stdout
+                  (run* [q]
+                        (log "hello")
+                        (≡ q True)))
+                ["hello\n" [True]]))
 
 (defn test-trace-s []
-  (assert (= (wrap-stdout
-              (run* [q]
-                    (trace-s)
-                    (≡ q True)))
-             ["()\n" [True]])))
+  (assert-equal (wrap-stdout
+                  (run* [q]
+                        (trace-s)
+                        (≡ q True)))
+                ["()\n" [True]]))

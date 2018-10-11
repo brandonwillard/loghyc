@@ -14,7 +14,8 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]]
+(import [nose.tools [assert-equal assert-not-equal]]
+        [adderall.dsl [*]]
         [adderall.internal [*]])
 
 (require [adderall.dsl [*]])
@@ -22,178 +23,182 @@
 (require [tests.utils [*]])
 (require [hy.contrib.walk [let]])
 
+(defn assert-all-equal [&rest tests]
+  (reduce (fn [x y] (assert-equal x y) y)
+          tests)
+  None)
 
 (defn test-cons []
-  (assert (= (cons 'a None)
-             (cons 'a [])
-             (cons 'a (,))
-             (cons 'a '())
-             ['a]
-             '(a)))
-  (assert (= (cons None 'a)
-             (cons [] 'a)
-             (cons (,) 'a)
-             (cons '() 'a)))
-  (assert (not (= (cons 'a None)
-                  (, 'a))))
-  (assert (= (cons 'a None)
-             (list (, 'a))))
+  (assert-all-equal (cons 'a None)
+                    (cons 'a [])
+                    (cons 'a (,))
+                    (cons 'a '())
+                    ['a]
+                    '(a))
+  (assert-all-equal (cons None 'a)
+                    (cons [] 'a)
+                    (cons (,) 'a)
+                    (cons '() 'a))
+  (assert-not-equal (cons 'a None)
+                    (, 'a))
+  (assert-equal (cons 'a None)
+                (list (, 'a)))
 
-  (assert (= (cons 'a '(b c))
-             (cons 'a ['b 'c])
-             (cons 'a (, 'b 'c))
-             '(a b c)
-             ['a 'b 'c]))
-  (assert (not (= (cons 'a (, 'b 'c))
-                  (, 'a))))
-  (assert (= (cons 'a None)
-             (list (, 'a))))
+  (assert-all-equal (cons 'a '(b c))
+                    (cons 'a ['b 'c])
+                    (cons 'a (, 'b 'c))
+                    '(a b c)
+                    ['a 'b 'c])
+  (assert-not-equal (cons 'a (, 'b 'c))
+                    (, 'a))
+  (assert-all-equal (cons 'a None)
+                    (list (, 'a)))
 
-  (assert (= (cons '(a b) 'c)
-             (cons ['a 'b] 'c)
-             (cons (, 'a 'b) 'c)))
+  (assert-all-equal (cons '(a b) 'c)
+                    (cons ['a 'b] 'c)
+                    (cons (, 'a 'b) 'c))
 
-  (assert (= (cons '(a b) '(c d))
-             (cons '(a b) ['c 'd])
-             (cons '(a b) (, 'c 'd))
-             [['a 'b] 'c 'd]
-             '((a b) c d)))
-  (assert (not (= (cons 'a (, 'b 'c))
-                  (, 'a 'b 'c))))
-  (assert (= (cons 'a (, 'b 'c))
-             (list (, 'a 'b 'c))))
-  (assert (= (cons '(a b) 'c)
-             (cons ['a 'b] 'c)
-             (cons (, 'a 'b) 'c)))
-  (assert (= (cons '(a b) '(c))
-             (cons ['a 'b] ['c])
-             (cons (, 'a 'b) (, 'c))
-             [['a 'b] 'c]
-             '((a b) c)))
-  (assert (= (car (cons 'a 'b))
-             'a))
-  (assert (= (car (cons '(a b) 'a))
-             (car (cons ['a 'b] 'a))
-             (car (cons (, 'a 'b) 'a))
-             ['a 'b]
-             '(a b)))
-  (assert (not (= (car (cons (, 'a 'b) 'a))
-                  (, 'a 'b))))
-  (assert (= (cdr (cons 'a 'b))
-             'b))
-  (assert (= (cdr (cons 'a None))
-             (cdr (cons '(a) None))
-             (cdr (cons 'a '()))
-             (cdr (cons 'a (,)))
-             (cdr (cons 'a []))
-             []))
-  (assert (= (cdr (cons 'a '(b)))
-             (cdr (cons '(a) '(b)))
-             (cdr (cons 'a ['b]))
-             (cdr (cons 'a (, 'b)))
-             ['b]
-             '(b)))
-  (assert (not (= (cdr (cons 'a (, 'b)))
-                  (, 'b)))))
+  (assert-all-equal (cons '(a b) '(c d))
+                    (cons '(a b) ['c 'd])
+                    (cons '(a b) (, 'c 'd))
+                    [['a 'b] 'c 'd]
+                    '((a b) c d))
+  (assert-not-equal (cons 'a (, 'b 'c))
+                    (, 'a 'b 'c))
+  (assert-all-equal (cons 'a (, 'b 'c))
+                    (list (, 'a 'b 'c)))
+  (assert-all-equal (cons '(a b) 'c)
+                    (cons ['a 'b] 'c)
+                    (cons (, 'a 'b) 'c))
+  (assert-all-equal (cons '(a b) '(c))
+                    (cons ['a 'b] ['c])
+                    (cons (, 'a 'b) (, 'c))
+                    [['a 'b] 'c]
+                    '((a b) c))
+  (assert-equal (car (cons 'a 'b))
+                'a)
+  (assert-all-equal (car (cons '(a b) 'a))
+                    (car (cons ['a 'b] 'a))
+                    (car (cons (, 'a 'b) 'a))
+                    ['a 'b]
+                    '(a b))
+  (assert-not-equal (car (cons (, 'a 'b) 'a))
+                    (, 'a 'b))
+  (assert-equal (cdr (cons 'a 'b))
+                'b)
+  (assert-all-equal (cdr (cons 'a None))
+                    (cdr (cons '(a) None))
+                    (cdr (cons 'a '()))
+                    (cdr (cons 'a (,)))
+                    (cdr (cons 'a []))
+                    [])
+  (assert-all-equal (cdr (cons 'a '(b)))
+                    (cdr (cons '(a) '(b)))
+                    (cdr (cons 'a ['b]))
+                    (cdr (cons 'a (, 'b)))
+                    ['b]
+                    '(b))
+  (assert-not-equal (cdr (cons 'a (, 'b)))
+                    (, 'b)))
 
 (defn test-fail-and-succeed []
-  (assert (= (run* [q] fail) []))
-  (assert (= (run* [q] succeed) [#U 0])))
+  (assert-equal (run* [q] fail) [])
+  (assert-equal (run* [q] succeed) [#U 0]))
 
 (defn test-s#-and-u# []
-  (assert (= (run* [q] fail) []))
-  (assert (= (run* [q] succeed) [#U 0])))
+  (assert-equal (run* [q] fail) [])
+  (assert-equal (run* [q] succeed) [#U 0]))
 
 (defn test-fresh []
-  (assert (= (run* [q] (fresh [x])) [#U 0])))
+  (assert-equal (run* [q] (fresh [x])) [#U 0]))
 
 (defn test-consᵒ []
-  (assert (= (run* [q] (consᵒ 1 [2 3] [1 2 3]))
-             [#U 0]))
-  (assert (= (run* [q] (consᵒ q [2 3] [1 2 3]))
-             [1]))
-  (assert (= (run* [q] (consᵒ q 2 (cons 1 2)))
-             [1]))
-  (assert (= (run* [q] (consᵒ q 2 '(1 2)))
-             []))
-  (assert (= (run* [q] (consᵒ 1 q [1 2 3]))
-             [[2 3]]))
-  (assert (= (run* [q] (consᵒ 1 [2 3] q))
-             [(cons 1 [2 3])]
-             [[1 2 3]]))
-  (assert (= (run* [q] (consᵒ q '(b) '(a b)))
-             ['a]))
-  (assert (= (run* [q] (consᵒ 1 [q 3] [1 2 3]))
-             [2]))
-  (assert (= (run* [q] (consᵒ 1 [2 q] [1 2 3]))
-             [3]))
-  (assert (= (run* [q] (consᵒ 1 [2 3] [q 2 3]))
-             [1]))
-  (assert (= (run* [q] (consᵒ 1 [2 3] [1 q 3]))
-             [2]))
-  (assert (= (run* [q] (consᵒ 1 [2 3] [1 2 q]))
-             [3]))
-  (assert (= (run* [q] (consᵒ 1 2 q))
-             [(cons 1 2)])))
+  (assert-equal (run* [q] (consᵒ 1 [2 3] [1 2 3]))
+                [#U 0])
+  (assert-equal (run* [q] (consᵒ q [2 3] [1 2 3]))
+                [1])
+  (assert-equal (run* [q] (consᵒ q 2 (cons 1 2)))
+                [1])
+  (assert-equal (run* [q] (consᵒ q 2 '(1 2)))
+                [])
+  (assert-equal (run* [q] (consᵒ 1 q [1 2 3]))
+                [[2 3]])
+  (assert-equal (run* [q] (consᵒ 1 [2 3] q))
+                [(cons 1 [2 3])]
+                [[1 2 3]])
+  (assert-equal (run* [q] (consᵒ q '(b) '(a b)))
+                ['a])
+  (assert-equal (run* [q] (consᵒ 1 [q 3] [1 2 3]))
+                [2])
+  (assert-equal (run* [q] (consᵒ 1 [2 q] [1 2 3]))
+                [3])
+  (assert-equal (run* [q] (consᵒ 1 [2 3] [q 2 3]))
+                [1])
+  (assert-equal (run* [q] (consᵒ 1 [2 3] [1 q 3]))
+                [2])
+  (assert-equal (run* [q] (consᵒ 1 [2 3] [1 2 q]))
+                [3])
+  (assert-equal (run* [q] (consᵒ 1 2 q))
+                [(cons 1 2)]))
 
 (defn test-project []
-  (assert (= (run* [q] (fresh [x]
-                              (≡ x 2)
-                              (≡ q (type x))))
-             [LVar]))
-  (assert (= (run* [q] (fresh [x] (≡ x 2)
-                              (project [x]
-                                       (≡ q (type x)))))
-             [(type 2)])))
+  (assert-equal (run* [q] (fresh [x]
+                                 (≡ x 2)
+                                 (≡ q (type x))))
+                [LVar])
+  (assert-equal (run* [q] (fresh [x] (≡ x 2)
+                                 (project [x]
+                                          (≡ q (type x)))))
+                [(type 2)]))
 
 (defn test-prep []
-  (assert (= (run* [q] (prep
-                        (≡ q ?x)
-                        (memberᵒ ?x [?y 4 2])
-                        (memberᵒ ?y [1 3 5])))
-             [1 3 5 4 4 4 2 2 2])))
+  (assert-equal (run* [q] (prep
+                            (≡ q ?x)
+                            (memberᵒ ?x [?y 4 2])
+                            (memberᵒ ?y [1 3 5])))
+                [1 3 5 4 4 4 2 2 2]))
 
 (defn test-set-support []
-  (assert (= (run* [q]
-                   (memberᵒ q (set [1 2 3 1 2 3])))
-             [1 2 3]))
-  (assert (= (run* [q]
-                   (memberᵒ 3 (set [1 2 q q])))
-             [3])))
+  (assert-equal (run* [q]
+                      (memberᵒ q (set [1 2 3 1 2 3])))
+                [1 2 3])
+  (assert-equal (run* [q]
+                      (memberᵒ 3 (set [1 2 q q])))
+                [3]))
 
 (defn test-lazyness []
-  (assert (= (first (wrap-stdout
-                     (lazy-run* [q]
-                                (log "hello")
-                                (≡ q True))))
-             ""))
+  (assert-equal (first (wrap-stdout
+                         (lazy-run* [q]
+                                    (log "hello")
+                                    (≡ q True))))
+                "")
 
-  (assert (= (first (wrap-stdout
-                     (list (lazy-run* [q]
-                                      (log "hello")
-                                      (≡ q True)))))
-             "hello\n"))
+  (assert-equal (first (wrap-stdout
+                         (list (lazy-run* [q]
+                                          (log "hello")
+                                          (≡ q True)))))
+                "hello\n")
 
-  (assert (= (first (wrap-stdout
-                     (run* [q]
-                           (log "hello")
-                           (≡ q True))))
-             "hello\n")))
+  (assert-equal (first (wrap-stdout
+                         (run* [q]
+                               (log "hello")
+                               (≡ q True))))
+                "hello\n"))
 
 (defn test-custom-unification []
   (defclass unifyClass [object])
   (let [l (unifyClass)]
-    (setv l.unify (fn [u v s] (, u 1 s)))
-    (assert (= (run* [q]
-                     (≡ l q))
-               [1]))
+       (setv l.unify (fn [u v s] (, u 1 s)))
+       (assert-equal (run* [q]
+                           (≡ l q))
+                     [1])
 
-    (setv l.unify None)
-    (assert (= (run* [q]
-                     (≡ l q))
-               [l]))))
+       (setv l.unify None)
+       (assert-equal (run* [q]
+                           (≡ l q))
+                     [l])))
 
 (defn test-run1 []
-  (assert (= (run¹ [q] (≡ q 1)) 1))
-  (assert (= (run¹ [q] (≡ q 1) (≡ q 2)) None))
-  (assert (= (run 1 [q] (≡ q 1)) [1])))
+  (assert-equal (run¹ [q] (≡ q 1)) 1)
+  (assert-equal (run¹ [q] (≡ q 1) (≡ q 2)) None)
+  (assert-equal (run 1 [q] (≡ q 1)) [1]))

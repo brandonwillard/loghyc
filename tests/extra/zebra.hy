@@ -14,7 +14,8 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-(import [adderall.dsl [*]]
+(import [nose.tools [assert-equal assert-not-equal]]
+        [adderall.dsl [*]]
         [adderall.extra.zebra [*]])
 
 (require [adderall.dsl [*]])
@@ -22,11 +23,11 @@
 
 
 (defn test-zebrap []
-  (assert (= (run* [q] (zebra-tableᵖ q))
-             [[['norwegian  'kools         #U 0         'fox        'yellow]
-               ['ukrainian  'chesterfields 'tea        'horse      'blue]
-               ['englishman 'oldgods       'milk       'snails     'red]
-               ['spaniard   'lucky-strikes 'oj         'dog        'ivory]
-               ['japanese   'parliaments   'coffee     #U 1         'green]]]))
-  (assert (= (run* [water horse] (zebraᵖ water horse))
-             [['norwegian 'japanese]])))
+  (assert-equal (run* [q] (zebra-tableᵖ q))
+                [[['norwegian  'kools         #U 0         'fox        'yellow]
+                  ['ukrainian  'chesterfields 'tea        'horse      'blue]
+                  ['englishman 'oldgods       'milk       'snails     'red]
+                  ['spaniard   'lucky-strikes 'oj         'dog        'ivory]
+                  ['japanese   'parliaments   'coffee     #U 1         'green]]])
+  (assert-equal (run* [water horse] (zebraᵖ water horse))
+                [['norwegian 'japanese]]))
