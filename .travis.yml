@@ -1,10 +1,10 @@
 language: python
 python:
-  - "3.4"
   - "3.5"
   - "3.6"
+  - "3.7"
   - "pypy3.5"
 install: pip install -r requirements.txt
 script:
-  - nosetests tests
-  - nosetests -qs -m benchmark tests/bench.py
+  - nosetests -v tests
+  - nosetests -v -qs -m benchmark tests/bench.py
