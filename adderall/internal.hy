@@ -21,21 +21,14 @@
 
 (defmacro defmacro-alias [names lambda-list &rest body]
   "define one macro with several names"
-  (setv ret `(do))
-  (for [name names]
-    (.append ret
-             `(defmacro ~name ~lambda-list ~@body)))
-  ret)
+  (+ `(do) (lfor name names `(defmacro ~name ~lambda-list ~@body))))
 
 (defmacro defn-alias [names lambda-list &rest body]
   "define one function with several names"
   (let [main (first names)
         aliases (list (rest names))]
-       (setv ret `(do (defn ~main ~lambda-list ~@body)))
-       (for [name aliases]
-         (.append ret
-                  `(setv ~name ~main)))
-       ret))
+    (+ `(do (defn ~main ~lambda-list ~@body))
+       (lfor name aliases `(setv ~name ~main)))))
 
 (defclass ConsPair [Iterable]
   "Construct a cons list.

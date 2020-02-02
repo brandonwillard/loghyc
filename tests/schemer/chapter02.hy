@@ -23,7 +23,7 @@
 (require [tests.schemer.common [*]])
 
 
-(frame "2.3" [[#U 0 #U 1]]
+(frame "2.3" [(+ '() [#U 0 #U 1])]
        (run* [r]
              (fresh [v w]
                     (== (let [x v
