@@ -17,7 +17,9 @@
 (import [collections.abc [Iterable]])
 
 (require [hy.contrib.walk [let]])
-
+(import [cons [cons car cdr]])
+(import [cons.core [ConsPair MaybeCons ConsNull]])
+;;(import [unification [unify  reify var]])
 
 (defmacro defmacro-alias [names lambda-list &rest body]
   "define one macro with several names"
@@ -29,72 +31,6 @@
         aliases (list (rest names))]
     (+ `(do (defn ~main ~lambda-list ~@body))
        (lfor name aliases `(setv ~name ~main)))))
-
-(defclass ConsPair [Iterable]
-  "Construct a cons list.
-
-A Python `list` is returned when the cdr is a `list` or `None`; otherwise, a
-`ConsPair` is returned.
-
-The arguments to `ConsPair` can be a car & cdr pair, or a sequence of objects to
-be nested in `cons`es, e.g.
-
-    (ConsPair car-1 car-2 car-3 cdr) == (ConsPair car-1 (cons car-2 (cons car-3 cdr)))
-"
-  (defn --new-- [cls &rest parts]
-    (if (> (len parts) 2)
-        (reduce (fn [x y] (ConsPair y x))
-                (reversed parts))
-        ;; Handle basic car, cdr case.
-        (do (setv car-part (-none-to-empty-or-list
-                             (first parts)))
-            (setv cdr-part (-none-to-empty-or-list
-                             (if (and (coll? parts)
-                                      (> (len parts) 1))
-                                 (last parts)
-                                 None)))
-            (if (list? cdr-part)
-                ;; Try to preserve the exact type of list
-                ;; (e.g. in case it's actually a HyList).
-                (+ ((type cdr-part) [car-part]) cdr-part)
-                (do
-                  (setv instance (.--new-- (super ConsPair cls) cls))
-                  (setv instance.car car-part)
-                  (setv instance.cdr cdr-part)
-                  instance)))))
-  (defn --hash-- [self]
-    (hash [self.car, self.cdr]))
-  (defn --eq-- [self other]
-    (and (= (type self) (type other))
-         (= self.car other.car)
-         (= self.cdr other.cdr)))
-  (defn --iter-- [self]
-    (yield self.car)
-    (if (list? self.cdr)
-        (for [x self.cdr] (yield x))
-        (raise StopIteration)))
-  (defn --repr-- [self]
-    (.format "({} . {})" self.car self.cdr)))
-
-(defn -none-to-empty-or-list [x]
-  (cond [(none? x) (list)]
-        [(and (coll? x)
-              (not (cons? x))
-              (not (list? x)))
-         (list x)]
-        [True x]))
-
-;; A synonym for ConsPair
-(setv cons ConsPair)
-
-(defn car [z]
-  (or (getattr z "car" None)
-      (-none-to-empty-or-list (first z))))
-(defn cdr [z]
-  (or (getattr z "cdr" None)
-      ;; Try to preserve the exact type of list
-      ;; (e.g. in case it's actually a HyList).
-      ((type z) (list (rest z)))))
 
 (defn lvar? [x] (instance? LVar x))
 (defn tuple? [x] (instance? tuple x))

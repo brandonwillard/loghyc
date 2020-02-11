@@ -17,6 +17,7 @@
 (import [functools [reduce partial]]
         [hy [HySymbol HyExpression HyList HyKeyword]]
         [hy.contrib.walk [prewalk]])
+(import [cons [cons car cdr]])
 (import [adderall.internal [unify lvar? seq? reify
                             LVar unbound interleave cons]])
 
