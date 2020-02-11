@@ -1,2 +1,3 @@
 -e git://github.com/hylang/hy.git@master#egg=hy
 -e git://github.com/algernon/monaxhyd.git@master#egg=monaxhyd
+-e git://github.com/pythological/python-cons.git#egg=cons
