@@ -29,69 +29,95 @@
   None)
 
 (defn test-cons []
-  (assert-all-equal (cons 'a None)
-                    (cons 'a [])
-                    (cons 'a (,))
-                    (cons 'a '())
-                    ['a])
-  (assert-all-equal (cons None 'a)
-                    (cons [] 'a)
-                    (cons (,) 'a)
-                    (cons '() 'a))
-  (assert-not-equal (cons 'a None)
-                    (, 'a))
-  (assert-equal (cons 'a None)
-                (list (, 'a)))
+  (assert-all-equal
+    ;;(cons 'a None)
+    (cons 'a [])
+    ['a])
+  (assert-all-equal
+    (cons 'a (,))
+    (,'a))
+  (assert-all-equal
+    (cons 'a '())
+    '(a))
+  
+  (assert-all-equal
+    (cons 'a ['b 'c])
+    ['a 'b 'c])
+  
+  (assert-all-equal
+    (cons 'a (, 'b 'c))
+    (,'a 'b 'c))
+  (assert-all-equal
+    (cons 'a '(b c))
+    '(a b c))
 
-  (assert-all-equal (cons 'a '(b c))
-                    (cons 'a ['b 'c])
-                    (cons 'a (, 'b 'c))
-                    ['a 'b 'c])
   (assert-not-equal (cons 'a (, 'b 'c))
                     (, 'a))
-  (assert-all-equal (cons 'a None)
-                    (list (, 'a)))
+  (assert-all-equal
+    (cons '(a b) '(c d))
+    '((a b) c d))
+  
+  (assert-all-equal
+    (cons 'a (, 'b 'c))
+    (, 'a 'b 'c)
+    )
+  
+  (assert-all-equal
+    (cons '(a b) '(c))
+    '((a b) c)
+    )
+  (assert-all-equal
+    (cons ['a 'b] ['c])
+    [['a 'b] 'c]
+    )
+  (assert-all-equal
+    (cons (, 'a 'b) (, 'c))
+    (, (, 'a 'b) 'c)
+    )
+  (assert-equal (car (cons 'a 'b))
+                'a)
 
-  (assert-all-equal (cons '(a b) 'c)
-                    (cons ['a 'b] 'c)
-                    (cons (, 'a 'b) 'c))
-
-  (assert-all-equal (cons '(a b) '(c d))
-                    (cons '(a b) ['c 'd])
-                    (cons '(a b) (, 'c 'd))
-                    [['a 'b] 'c 'd])
-  (assert-not-equal (cons 'a (, 'b 'c))
-                    (, 'a 'b 'c))
-  (assert-all-equal (cons 'a (, 'b 'c))
-                    (list (, 'a 'b 'c)))
-  (assert-all-equal (cons '(a b) 'c)
-                    (cons ['a 'b] 'c)
-                    (cons (, 'a 'b) 'c))
-  (assert-all-equal (cons '(a b) '(c))
-                    (cons ['a 'b] ['c])
-                    (cons (, 'a 'b) (, 'c))
-                    [['a 'b] 'c])
-  (assert-equal (car (cons 'a 'b)) 'a)
-  (assert-all-equal (car (cons '(a b) 'a))
-                    (car (cons ['a 'b] 'a))
-                    (car (cons (, 'a 'b) 'a))
-                    ['a 'b])
-  (assert-not-equal (car (cons (, 'a 'b) 'a))
+  (assert-all-equal
+    (car (cons '(a b) 'a))
+    '(a b))
+  (assert-all-equal
+    (car (cons ['a 'b] 'a))
+    ['a 'b])
+  (assert-all-equal
+    (car (cons (, 'a 'b) 'a))
+    (, 'a 'b) )
+  
+  (assert-all-equal (car (cons (, 'a 'b) 'a))
                     (, 'a 'b))
-  (assert-equal (cdr (cons 'a 'b)) 'b)
-  (assert-all-equal (cdr (cons 'a None))
-                    (cdr (cons '(a) None))
-                    (cdr (cons 'a '()))
-                    (cdr (cons 'a (,)))
-                    (cdr (cons 'a []))
-                    [])
-  (assert-all-equal (cdr (cons 'a '(b)))
-                    (cdr (cons '(a) '(b)))
-                    (cdr (cons 'a ['b]))
-                    (cdr (cons 'a (, 'b)))
-                    ['b])
-  (assert-not-equal (cdr (cons 'a (, 'b)))
-                    (, 'b)))
+
+  (assert-equal (cdr (cons 'a 'b))
+                'b)
+
+  (assert-all-equal
+    (cdr (cons 'a '()))
+    '())
+  (assert-all-equal
+    (cdr (cons 'a (,)))
+    (,))
+  (assert-all-equal
+    (cdr (cons 'a []))
+    [])
+
+  (assert-all-equal
+    (cdr (cons 'a '(b)))
+    (cdr (cons '(a) '(b)))
+    '(b))
+  (assert-all-equal
+    (cdr (cons 'a ['b]))
+    ['b])
+  (assert-all-equal
+    (cdr (cons 'a (, 'b)))
+    (, 'b))
+
+
+  (assert-all-equal (cdr (cons 'a (, 'b)))
+                    (, 'b))
+)
 
 (defn test-fail-and-succeed []
   (assert-equal (run* [q] fail) [])

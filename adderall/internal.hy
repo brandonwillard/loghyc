@@ -30,6 +30,20 @@
     (+ `(do (defn ~main ~lambda-list ~@body))
        (lfor name aliases `(setv ~name ~main)))))
 
+(defclass Nil/cl [] 
+  (defn --init-- [self]
+    (setv
+      self.car self
+      self.cdr self)))
+(setv nil/cl (Nil/cl))
+(defn null/cl? [x]
+  (cond
+    [(instance? Nil/cl x) True]
+    [(= [] x) True]
+    [(= (,) x) True]
+    [(= '() x) True]
+    [True False])) ;;None is not nil
+
 (defclass ConsPair [Iterable]
   "Construct a cons list.
 
@@ -49,19 +63,29 @@ be nested in `cons`es, e.g.
         (do (setv car-part (-none-to-empty-or-list
                              (first parts)))
             (setv cdr-part (-none-to-empty-or-list
-                             (if (and (coll? parts)
-                                      (> (len parts) 1))
-                                 (last parts)
-                                 None)))
-            (if (list? cdr-part)
-                ;; Try to preserve the exact type of list
-                ;; (e.g. in case it's actually a HyList).
-                (+ ((type cdr-part) [car-part]) cdr-part)
-                (do
-                  (setv instance (.--new-- (super ConsPair cls) cls))
-                  (setv instance.car car-part)
-                  (setv instance.cdr cdr-part)
-                  instance)))))
+                             (if
+                               (and (coll? parts)(> (len parts) 1))
+                               (last parts)
+                               ;;None
+                               nil/cl
+                               )))
+            (cond
+              [(instance? Nil/cl cdr-part)
+               `(~car-part)]
+              [(instance? hy.models.HyExpression cdr-part)
+               `(~car-part ~@cdr-part)]
+              [(tuple? cdr-part)
+               (tuple (+ [car-part] (list cdr-part)))]
+              [(list? cdr-part)
+               ;; Try to preserve the exact type of list
+               ;; (e.g. in case it's actually a HyList).
+               (+ ((type cdr-part) [car-part]) cdr-part)]
+              [True
+               (do
+                 (setv instance (.--new-- (super ConsPair cls) cls))
+                 (setv instance.car car-part)
+                 (setv instance.cdr cdr-part)
+                 instance)]))))
   (defn --hash-- [self]
     (hash [self.car, self.cdr]))
   (defn --eq-- [self other]
@@ -70,19 +94,22 @@ be nested in `cons`es, e.g.
          (= self.cdr other.cdr)))
   (defn --iter-- [self]
     (yield self.car)
-    (if (list? self.cdr)
+    (if (coll? self.cdr) ;;(list? self.cdr)
         (for [x self.cdr] (yield x))
-        (raise StopIteration)))
+        (raise StopIteration))
+    )
   (defn --repr-- [self]
     (.format "({} . {})" self.car self.cdr)))
 
 (defn -none-to-empty-or-list [x]
-  (cond [(none? x) (list)]
-        [(and (coll? x)
-              (not (cons? x))
-              (not (list? x)))
-         (list x)]
-        [True x]))
+  (cond
+    ;;[(none? x) (list)]
+    [(tuple? x) x]
+    [(and (coll? x)
+          (not (cons? x))
+          (not (list? x)))
+     (list x)]
+    [True x]))
 
 ;; A synonym for ConsPair
 (setv cons ConsPair)
@@ -97,8 +124,6 @@ be nested in `cons`es, e.g.
       ((type z) (list (rest z)))))
 
 (defn lvar? [x] (instance? LVar x))
-(defn tuple? [x] (instance? tuple x))
-(defn list? [x] (instance? list x))
 (defn seq? [x] (or (and (not (cons? x))
                         (tuple? x))
                    (instance? list x)
@@ -106,10 +131,12 @@ be nested in `cons`es, e.g.
 (defn neseq? [c]
   (and (seq? c) (not (empty? c))))
 (defn cons? [a]
-  (if (or (and (list? a) (not (empty? a)))
-          (instance? ConsPair a))
-      True
-      False))
+  (cond [(null/cl? a) False]
+        [(instance? ConsPair a) True]
+        ;;[(coll? a) (not (empty? a)) True]
+        [(or (list? a) (tuple? a) ) (not (empty? a)) True]
+        [True False]))
+
 
 (defn interleave [seqs]
   (setv iters (map iter seqs))
@@ -117,10 +144,10 @@ be nested in `cons`es, e.g.
     (setv newiters [])
     (for [itr iters]
       (try
-       (do
-        (yield (next itr))
-        (.append newiters itr))
-       (except [StopIteration])))
+        (do
+          (yield (next itr))
+          (.append newiters itr))
+        (except [StopIteration])))
     (setv iters newiters)))
 
 (defclass LVar [object]
@@ -137,8 +164,8 @@ be nested in `cons`es, e.g.
     (.format "<{0!r}>" self.name))
   (defn bound? [self]
     (if self.unbound
-      True
-      False)))
+        True
+        False)))
 
 (defn unbound [n]
   (LVar (.format "_.{0}" n) 'unbound))
@@ -176,10 +203,10 @@ unification results, `s`.
   (defn reifying [val]
     (setv val (substitute val s))
     (cond [(lvar? val) (do
-                        (unless (in val free-vars)
-                          (setv (get free_vars val)
-                                (unbound (len free-vars))))
-                        (get free-vars val))]
+                         (unless (in val free-vars)
+                           (setv (get free_vars val)
+                                 (unbound (len free-vars))))
+                         (get free-vars val))]
           [(seq? val) ((type val) (map reifying val))]
           [(cons? val) (cons (reifying (car val))
                              (reifying (cdr val)))]
@@ -209,39 +236,39 @@ E.g.
     (setv u (substitute u s))
     (setv v (substitute v s)))
   (cond
-   [(none? s) s]
-   [(is u v) s]
-   [(and (hasattr u "unify")
-         (callable u.unify))
-    (.unify u v u s)]
-   [(and (hasattr v "unify")
-         (callable v.unify))
-    (.unify v u v s)]
-   [(lvar? u)
-    (if (lvar? v)
-      (extend-unchecked u v s)
-      (if (and (hasattr v "unify")
-               (callable v.unify))
-        (.unify v u v s)
-        (extend u v s)))]
-   [(lvar? v)
-    (if (and (hasattr u "unify")
-             (callable u.unify))
-      (.unify u v u s)
-      (extend v u s))]
-   [(and (seq? u) (seq? v) (= (len u) (len v)))
-    (do
-     (for [[ui vi] (zip u v)]
-       (setv s (unify ui vi s))
-       (when (none? s)
-         (break)))
-     s)]
-   [(or (and (cons? u) (or (cons? v) (neseq? v)))
-        (and (or (cons? u) (neseq? u)) (cons? v)))
-    (do
-      (setv s (unify (car u) (car v) s))
-      (setv s (unify (cdr u) (cdr v) s))
-     s)]
-   [(= u v) s]))
+    [(none? s) s]
+    [(is u v) s]
+    [(and (hasattr u "unify")
+          (callable u.unify))
+     (.unify u v u s)]
+    [(and (hasattr v "unify")
+          (callable v.unify))
+     (.unify v u v s)]
+    [(lvar? u)
+     (if (lvar? v)
+         (extend-unchecked u v s)
+         (if (and (hasattr v "unify")
+                  (callable v.unify))
+             (.unify v u v s)
+             (extend u v s)))]
+    [(lvar? v)
+     (if (and (hasattr u "unify")
+              (callable u.unify))
+         (.unify u v u s)
+         (extend v u s))]
+    [(and (seq? u) (seq? v) (= (len u) (len v)))
+     (do
+       (for [[ui vi] (zip u v)]
+         (setv s (unify ui vi s))
+         (when (none? s)
+           (break)))
+       s)]
+    [(or (and (cons? u) (or (cons? v) (neseq? v)))
+         (and (or (cons? u) (neseq? u)) (cons? v)))
+     (do
+       (setv s (unify (car u) (car v) s))
+       (setv s (unify (cdr u) (cdr v) s))
+       s)]
+    [(= u v) s]))
 
 (setv EXPORTS [])
