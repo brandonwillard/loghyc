@@ -14,6 +14,7 @@
 ;; You should have received a copy of the GNU Lesser General Public
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+(import [cons [cons car cdr]])
 (import [adderall.dsl [*]]
         [tests.schemer.common [*]])
 (require [adderall.dsl [*]])

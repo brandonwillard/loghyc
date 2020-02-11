@@ -16,8 +16,8 @@ Example
 -------
 
 ```hy
-(import [adderall.dsl [*]])
-(require adderall.dsl)
+(import  [adderall.dsl [*]])
+(require [adderall.dsl [*]])
 
 (run* [q] (condᵉ [(≡ q 'tea)]
                  [(≡ q 'coffee) succeed]))
@@ -51,8 +51,8 @@ mostly to show the power of the system, or for fun:
 ```hy
 (import [adderall.dsl [*]]
         [adderall.extra.zebra [*]])
-(require adderall.dsl)
-(require adderall.extra.zebra)
+(require [adderall.dsl [*]])
+(require [adderall.extra.zebra [*]])
 
 (run* [water-drinker horse-owner] (zebraᵖ water-drinker horse-owner))
 ;; => [['norvegian 'japanese]]

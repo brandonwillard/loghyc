@@ -15,6 +15,7 @@
 ;; License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 (import [nose.tools [assert-equal assert-not-equal]]
+        [cons [cons car cdr]]
         [adderall.dsl [*]]
         [adderall.internal [*]])
 
@@ -29,69 +30,29 @@
   None)
 
 (defn test-cons []
-  (assert-all-equal (cons 'a None)
-                    (cons 'a [])
-                    (cons 'a (,))
-                    (cons 'a '())
-                    ['a])
-  (assert-all-equal (cons None 'a)
-                    (cons [] 'a)
-                    (cons (,) 'a)
-                    (cons '() 'a))
-  (assert-not-equal (cons 'a None)
-                    (, 'a))
-  (assert-equal (cons 'a None)
-                (list (, 'a)))
-
-  (assert-all-equal (cons 'a '(b c))
-                    (cons 'a ['b 'c])
-                    (cons 'a (, 'b 'c))
-                    ['a 'b 'c])
-  (assert-not-equal (cons 'a (, 'b 'c))
-                    (, 'a))
-  (assert-all-equal (cons 'a None)
-                    (list (, 'a)))
-
-  (assert-all-equal (cons '(a b) 'c)
-                    (cons ['a 'b] 'c)
-                    (cons (, 'a 'b) 'c))
-
-  (assert-all-equal (cons '(a b) '(c d))
-                    (cons '(a b) ['c 'd])
-                    (cons '(a b) (, 'c 'd))
-                    [['a 'b] 'c 'd])
-  (assert-not-equal (cons 'a (, 'b 'c))
-                    (, 'a 'b 'c))
-  (assert-all-equal (cons 'a (, 'b 'c))
-                    (list (, 'a 'b 'c)))
-  (assert-all-equal (cons '(a b) 'c)
-                    (cons ['a 'b] 'c)
-                    (cons (, 'a 'b) 'c))
-  (assert-all-equal (cons '(a b) '(c))
-                    (cons ['a 'b] ['c])
-                    (cons (, 'a 'b) (, 'c))
-                    [['a 'b] 'c])
-  (assert-equal (car (cons 'a 'b)) 'a)
-  (assert-all-equal (car (cons '(a b) 'a))
-                    (car (cons ['a 'b] 'a))
-                    (car (cons (, 'a 'b) 'a))
-                    ['a 'b])
-  (assert-not-equal (car (cons (, 'a 'b) 'a))
-                    (, 'a 'b))
-  (assert-equal (cdr (cons 'a 'b)) 'b)
-  (assert-all-equal (cdr (cons 'a None))
-                    (cdr (cons '(a) None))
-                    (cdr (cons 'a '()))
-                    (cdr (cons 'a (,)))
-                    (cdr (cons 'a []))
-                    [])
-  (assert-all-equal (cdr (cons 'a '(b)))
-                    (cdr (cons '(a) '(b)))
-                    (cdr (cons 'a ['b]))
-                    (cdr (cons 'a (, 'b)))
-                    ['b])
-  (assert-not-equal (cdr (cons 'a (, 'b)))
-                    (, 'b)))
+  (assert-equal 
+    (cons 'a '())
+    '(a))
+  (assert-equal
+    (cons 'a '(b c))
+    '(a b c))
+  (assert-equal
+    (cons '(a b) '(c d))
+    '((a b) c d))
+  (assert-equal
+    (cons '(a b) '(c))
+    '((a b) c))
+  (assert-equal
+    (car (cons '(a b) 'a))
+    '(a b))
+  (assert-equal
+    (cdr (cons 'a '()))
+    '())
+  (assert-all-equal
+    (cdr (cons 'a '(b)))
+    (cdr (cons '(a) '(b)))
+    '(b))
+)
 
 (defn test-fail-and-succeed []
   (assert-equal (run* [q] fail) [])
@@ -150,13 +111,13 @@
                             (memberᵒ ?y [1 3 5])))
                 [1 3 5 4 4 4 2 2 2]))
 
-(defn test-set-support []
-  (assert-equal (run* [q]
-                      (memberᵒ q (set [1 2 3 1 2 3])))
-                [1 2 3])
-  (assert-equal (run* [q]
-                      (memberᵒ 3 (set [1 2 q q])))
-                [3]))
+;; (defn test-set-support []
+;;   (assert-equal (run* [q]
+;;                       (memberᵒ q (set [1 2 3 1 2 3])))
+;;                 [1 2 3])
+;;   (assert-equal (run* [q]
+;;                       (memberᵒ 3 (set [1 2 q q])))
+;;                 [3]))
 
 (defn test-lazyness []
   (assert-equal (first (wrap-stdout

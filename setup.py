@@ -20,7 +20,7 @@ from setuptools import find_packages, setup
 setup(
     name="adderall",
     version="2.0.0",
-    install_requires=['hy>=0.15', 'monaxhyd>=0.2.1'],
+    install_requires=['hy>=0.15', 'monaxhyd>=0.2.1', "cons>=0.3.1"],
     packages=find_packages(exclude=['tests', 'tests.extra', 'tests.schemer']),
     package_data={
         'adderall': ['*.hy'],
@@ -35,7 +35,7 @@ setup(
     license="LGPL-3",
     url="https://github.com/algernon/adderall",
     platforms=['any'],
-    python_requires='>=3.4',
+    python_requires='>=3.6',
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
